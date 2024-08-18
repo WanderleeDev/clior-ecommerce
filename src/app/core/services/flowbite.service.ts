@@ -5,7 +5,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
   providedIn: 'root',
 })
 export class FlowbiteService {
-  constructor(@Inject(PLATFORM_ID) private platformID: any) {}
+  constructor(@Inject(PLATFORM_ID) private platformID: never) {}
 
   loadFlowbite() {
     if (isPlatformBrowser(this.platformID)) {
