@@ -1,0 +1,13 @@
+<div
+  class="w-full h-full relative after:inset-0 after:absolute after:bg-black/20 after:bg-blend-multiply"
+>
+  <video
+  #videoPlayer
+  (timeupdate)="onProgress(videoPlayer)"
+    class="w-full h-full object-cover bg-gray-700 bg-blend-multiply"
+    [src]="videoUrl()"
+    muted
+    autoplay
+    loop
+  ></video>
+</div>

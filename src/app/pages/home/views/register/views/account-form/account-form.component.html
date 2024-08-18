@@ -1,0 +1,45 @@
+<app-register-form-layout [currentStep]="2">
+  <form
+    class="max-w-md mx-auto flex flex-col gap-4 w-full"
+    (ngSubmit)="onSubmit()"
+    novalidate
+    [formGroup]="accountForm"
+    errorTailor
+  >
+    @for (field of fieldsForm.slice(0,2); track field.name) {
+    <app-input-flowbite [formControlName]="field.control" [fieldData]="field" />
+    }
+
+    <div class="grid md:grid-cols-2 md:gap-6">
+      @for (field of fieldsForm.slice(2,4); track field.name) {
+        <app-input-flowbite [formControlName]="field.control" [fieldData]="field" />
+        }
+    </div>
+
+    <div class="flex justify-between">
+      <app-button-flowbite
+        (click)="onBackStep()"
+        [isFlexReverse]="true"
+        label="Prev"
+      >
+        <app-arrow-left-svg />
+      </app-button-flowbite>
+      <app-button-flowbite
+        (click)="onSubmit()"
+        [isDisabled]="accountForm.invalid"
+        label="Next"
+        typeButton="submit"
+      >
+        <app-arrow-right-svg />
+      </app-button-flowbite>
+    </div>
+  </form>
+</app-register-form-layout>
+<ng-template let-error let-text="text" #error>
+  <span
+    class="absolute bg-red-500 text-white bottom-0 px-2 translate-y-[110%] text-xs tracking-wide rounded-md border-gray-200 border-[.15rem ] select-none"
+  >
+    {{ text }}
+  </span>
+</ng-template>
+

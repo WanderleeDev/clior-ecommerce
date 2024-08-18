@@ -1,1 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer utilities {
+  .active-link {
+    color: #0249e4;
+    text-decoration: underline;
+  }
+  .grid-layout {
+    display: grid;
+    grid-template-columns: 0.5rem 1fr 0.5rem;
+
+    @media (width >= 18.75rem) {
+      grid-template-columns: 1rem 1fr 1rem;
+    }
+
+    @media (width >= 50rem) {
+      grid-template-columns: 1.5rem 1fr 1.5rem;
+    }
+
+    @media (width >= 80rem) {
+      grid-template-columns: 2rem 1fr 2rem;
+    }
+
+    @media (width >= 95rem) {
+      grid-template-columns: 3rem 1fr 3rem;
+    }
+  }
+}
+
+.grid-area-center {
+  grid-column: 2/3;
+}
+
+.my-class {
+  @apply text-red-500;
+}

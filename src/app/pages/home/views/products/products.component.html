@@ -1,0 +1,9 @@
+@defer (when products() !== undefined && products()?.length) {
+<app-masonry [products]="products()!" />
+}@placeholder {
+<app-loader textComplementary="Loading products" />
+}@loading (minimum 3s) {
+<app-grid-image-skeleton [listImages]="15" />
+}@error {
+<p class="text-center">Something wrong</p>
+}

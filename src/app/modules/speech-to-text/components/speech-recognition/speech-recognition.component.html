@@ -1,0 +1,19 @@
+@if (hasSpeechRecognitionSupport | async) {
+<button
+  class="button-recognition size-9"
+  [ngClass]="customClass()"
+  [title]="labelButton()"
+  [attr.aria-label]="labelButton()"
+  (click)="toggleSpeechRecognition()"
+  type="button"
+>
+  @if (transcriptData().isActive) {
+  <app-bars [size]="SIZE_ICON" [color]="COLOR_ICON" />
+  }@else {
+  <app-microphone [size]="SIZE_ICON" [color]="COLOR_ICON" />
+  }
+</button>
+}
+<!-- <pre class="bg-slate-400">
+  {{transcriptData() | json}}
+</pre> -->

@@ -1,0 +1,37 @@
+<div
+  class="z-50 my-4 w-56 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl block"
+  id="dropdown"
+  data-popper-placement="bottom"
+>
+  <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
+    @for (option of options; track option.title) {
+    <li>
+      <button
+        type="button"
+        class="flex gap-4 flex-row-reverse justify-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white w-full"
+      >
+        Login with {{ option.title }}
+        <img
+          class="text-red-300"
+          width="20"
+          height="20"
+          [ngSrc]="option.icon"
+          [alt]="[option.title + 'logo']"
+        />
+      </button>
+    </li>
+    }
+  </ul>
+  <ul
+    class="py-4 text-gray-700 dark:text-gray-300 grid place-content-center"
+    aria-labelledby="dropdown"
+  >
+    <li>
+      <a
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-max"
+        routerLink="/login"
+        >Sign in to your account</a
+      >
+    </li>
+  </ul>
+</div>
