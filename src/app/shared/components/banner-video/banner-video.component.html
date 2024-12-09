@@ -2,9 +2,9 @@
   class="w-full h-full relative after:inset-0 after:absolute after:bg-black/20 after:bg-blend-multiply"
 >
   <video
-  #videoPlayer
-  (timeupdate)="onProgress(videoPlayer)"
-    class="w-full h-full object-cover bg-gray-700 bg-blend-multiply"
+    #videoPlayer
+    (timeupdate)="onProgress(videoPlayer)"
+    class="w-full h-full object-cover bg-gray-700 bg-blend-multiply aspect-video"
     [src]="videoUrl()"
     muted
     autoplay

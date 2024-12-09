@@ -22,8 +22,9 @@
   }
   .grid-layout {
     display: grid;
-    grid-template-columns: 0.5rem 1fr 0.5rem;
+    grid-template-columns: 0rem 1fr 0rem;
 
+    /*
     @media (width >= 18.75rem) {
       grid-template-columns: 1rem 1fr 1rem;
     }
@@ -39,6 +40,7 @@
     @media (width >= 95rem) {
       grid-template-columns: 3rem 1fr 3rem;
     }
+    */
   }
 }
 

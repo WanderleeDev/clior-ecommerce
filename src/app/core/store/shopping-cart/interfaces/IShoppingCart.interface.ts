@@ -1,4 +1,4 @@
-import { IProductDto } from "../../../../pages/home/interfaces/IProduct.interface";
+import { IProductDto } from '../../../../pages/homee/interfaces/IProduct.interface';
 
 export interface IUpdateParams {
   products: IProductDto[];

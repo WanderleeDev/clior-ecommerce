@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { IProductDto } from '../../../pages/home/interfaces/IProduct.interface';
+import { IProductDto } from '../../../pages/homee/interfaces/IProduct.interface';
 import SHOPPING_CART_ACTIONS from './shopping-cart.actions';
 import { ShoppingCartStatus } from './interfaces/IShoppingCart.interface';
 import { ShoppingCartManagerService } from './services/shoppingCartManager.service';

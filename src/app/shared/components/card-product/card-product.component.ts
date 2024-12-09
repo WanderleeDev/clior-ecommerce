@@ -1,7 +1,7 @@
 import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { IProduct } from '../../../pages/home/interfaces/IProduct.interface';
-import { StarRatingComponent } from '../../ui/star-rating/star-rating.component';
+import { IProduct } from '../../../pages/homee/interfaces/IProduct.interface';
+import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { RouterLink } from '@angular/router';
 
 @Component({

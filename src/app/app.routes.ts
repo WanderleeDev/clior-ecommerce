@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { MainLayoutComponent } from './layout/main-layout.component';
 
 export const routes: Routes = [
   {
@@ -8,11 +9,43 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('./pages/home/home.routing')
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+      },
+      {
+        path: 'home',
+        title: 'Clior | Home',
+        loadComponent: () => import('./pages/home/home.component'),
+      },
+      {
+        path: 'products',
+        title: 'Clior | Products',
+        loadChildren: () => import('./pages/product/product.routing'),
+      },
+      {
+        path: 'auth',
+        title: 'Clior | Authentication',
+        loadChildren: () => import('./pages/auth/auth.routes'),
+      },
+      {
+        path: 'user',
+        title: 'Clior | My Account',
+        loadComponent: () => import('./pages/user/user.component'),
+      },
+      {
+        path: 'payments',
+        title: 'Clior | Payments',
+        loadComponent: () => import('./pages/payments/payments.component'),
+      },
+    ],
   },
   {
     path: 'cms',
-    loadComponent: () => import('./pages/cms/cms.component')
+    loadComponent: () => import('./pages/cms/cms.component'),
   },
   {
     path: '**',

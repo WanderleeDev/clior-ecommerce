@@ -1,23 +1,25 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MainLayoutComponent } from '../../layout/main-layout.component';
-import { RouterOutlet } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
+import { BannerVideoComponent } from '../../shared/components/banner-video/banner-video.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import { WhyUsComponent } from './components/why-us/why-us.component';
+import { StoreFrontComponent } from './components/store-front/store-front.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MainLayoutComponent, RouterOutlet],
-  template: `
-    <app-main-layout>
-      <router-outlet class="hidden" />
-    </app-main-layout>
-  `,
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
+  imports: [BannerVideoComponent, WhyUsComponent, StoreFrontComponent],
+  templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HomeComponent {
-
+  readonly #sanitizer = inject(DomSanitizer);
+  protected readonly currentTimeVideo = signal(0);
+  protected readonly videoUrl = this.#sanitizer.bypassSecurityTrustResourceUrl(
+    'https://www.youtube.com/embed/CJQG8qS7oxM?si=KSnd6oed84QEvv7b'
+  );
 }

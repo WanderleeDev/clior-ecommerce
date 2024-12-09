@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IProductDto } from '../../../../pages/home/interfaces/IProduct.interface';
+import { IProductDto } from '../../../../pages/homee/interfaces/IProduct.interface';
 import {
   IUpdateParams,
   UpdateAction,

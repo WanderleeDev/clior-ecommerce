@@ -1,17 +1,12 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { StepperRegisterComponent } from '../pages/home/views/register/component/stepper-register/stepper-register.component';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { StepperRegisterComponent } from '../pages/auth/views/register/component/stepper-register/stepper-register.component';
+import { RouterLink } from '@angular/router';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-register-form-layout',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    StepperRegisterComponent,
-    RouterLink,
-    LoaderComponent,
-  ],
+  imports: [StepperRegisterComponent, RouterLink, LoaderComponent],
   template: `
     <div class="grid gap-16 h-full">
       <app-stepper-register
@@ -27,7 +22,7 @@ import { LoaderComponent } from '../shared/components/loader/loader.component';
       >
         Already have an account?
         <a
-          routerLink="/register"
+          routerLink="/auth/login"
           class="text-blue-600 hover:underline dark:text-blue-500 cursor-pointer"
           >Enter here</a
         >

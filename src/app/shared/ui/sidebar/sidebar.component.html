@@ -1,0 +1,266 @@
+<aside
+  id="logo-sidebar"
+  class="fixed top-0 left-0 z-40 w-64 h-96 pt-20 transition-transform -translate-x-full bg-gray-900 sm:translate-x-0"
+>
+  <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-900">
+    <div class="space-y-4">
+      <!-- Brand Filter -->
+      <div class="relative">
+        <button
+          class="flex items-center justify-between w-full p-2 text-gray-400 hover:text-white bg-gray-800 rounded-lg"
+        >
+          <span>Apple</span>
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Price Range -->
+      <div class="space-y-2">
+        <h3 class="text-sm font-medium text-gray-400">Price Range</h3>
+        <div class="px-2">
+          <div class="relative">
+            <div class="h-1 bg-gray-700 rounded-full">
+              <div
+                class="absolute h-1 bg-purple-600 rounded-full"
+                style="width: 60%; left: 20%"
+              ></div>
+            </div>
+          </div>
+          <div class="flex justify-between mt-4">
+            <input
+              type="number"
+              value="300"
+              class="w-20 px-2 py-1 text-sm text-white bg-gray-800 rounded border border-gray-700"
+            />
+            <input
+              type="number"
+              value="3500"
+              class="w-20 px-2 py-1 text-sm text-white bg-gray-800 rounded border border-gray-700"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery Method -->
+      <div class="space-y-2">
+        <h3 class="text-sm font-medium text-gray-400">Delivery method</h3>
+        <div class="space-y-2">
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="radio"
+              name="delivery"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+            />
+            <span>Flowbox</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="radio"
+              name="delivery"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+            />
+            <span>Pick from the store</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="radio"
+              name="delivery"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+            />
+            <span>Fast courier</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rating -->
+      <div class="space-y-2">
+        <h3 class="text-sm font-medium text-gray-400">Rating</h3>
+        <div class="space-y-2">
+          @for (rating of [5,4,3,2,1]; track rating) {
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="radio"
+              name="rating"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+            />
+            <div class="flex items-center">
+              @for (star of [1,2,3,4,5]; track star) {
+              <svg
+                class="w-4 h-4"
+                [class.text-yellow-300]="star <= rating"
+                [class.text-gray-600]="star > rating"
+                fill="currentColor"
+                viewBox="0 0 22 20"
+              >
+                <path
+                  d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                />
+              </svg>
+              }
+            </div>
+          </label>
+          }
+        </div>
+      </div>
+
+      <!-- Condition -->
+      <div class="space-y-2">
+        <h3 class="text-sm font-medium text-gray-400">Condition</h3>
+        <div class="space-y-2">
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="radio"
+              name="condition"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+              checked
+            />
+            <span>All</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="radio"
+              name="condition"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+            />
+            <span>New</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="radio"
+              name="condition"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+            />
+            <span>Used</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Color -->
+      <div class="space-y-2">
+        <h3 class="text-sm font-medium text-gray-400">Colour</h3>
+        <div class="space-y-2">
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span class="flex items-center space-x-2">
+              <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+              <span>Blue</span>
+            </span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-gray-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span class="flex items-center space-x-2">
+              <span class="w-4 h-4 bg-gray-600 rounded-full"></span>
+              <span>Gray</span>
+            </span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-green-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span class="flex items-center space-x-2">
+              <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+              <span>Green</span>
+            </span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-pink-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span class="flex items-center space-x-2">
+              <span class="w-4 h-4 bg-pink-600 rounded-full"></span>
+              <span>Pink</span>
+            </span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-red-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span class="flex items-center space-x-2">
+              <span class="w-4 h-4 bg-red-600 rounded-full"></span>
+              <span>Red</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Weight -->
+      <div class="space-y-2">
+        <h3 class="text-sm font-medium text-gray-400">Weight</h3>
+        <div class="space-y-2">
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span>Under 1 kg</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span>1 kg to 5 kg</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span>5 kg to 10 kg</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span>10 kg to 20 kg</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-gray-400">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600 rounded"
+            />
+            <span>Over 20 kg</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile toggle button -->
+<button
+  type="button"
+  (click)="toggleSidebar()"
+  class="fixed bottom-4 right-4 sm:hidden z-50 p-3 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+>
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M4 6h16M4 12h16m-7 6h7"
+    ></path>
+  </svg>
+</button>

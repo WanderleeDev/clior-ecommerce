@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IProductDto } from '../../../pages/home/interfaces/IProduct.interface';
+import { IProductDto } from '../../../pages/homee/interfaces/IProduct.interface';
 import { UpdateAction } from './shopping-cart-reducers';
 
 const addProduct = createAction(
@@ -14,7 +14,7 @@ const removeProduct = createAction(
 
 const updateProduct = createAction(
   '[Shopping Cart Section] Update quantity product',
-  props<{ productId: number, action: UpdateAction }>()
+  props<{ productId: number; action: UpdateAction }>()
 );
 
 const clearShoppingCart = createAction(

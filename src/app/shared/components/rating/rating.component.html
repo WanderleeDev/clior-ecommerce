@@ -1,0 +1,25 @@
+<div
+  class="container-stars"
+  [class.readonly]="isReadonly()"
+  [style.color]="backgroundStar()"
+  [style.flex-direction]="orientation() === 'horizontal' ? 'row' : 'column'"
+>
+  @for (item of arrayStars; let i = $index; track i) {
+  <svg
+    (click)="viewRating(i + 1)"
+    [class.active-rating]="i + 1 <= rating()"
+    [attr.width]="sizeStar()"
+    [attr.height]="sizeStar()"
+    [attr.aria-label]="[
+      'rate with ' + (i + 1) + (i + 1 < 2 ? ' star' : ' stars')
+    ]"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 256 256"
+  >
+    <path
+      fill="currentColor"
+      d="m234.5 114.38l-45.1 39.36l13.51 58.6a16 16 0 0 1-23.84 17.34l-51.11-31l-51 31a16 16 0 0 1-23.84-17.34l13.49-58.54l-45.11-39.42a16 16 0 0 1 9.11-28.06l59.46-5.15l23.21-55.36a15.95 15.95 0 0 1 29.44 0L166 81.17l59.44 5.15a16 16 0 0 1 9.11 28.06Z"
+    />
+  </svg>
+  }
+</div>

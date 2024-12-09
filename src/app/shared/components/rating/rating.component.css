@@ -1,0 +1,28 @@
+:host {
+  display: contents;
+}
+
+.container-stars {
+  display: inline-flex;
+  flex-flow: row nowrap;
+  transition: color 0.1s ease-in-out;
+  &:hover > svg {
+    color: rgb(252, 185, 61);
+  }
+
+  svg {
+    cursor: pointer;
+    transition: color 0.1s ease-in-out;
+    &:hover ~ svg {
+      color: currentColor;
+    }
+  }
+
+  .active-rating {
+    color: rgb(252, 185, 61);
+  }
+}
+
+.readonly {
+  pointer-events: none;
+}

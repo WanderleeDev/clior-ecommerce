@@ -29,7 +29,6 @@
     <div
       class="text-base font-medium text-gray-900 dark:text-white hover:underline flex items-center gap-2"
     >
-      <span>{{ isLogged() ? "Max" : "My account" }}</span>
       <svg
         class="size-3 text-gray-800 dark:text-white pt-1"
         aria-hidden="true"
@@ -47,11 +46,9 @@
       </svg>
     </div>
   </button>
-  @if (isViewDripMenu()) {
-    @if (isLogged()) {
-    <app-dropdown-menu class="absolute right-0" />
-    }@else {
-    <app-login-options class="absolute right-0" />
-    }
-}
+  @if (isViewDripMenu()) { @if (isLogged()) {
+  <app-dropdown-menu class="absolute right-0" />
+  }@else {
+  <app-login-options class="absolute right-0" />
+  } }
 </div>

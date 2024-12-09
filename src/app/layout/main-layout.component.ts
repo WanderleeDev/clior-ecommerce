@@ -1,23 +1,20 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HeaderComponent } from '../shared/ui/header/header.component';
 import { FooterComponent } from '../shared/ui/footer/footer.component';
-import { LoaderComponent } from '../shared/components/loader/loader.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, LoaderComponent],
+  imports: [HeaderComponent, FooterComponent, RouterOutlet],
   template: `
-    <main class="min-h-dvh w-full grid grid-rows-[auto_1fr_auto]">
+    <main
+      class="min-h-dvh w-full grid grid-rows-[auto_1fr_auto] max-w-[120rem] mx-auto"
+    >
       <app-header class="z-20" />
-      <div class="py-4 md:py-8 xl:py-12 grid-layout h-full">
+      <div class="grid-layout h-full overflow-x-hidden">
         <div class="grid-area-center content-center h-full">
-          <ng-content>
-            <app-loader
-              class="grid-area-center"
-              textComplementary="Loading page..."
-            />
-          </ng-content>
+          <router-outlet />
         </div>
       </div>
       <app-footer />
