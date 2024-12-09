@@ -13,11 +13,12 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RatingComponent {
+  readonly rating = model.required<number>();
+  readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
+  readonly quantityReview = input<number>();
   readonly sizeStar = input(18);
   readonly isReadonly = input(false);
-  readonly rating = model.required<number>();
   readonly backgroundStar = input('#dcdcdc');
-  readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly arrayStars = Array.from({ length: 5 }, (_, i) => i + 1);
 
   public viewRating(rating: number): void {

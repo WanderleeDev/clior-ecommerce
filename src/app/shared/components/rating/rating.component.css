@@ -1,5 +1,7 @@
 :host {
-  display: contents;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .container-stars {

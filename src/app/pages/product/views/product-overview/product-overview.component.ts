@@ -2,11 +2,17 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommentComponent } from '../../components/comment/comment.component';
 import { CommentFormComponent } from '../../components/comment-form/comment-form.component';
 import { RatingComponent } from '../../../../shared/components/rating/rating.component';
+import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-product-overview',
   standalone: true,
-  imports: [CommentComponent, CommentFormComponent, RatingComponent],
+  imports: [
+    CommentComponent,
+    CommentFormComponent,
+    RatingComponent,
+    LoaderComponent,
+  ],
   templateUrl: './product-overview.component.html',
   host: {
     class: 'py-10 container mx-auto block',

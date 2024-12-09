@@ -5,5 +5,9 @@
     [(currentTime)]="currentTimeVideo"
   />
   <app-store-front />
+  @defer (on viewport) {
   <app-why-us />
+  }@placeholder {
+  <app-loader class="py-32" textComplementary="loading section" />
+  }
 </section>

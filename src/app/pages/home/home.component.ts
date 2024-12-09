@@ -8,11 +8,17 @@ import { BannerVideoComponent } from '../../shared/components/banner-video/banne
 import { DomSanitizer } from '@angular/platform-browser';
 import { WhyUsComponent } from './components/why-us/why-us.component';
 import { StoreFrontComponent } from './components/store-front/store-front.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [BannerVideoComponent, WhyUsComponent, StoreFrontComponent],
+  imports: [
+    BannerVideoComponent,
+    WhyUsComponent,
+    StoreFrontComponent,
+    LoaderComponent,
+  ],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

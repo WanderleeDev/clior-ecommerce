@@ -23,3 +23,8 @@
   </svg>
   }
 </div>
+@if (quantityReview()) {
+<span class="rating-text ms-2 text-sm text-gray-500 translate-y-[.1rem]">
+  {{ rating() }} ({{ quantityReview() }})
+</span>
+}

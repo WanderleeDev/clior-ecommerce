@@ -1,3 +1,12 @@
 <section class="relative">
   <app-sidebar />
+  <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    @for (product of products; track product.id) {
+    <app-product-card [product]="product" />
+    }@empty {
+    <div class="col-span-full text-center">
+      <p class="text-gray-500">No products found</p>
+    </div>
+    }
+  </div>
 </section>
