@@ -1,0 +1,154 @@
+<!-- Color Selection -->
+<div>
+  <h3 class="text-lg font-medium text-white">Colour</h3>
+  <div class="mt-2 flex space-x-2">
+    <button
+      class="w-12 h-12 rounded-lg bg-green-500"
+      title="green"
+      [class.ring-2]="selectedColor === 'green'"
+      [class.ring-purple-600]="selectedColor === 'green'"
+    ></button>
+    <button
+      class="w-12 h-12 rounded-lg bg-pink-500"
+      title="pink"
+      [class.ring-2]="selectedColor === 'pink'"
+      [class.ring-purple-600]="selectedColor === 'pink'"
+    ></button>
+    <button
+      class="w-12 h-12 rounded-lg bg-gray-300"
+      title="silver"
+      [class.ring-2]="selectedColor === 'silver'"
+      [class.ring-purple-600]="selectedColor === 'silver'"
+    ></button>
+    <button
+      class="w-12 h-12 rounded-lg bg-blue-500"
+      title="blue"
+      [class.ring-2]="selectedColor === 'blue'"
+      [class.ring-purple-600]="selectedColor === 'blue'"
+    ></button>
+  </div>
+</div>
+
+<!-- Storage Selection -->
+<div>
+  <h3 class="text-lg font-medium text-white">SSD capacity</h3>
+  <div class="mt-2 flex space-x-2">
+    <button
+      class="px-4 py-2 rounded-lg"
+      [class.bg-gray-700]="selectedStorage === '256GB'"
+      [class.bg-gray-800]="selectedStorage !== '256GB'"
+      [class.text-white]="selectedStorage === '256GB'"
+      [class.text-gray-400]="selectedStorage !== '256GB'"
+    >
+      256GB
+    </button>
+    <button
+      class="px-4 py-2 rounded-lg"
+      [class.bg-gray-700]="selectedStorage === '512GB'"
+      [class.bg-gray-800]="selectedStorage !== '512GB'"
+      [class.text-white]="selectedStorage === '512GB'"
+      [class.text-gray-400]="selectedStorage !== '512GB'"
+    >
+      512GB
+    </button>
+    <button
+      class="px-4 py-2 rounded-lg"
+      [class.bg-gray-700]="selectedStorage === '1TB'"
+      [class.bg-gray-800]="selectedStorage !== '1TB'"
+      [class.text-white]="selectedStorage === '1TB'"
+      [class.text-gray-400]="selectedStorage !== '1TB'"
+    >
+      1TB
+    </button>
+  </div>
+</div>
+
+<!-- Delivery Options -->
+<div>
+  <h3 class="text-lg font-medium text-white">Pickup</h3>
+  <div class="mt-2 space-y-2">
+    <label class="flex items-center space-x-3">
+      <input
+        type="radio"
+        name="delivery"
+        class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+      />
+      <span class="text-gray-300">Shipping - {{ 19 }}</span>
+      <span class="text-gray-500">Arrives Nov 17</span>
+    </label>
+    <label class="flex items-center space-x-3">
+      <input
+        type="radio"
+        name="delivery"
+        class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+      />
+      <span class="text-gray-300">Pickup from Flowbox- {{ 9 }}</span>
+      <span class="text-blue-400 hover:underline cursor-pointer"
+        >Pick a Flowbox near you</span
+      >
+    </label>
+    <label class="flex items-center space-x-3">
+      <input
+        type="radio"
+        name="delivery"
+        disabled
+        class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+      />
+      <span class="text-gray-500">Pickup from our store</span>
+      <span class="text-gray-500">Not available</span>
+    </label>
+  </div>
+</div>
+
+<!-- Warranty Options -->
+<div>
+  <h3 class="text-lg font-medium text-white">Add extra warranty</h3>
+  <div class="mt-2 space-y-2">
+    <label class="flex items-center space-x-3">
+      <input
+        type="radio"
+        name="warranty"
+        class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+      />
+      <span class="text-gray-300">1 year - {{ 39 }}</span>
+    </label>
+    <label class="flex items-center space-x-3">
+      <input
+        type="radio"
+        name="warranty"
+        class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+      />
+      <span class="text-gray-300">2 years - {{ 69 }}</span>
+    </label>
+    <label class="flex items-center space-x-3">
+      <input
+        type="radio"
+        name="warranty"
+        class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
+      />
+      <span class="text-gray-300">3 years - {{ 991 }}</span>
+    </label>
+  </div>
+</div>
+
+<!-- Add to Cart Section -->
+<div class="flex items-center space-x-4">
+  <button
+    class="flex-none px-4 py-2 text-white bg-gray-800 rounded-lg hover:bg-gray-700"
+  >
+    Add to favorites
+  </button>
+  <div class="flex items-center space-x-2">
+    <label class="text-gray-400" for="quantity">Quantity</label>
+    <select id="quantity" class="bg-gray-800 text-white rounded-lg px-2 py-2">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+    </select>
+  </div>
+  <button
+    class="flex-1 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700"
+  >
+    Add to cart
+  </button>
+</div>

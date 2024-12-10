@@ -9,9 +9,16 @@ export interface Product {
   category: string;
   rating: Rating;
   discount: number | null;
+  tag: ProductTag | null;
 }
 
 export interface Rating {
   rate: number;
   count: number;
 }
+
+export type ProductTag = 'In stock' | 'Out of stock' | 'Limited stock';
+export type ProductInfo = Pick<
+  Product,
+  'name' | 'rating' | 'price' | 'description' | 'tag'
+>;

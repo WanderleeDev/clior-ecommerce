@@ -1,231 +1,30 @@
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-  <!-- Product Images -->
-  <div class="space-y-4">
-    <div class="bg-gray-800 rounded-lg p-4">
-      <img
-        [src]="product.imageUrl"
-        alt="Product"
-        class="w-full h-auto object-contain"
-      />
-    </div>
-    <div class="grid grid-cols-4 gap-4">
-      @for (img of [1,2,3,4]; track img) {
-      <div
-        class="bg-gray-800 rounded-lg p-2 cursor-pointer border-2"
-        [class.border-purple-600]="img === 1"
-        [class.border-transparent]="img !== 1"
-      >
-        <img
-          [src]="product.imageUrl"
-          alt="Thumbnail"
-          class="w-full h-auto object-contain"
-        />
-      </div>
-      }
-    </div>
+@if (!productData()) {
+  <app-loader class="py-32" textComplementary="loading product" />
+}
+@if (productData()) {
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+    <app-product-image-gallery [title]="product.title" />
+
+    <app-product-info [productInfo]="productData()!">
+      <app-tag content="In stock" ngProjectAs="tag" />
+      <app-product-form-order ngProjectAs="extra" />
+    </app-product-info>
   </div>
 
-  <!-- Product Info -->
-  <div class="space-y-6">
-    <div>
-      <span
-        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
-      >
-        In stock
-      </span>
-      <h2 class="mt-2 text-3xl font-bold text-white">
-        {{ product.title }}
-      </h2>
-      <div class="mt-2 flex items-center space-x-2">
-        <div class="flex items-center">
-          <app-rating [rating]="2" [isReadonly]="true" />
+  @defer (on viewport) {
+    <section class="mt-12" id="review">
+      <h3 class="text-2xl font-bold text-white mb-6">Customer Reviews</h3>
+
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="space-y-4">
+          @for (comment of comments; track comment.author) {
+            <app-comment [comment]="comment" />
+          }
         </div>
-        <span class="text-blue-400 hover:underline cursor-pointer"
-          >345 Reviews</span
-        >
-        <span class="text-gray-400">|</span>
-        <span class="text-blue-400 hover:underline cursor-pointer"
-          >Deliver to Bonnie Green- Sacramento 23647</span
-        >
+        <app-comment-form />
       </div>
-    </div>
-
-    <div class="text-4xl font-bold text-white">{{ product.price }}</div>
-
-    <!-- Color Selection -->
-    <div>
-      <h3 class="text-lg font-medium text-white">Colour</h3>
-      <div class="mt-2 flex space-x-2">
-        <button
-          class="w-12 h-12 rounded-lg bg-green-500"
-          title="green"
-          [class.ring-2]="selectedColor === 'green'"
-          [class.ring-purple-600]="selectedColor === 'green'"
-        ></button>
-        <button
-          class="w-12 h-12 rounded-lg bg-pink-500"
-          title="pink"
-          [class.ring-2]="selectedColor === 'pink'"
-          [class.ring-purple-600]="selectedColor === 'pink'"
-        ></button>
-        <button
-          class="w-12 h-12 rounded-lg bg-gray-300"
-          title="silver"
-          [class.ring-2]="selectedColor === 'silver'"
-          [class.ring-purple-600]="selectedColor === 'silver'"
-        ></button>
-        <button
-          class="w-12 h-12 rounded-lg bg-blue-500"
-          title="blue"
-          [class.ring-2]="selectedColor === 'blue'"
-          [class.ring-purple-600]="selectedColor === 'blue'"
-        ></button>
-      </div>
-    </div>
-
-    <!-- Storage Selection -->
-    <div>
-      <h3 class="text-lg font-medium text-white">SSD capacity</h3>
-      <div class="mt-2 flex space-x-2">
-        <button
-          class="px-4 py-2 rounded-lg"
-          [class.bg-gray-700]="selectedStorage === '256GB'"
-          [class.bg-gray-800]="selectedStorage !== '256GB'"
-          [class.text-white]="selectedStorage === '256GB'"
-          [class.text-gray-400]="selectedStorage !== '256GB'"
-        >
-          256GB
-        </button>
-        <button
-          class="px-4 py-2 rounded-lg"
-          [class.bg-gray-700]="selectedStorage === '512GB'"
-          [class.bg-gray-800]="selectedStorage !== '512GB'"
-          [class.text-white]="selectedStorage === '512GB'"
-          [class.text-gray-400]="selectedStorage !== '512GB'"
-        >
-          512GB
-        </button>
-        <button
-          class="px-4 py-2 rounded-lg"
-          [class.bg-gray-700]="selectedStorage === '1TB'"
-          [class.bg-gray-800]="selectedStorage !== '1TB'"
-          [class.text-white]="selectedStorage === '1TB'"
-          [class.text-gray-400]="selectedStorage !== '1TB'"
-        >
-          1TB
-        </button>
-      </div>
-    </div>
-
-    <!-- Delivery Options -->
-    <div>
-      <h3 class="text-lg font-medium text-white">Pickup</h3>
-      <div class="mt-2 space-y-2">
-        <label class="flex items-center space-x-3">
-          <input
-            type="radio"
-            name="delivery"
-            class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
-          />
-          <span class="text-gray-300">Shipping - {{ 19 }}</span>
-          <span class="text-gray-500">Arrives Nov 17</span>
-        </label>
-        <label class="flex items-center space-x-3">
-          <input
-            type="radio"
-            name="delivery"
-            class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
-          />
-          <span class="text-gray-300">Pickup from Flowbox- {{ 9 }}</span>
-          <span class="text-blue-400 hover:underline cursor-pointer"
-            >Pick a Flowbox near you</span
-          >
-        </label>
-        <label class="flex items-center space-x-3">
-          <input
-            type="radio"
-            name="delivery"
-            disabled
-            class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
-          />
-          <span class="text-gray-500">Pickup from our store</span>
-          <span class="text-gray-500">Not available</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Warranty Options -->
-    <div>
-      <h3 class="text-lg font-medium text-white">Add extra warranty</h3>
-      <div class="mt-2 space-y-2">
-        <label class="flex items-center space-x-3">
-          <input
-            type="radio"
-            name="warranty"
-            class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
-          />
-          <span class="text-gray-300">1 year - {{ 39 }}</span>
-        </label>
-        <label class="flex items-center space-x-3">
-          <input
-            type="radio"
-            name="warranty"
-            class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
-          />
-          <span class="text-gray-300">2 years - {{ 69 }}</span>
-        </label>
-        <label class="flex items-center space-x-3">
-          <input
-            type="radio"
-            name="warranty"
-            class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600"
-          />
-          <span class="text-gray-300">3 years - {{ 991 }}</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Add to Cart Section -->
-    <div class="flex items-center space-x-4">
-      <button
-        class="flex-none px-4 py-2 text-white bg-gray-800 rounded-lg hover:bg-gray-700"
-      >
-        Add to favorites
-      </button>
-      <div class="flex items-center space-x-2">
-        <label class="text-gray-400" for="quantity">Quantity</label>
-        <select
-          id="quantity"
-          class="bg-gray-800 text-white rounded-lg px-2 py-2"
-        >
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-        </select>
-      </div>
-      <button
-        class="flex-1 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700"
-      >
-        Add to cart
-      </button>
-    </div>
-  </div>
-</div>
-
-@defer (on viewport) {
-<section class="mt-12">
-  <h3 class="text-2xl font-bold text-white mb-6">Customer Reviews</h3>
-
-  <div class="grid gap-8 md:grid-cols-2">
-    <div class="space-y-4">
-      @for (comment of comments; track comment.author) {
-      <app-comment [comment]="comment" />
-      }
-    </div>
-    <app-comment-form />
-  </div>
-</section>
-
-}@placeholder {
-<app-loader class="py-32" textComplementary="loading reviews" />
+    </section>
+  } @placeholder {
+    <app-loader id="review" class="py-32" textComplementary="loading reviews" />
+  }
 }

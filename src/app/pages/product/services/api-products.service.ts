@@ -22,6 +22,7 @@ export class ApiProductsService {
       category: 'supplements',
       rating: { rate: 4.8, count: 245 },
       discount: 0.1,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -38,6 +39,7 @@ export class ApiProductsService {
       category: 'supplements',
       rating: { rate: 4.7, count: 189 },
       discount: 0.1,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -54,6 +56,7 @@ export class ApiProductsService {
       category: 'supplements',
       rating: { rate: 4.9, count: 312 },
       discount: null,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -70,6 +73,7 @@ export class ApiProductsService {
       category: 'supplements',
       rating: { rate: 4.6, count: 178 },
       discount: null,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -86,6 +90,7 @@ export class ApiProductsService {
       category: 'nutraceutics',
       rating: { rate: 4.8, count: 423 },
       discount: null,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -102,6 +107,7 @@ export class ApiProductsService {
       category: 'nutraceutics',
       rating: { rate: 4.7, count: 156 },
       discount: null,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -118,6 +124,7 @@ export class ApiProductsService {
       category: 'nutraceutics',
       rating: { rate: 4.9, count: 289 },
       discount: null,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -134,6 +141,7 @@ export class ApiProductsService {
       category: 'nutraceutics',
       rating: { rate: 4.5, count: 167 },
       discount: null,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -147,6 +155,7 @@ export class ApiProductsService {
       category: 'nutraceutics',
       rating: { rate: 4.6, count: 198 },
       discount: null,
+      tag: null,
     },
     {
       id: generateRandomId(),
@@ -160,6 +169,7 @@ export class ApiProductsService {
       category: 'supplements',
       rating: { rate: 4.7, count: 145 },
       discount: null,
+      tag: null,
     },
   ];
 

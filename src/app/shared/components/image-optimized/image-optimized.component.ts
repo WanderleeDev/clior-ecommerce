@@ -8,16 +8,27 @@ import {
 import { ImageErrorService } from '../../services/image-error.service';
 import { NgOptimizedImage } from '@angular/common';
 
+type ObjectFit =
+  | 'object-contain'
+  | 'object-cover'
+  | 'object-fill'
+  | 'object-none'
+  | 'object-scale-down';
+
 @Component({
   selector: 'app-image-optimized',
   standalone: true,
   imports: [NgOptimizedImage],
   template: `<figure class="relative">
-    <div class="w-full h-48 relative bg-[#CED6D9]">
+    <div
+      class="w-full relative rounded-lg bg-[#CED6D9] {{
+        customClass()
+      }} overflow-hidden"
+    >
       @let image = imageBase() || placeholderImage;
 
       <img
-        class="rounded-t-lg w-full h-48 object-contain"
+        class="{{ fitOption() }}"
         (error)="handleErrorImage()"
         [ngSrc]="image"
         [alt]="title()"
@@ -30,8 +41,11 @@ import { NgOptimizedImage } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageOptimizedComponent {
+  readonly customClass = input<string>();
   readonly imageBase = model.required<string>();
   readonly title = input.required<string>();
+  readonly fitOption = input<ObjectFit>('object-contain');
+
   readonly #imageErrorService = inject(ImageErrorService);
   protected readonly placeholderImage =
     this.#imageErrorService.getPlaceholderImage();

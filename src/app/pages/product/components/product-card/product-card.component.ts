@@ -1,5 +1,5 @@
 import { CurrencyPipe, PercentPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Product } from '../../model/Product.model';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
 import { RatingComponent } from '../../../../shared/components/rating/rating.component';
@@ -23,7 +23,7 @@ import { ImageOptimizedComponent } from '../../../../shared/components/image-opt
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCardComponent {
-  readonly product = model.required<Product>();
+  readonly product = input.required<Product>();
 
   protected addToCart(e: Event) {
     e.stopPropagation();

@@ -1,8 +1,22 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CommentComponent } from '../../components/comment/comment.component';
 import { CommentFormComponent } from '../../components/comment-form/comment-form.component';
 import { RatingComponent } from '../../../../shared/components/rating/rating.component';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
+import { ApiProductsService } from '../../services/api-products.service';
+import { Product } from '../../model/Product.model';
+import { ProductImageGalleryComponent } from '../../components/product-inage-gallery/product-image-gallery.component';
+import { TagComponent } from '../../../../shared/components/tag/tag.component';
+import { CurrencyPipe } from '@angular/common';
+import { ProductFormOrderComponent } from '../../components/product-form-order/product-form-order.component';
+import { ProductInfoComponent } from '../../components/product-info/product-info.component';
 
 @Component({
   selector: 'app-product-overview',
@@ -10,8 +24,12 @@ import { LoaderComponent } from '../../../../shared/components/loader/loader.com
   imports: [
     CommentComponent,
     CommentFormComponent,
-    RatingComponent,
     LoaderComponent,
+    ProductImageGalleryComponent,
+    TagComponent,
+    CurrencyPipe,
+    ProductFormOrderComponent,
+    ProductInfoComponent,
   ],
   templateUrl: './product-overview.component.html',
   host: {
@@ -19,7 +37,10 @@ import { LoaderComponent } from '../../../../shared/components/loader/loader.com
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ProductOverviewComponent {
+export default class ProductOverviewComponent implements OnInit {
+  protected readonly id = input.required<string>();
+  protected readonly productData = signal<Product | null>(null);
+  readonly #productService = inject(ApiProductsService);
   product = {
     id: 1,
     title:
@@ -28,9 +49,6 @@ export default class ProductOverviewComponent {
       'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-blue-selection-hero-202310?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1697301104671',
     price: 1249.99,
   };
-
-  selectedColor = 'pink';
-  selectedStorage = '256GB';
 
   comments = [
     {
@@ -55,6 +73,10 @@ export default class ProductOverviewComponent {
       rating: 5,
     },
   ];
+
+  ngOnInit(): void {
+    this.productData.set(this.#productService.getProductById(this.id()));
+  }
 
   addComment(data: { rating: number; comment: string }) {
     this.comments.unshift({

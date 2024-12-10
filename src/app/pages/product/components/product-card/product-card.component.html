@@ -3,9 +3,11 @@
 >
   <a
     class="hover:ring-2 overflow-hidden ring-purple-600 block rounded-lg"
+    title="View product"
     [routerLink]="['/products', product().id]"
   >
     <app-image-optimized
+      customClass="h-48"
       [imageBase]="product().thumbnail"
       [title]="product().name"
     >
