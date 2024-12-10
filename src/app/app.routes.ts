@@ -32,9 +32,9 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/auth/auth.routes'),
       },
       {
-        path: 'user',
-        title: 'Clior | My Account',
-        loadComponent: () => import('./pages/user/user.component'),
+        path: 'profile',
+        title: 'Clior | Profile',
+        loadComponent: () => import('./pages/profile/profile.component'),
       },
       {
         path: 'payments',

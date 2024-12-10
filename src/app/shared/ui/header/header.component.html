@@ -83,9 +83,11 @@
         </svg>
       </button>
       @if (isLogged) {
-      <app-avatar sizeClass="size-10" />
-      }@else {
-      <app-user-control />
+        <a routerLink="/profile">
+          <app-avatar sizeClass="size-10" />
+        </a>
+      } @else {
+        <app-user-control />
       }
     </div>
     <div

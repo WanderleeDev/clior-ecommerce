@@ -20,6 +20,7 @@ import { UserControlComponent } from '../user-control/user-control.component';
     SearchBarComponent,
     AvatarComponent,
     UserControlComponent,
+    RouterLink,
   ],
   templateUrl: './header.component.html',
   styles: `
@@ -31,7 +32,7 @@ import { UserControlComponent } from '../user-control/user-control.component';
 })
 export class HeaderComponent {
   #darkThemeService = inject(DarkThemeService);
-  isLogged = false;
+  isLogged = true;
   hasDarkMode = this.#darkThemeService.getDarkModeComputed();
   isOpenDrawer = model<boolean>(false);
 

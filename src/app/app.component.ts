@@ -11,11 +11,11 @@ import { DarkThemeService } from './shared/services/darkTheme.service';
   styleUrls: [],
 })
 export class AppComponent implements OnInit {
-  #flowbiteService = inject(FlowbiteService);
-  #darkThemeService = inject(DarkThemeService);
+  readonly #flowbiteService = inject(FlowbiteService);
+  readonly #darkThemeService = inject(DarkThemeService);
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.#flowbiteService.loadFlowbite();
-    this.#darkThemeService.verifyTheme()
+    this.#darkThemeService.verifyTheme();
   }
 }

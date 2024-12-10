@@ -5,11 +5,13 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
   providedIn: 'root',
 })
 export class FlowbiteService {
-  constructor(@Inject(PLATFORM_ID) private platformID: never) {}
+  constructor(@Inject(PLATFORM_ID) private platformID: object) {}
 
-  loadFlowbite() {
+  public loadFlowbite() {
     if (isPlatformBrowser(this.platformID)) {
-      import('flowbite');
+      import('flowbite').then().catch((err) => {
+        console.error(`Error loading flowbite: ${err}`);
+      });
     }
   }
 }
