@@ -8,12 +8,27 @@ module.exports = tseslint.config(
   {
     files: ["**/*.ts"],
     extends: [
+      eslint.configs.recommended,
+      // @ts-ignore
+      ...tseslint.configs.recommended,
+      // @ts-ignore
+      ...tseslint.configs.stylistic,
+      // @ts-ignore
+      ...angular.configs.tsRecommended,
+      // @ts-ignore
+
+      ...ngrx.configs.all,
+    ],
+    overrides: [
       {
-        ...eslint.configs.recommended,
-        ...tseslint.configs.recommended,
-        ...tseslint.configs.stylistic,
-        ...angular.configs.tsRecommended,
-        ...ngrx.configs.all,
+        files: ["**/*.html"],
+        extends: [
+          "eslint:recommended",
+          "plugin:@typescript-eslint/recommended",
+          "plugin:@angular-eslint/recommended",
+          "plugin:@angular-eslint/template/process-inline-templates",
+          "plugin:prettier/recommended",
+        ],
       },
     ],
     processor: angular.processInlineTemplates,

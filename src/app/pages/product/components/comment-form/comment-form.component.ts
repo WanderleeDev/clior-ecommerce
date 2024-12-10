@@ -18,8 +18,8 @@ export interface Comment {
 export class CommentFormComponent {
   // @Output() onSubmit = new EventEmitter<{ rating: number; comment: string }>();
 
-  rating: number = 0;
-  comment: string = '';
+  rating = 0;
+  comment = '';
 
   setRating(value: number) {
     this.rating = value;

@@ -8,13 +8,11 @@ import {
 } from '@angular/core';
 import { CommentComponent } from '../../components/comment/comment.component';
 import { CommentFormComponent } from '../../components/comment-form/comment-form.component';
-import { RatingComponent } from '../../../../shared/components/rating/rating.component';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
 import { ApiProductsService } from '../../services/api-products.service';
 import { Product } from '../../model/Product.model';
 import { ProductImageGalleryComponent } from '../../components/product-inage-gallery/product-image-gallery.component';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
-import { CurrencyPipe } from '@angular/common';
 import { ProductFormOrderComponent } from '../../components/product-form-order/product-form-order.component';
 import { ProductInfoComponent } from '../../components/product-info/product-info.component';
 
@@ -27,7 +25,6 @@ import { ProductInfoComponent } from '../../components/product-info/product-info
     LoaderComponent,
     ProductImageGalleryComponent,
     TagComponent,
-    CurrencyPipe,
     ProductFormOrderComponent,
     ProductInfoComponent,
   ],

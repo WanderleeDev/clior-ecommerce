@@ -1,39 +1,39 @@
 <ng-container>
-	<div class="bg-gray-800 rounded-lg p-2 sm:p-3 md:p-4">
-		<app-image-optimized
-			customClass="h-64 md:h-96 lg:h-[28rem] xl:h-[34.3rem]"
-			[imageBase]="currentImage()"
-			[title]="title() + ' main image'"
-			fitOption="object-cover"
-		/>
-	</div>
+  <div class="bg-gray-800 rounded-lg p-2 sm:p-3 md:p-4">
+    <app-image-optimized
+      customClass="h-64 md:h-96 lg:h-[28rem] xl:h-[34.3rem]"
+      [imageBase]="currentImage()"
+      [title]="title() + ' main image'"
+      fitOption="object-cover"
+    />
+  </div>
 
-	<div class="product-thumbnail-gallery grid grid-cols-4 gap-4 sm:gap-6">
-		@for (image of images(); track $index) { @let activeButton =
-		currentImage()=== images()[$index];
+  <div class="product-thumbnail-gallery grid grid-cols-4 gap-4 sm:gap-6">
+    @for (image of images(); track $index) {
+      @let activeButton = currentImage() === images()[$index];
 
-		<button
-			class="block bg-gray-800 rounded-lg p-1 md:p-1.5 cursor-pointer border-2 relative group overflow-hidden"
-			title="see image {{ $index + 1 }} of {{ title() }}"
-			[class.border-purple-600]="activeButton"
-			[class.border-transparent]="!activeButton"
-			(click)="selectThumbnail($index)"
-		>
-			<app-image-optimized
-				customClass="aspect-square"
-				[imageBase]="image"
-				[title]="title() + ' thumbnail'"
-				fitOption="object-cover"
-			>
-				<span
-					class="absolute grid place-content-center inset-0 text-gray-200 font-black text-lg sm:text-2xl group-hover:opacity-100 group-focus-within:opacity-100 bg-black/20 backdrop-blur-sm transition-opacity rounded-lg"
-					[class.opacity-100]="activeButton"
-					[class.opacity-0]="!activeButton"
-				>
-					{{ $index + 1 }}
-				</span>
-			</app-image-optimized>
-		</button>
-		}
-	</div>
+      <button
+        class="block bg-gray-800 rounded-lg p-1 md:p-1.5 cursor-pointer border-2 relative group overflow-hidden"
+        title="see image {{ $index + 1 }} of {{ title() }}"
+        [class.border-purple-600]="activeButton"
+        [class.border-transparent]="!activeButton"
+        (click)="selectThumbnail($index)"
+      >
+        <app-image-optimized
+          customClass="aspect-square"
+          [imageBase]="image"
+          [title]="title() + ' thumbnail'"
+          fitOption="object-cover"
+        >
+          <span
+            class="absolute grid place-content-center inset-0 text-gray-200 font-black text-lg sm:text-2xl group-hover:opacity-100 group-focus-within:opacity-100 bg-black/20 backdrop-blur-sm transition-opacity rounded-lg"
+            [class.opacity-100]="activeButton"
+            [class.opacity-0]="!activeButton"
+          >
+            {{ $index + 1 }}
+          </span>
+        </app-image-optimized>
+      </button>
+    }
+  </div>
 </ng-container>

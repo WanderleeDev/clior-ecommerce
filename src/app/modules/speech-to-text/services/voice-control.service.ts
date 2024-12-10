@@ -3,7 +3,7 @@ import { Injectable, afterNextRender, computed, signal } from '@angular/core';
 import { Subject } from 'rxjs/internal/Subject';
 import { ClientLanguageRecognitionService } from './client-language.-recognition.service';
 import { Observable } from 'rxjs';
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 declare let webkitSpeechRecognition: any;
 
 interface DataTranscript {

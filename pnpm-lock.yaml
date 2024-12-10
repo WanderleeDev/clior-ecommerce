@@ -108,9 +108,9 @@ importers:
         version: 18.19.43
       angular-eslint:
         specifier: 18.1.0
-        version: 18.1.0(@angular-devkit/core@18.1.3(chokidar@3.6.0))(@angular-devkit/schematics@18.1.3(chokidar@3.6.0))(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript-eslint@8.0.0-alpha.38(eslint@9.8.0)(typescript@5.4.5))(typescript@5.4.5)
+        version: 18.1.0(@angular-devkit/core@19.0.4(chokidar@3.6.0))(@angular-devkit/schematics@18.1.3(chokidar@3.6.0))(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript-eslint@8.0.0-alpha.38(eslint@9.8.0)(typescript@5.4.5))(typescript@5.4.5)
       eslint:
-        specifier: ^9.8.0
+        specifier: ^9.6.0
         version: 9.8.0
       eslint-config-prettier:
         specifier: ^9.1.0
@@ -219,6 +219,15 @@ packages:
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
       chokidar: ^3.5.2
+    peerDependenciesMeta:
+      chokidar:
+        optional: true
+
+  '@angular-devkit/core@19.0.4':
+    resolution: {integrity: sha512-+imxIj1JLr2hbUYQePHgkTUKr0VmlxNSZvIREcCWtXUcdCypiwhJAtGXv6MfpB4hAx+FJZYEpVWeLwYOS/gW0A==}
+    engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    peerDependencies:
+      chokidar: ^4.0.0
     peerDependenciesMeta:
       chokidar:
         optional: true
@@ -5438,6 +5447,17 @@ snapshots:
     optionalDependencies:
       chokidar: 3.6.0
 
+  '@angular-devkit/core@19.0.4(chokidar@3.6.0)':
+    dependencies:
+      ajv: 8.17.1
+      ajv-formats: 3.0.1(ajv@8.17.1)
+      jsonc-parser: 3.3.1
+      picomatch: 4.0.2
+      rxjs: 7.8.1
+      source-map: 0.7.4
+    optionalDependencies:
+      chokidar: 3.6.0
+
   '@angular-devkit/schematics@18.1.3(chokidar@3.6.0)':
     dependencies:
       '@angular-devkit/core': 18.1.3(chokidar@3.6.0)
@@ -5479,9 +5499,9 @@ snapshots:
       eslint: 9.8.0
       typescript: 5.4.5
 
-  '@angular-eslint/schematics@18.1.0(@angular-devkit/core@18.1.3(chokidar@3.6.0))(@angular-devkit/schematics@18.1.3(chokidar@3.6.0))(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript@5.4.5)':
+  '@angular-eslint/schematics@18.1.0(@angular-devkit/core@19.0.4(chokidar@3.6.0))(@angular-devkit/schematics@18.1.3(chokidar@3.6.0))(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript@5.4.5)':
     dependencies:
-      '@angular-devkit/core': 18.1.3(chokidar@3.6.0)
+      '@angular-devkit/core': 19.0.4(chokidar@3.6.0)
       '@angular-devkit/schematics': 18.1.3(chokidar@3.6.0)
       '@angular-eslint/eslint-plugin': 18.1.0(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript@5.4.5)
       '@angular-eslint/eslint-plugin-template': 18.1.0(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript@5.4.5)
@@ -7624,10 +7644,6 @@ snapshots:
       mime-types: 2.1.35
       negotiator: 0.6.3
 
-  acorn-jsx@5.3.2(acorn@8.12.1):
-    dependencies:
-      acorn: 8.12.1
-
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
       acorn: 8.14.0
@@ -7660,6 +7676,10 @@ snapshots:
     optionalDependencies:
       ajv: 8.16.0
 
+  ajv-formats@3.0.1(ajv@8.17.1):
+    optionalDependencies:
+      ajv: 8.17.1
+
   ajv-keywords@3.5.2(ajv@6.12.6):
     dependencies:
       ajv: 6.12.6
@@ -7690,12 +7710,12 @@ snapshots:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
-  angular-eslint@18.1.0(@angular-devkit/core@18.1.3(chokidar@3.6.0))(@angular-devkit/schematics@18.1.3(chokidar@3.6.0))(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript-eslint@8.0.0-alpha.38(eslint@9.8.0)(typescript@5.4.5))(typescript@5.4.5):
+  angular-eslint@18.1.0(@angular-devkit/core@19.0.4(chokidar@3.6.0))(@angular-devkit/schematics@18.1.3(chokidar@3.6.0))(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript-eslint@8.0.0-alpha.38(eslint@9.8.0)(typescript@5.4.5))(typescript@5.4.5):
     dependencies:
       '@angular-eslint/builder': 18.1.0(eslint@9.8.0)(typescript@5.4.5)
       '@angular-eslint/eslint-plugin': 18.1.0(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript@5.4.5)
       '@angular-eslint/eslint-plugin-template': 18.1.0(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript@5.4.5)
-      '@angular-eslint/schematics': 18.1.0(@angular-devkit/core@18.1.3(chokidar@3.6.0))(@angular-devkit/schematics@18.1.3(chokidar@3.6.0))(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript@5.4.5)
+      '@angular-eslint/schematics': 18.1.0(@angular-devkit/core@19.0.4(chokidar@3.6.0))(@angular-devkit/schematics@18.1.3(chokidar@3.6.0))(@typescript-eslint/utils@8.0.0(eslint@9.8.0)(typescript@5.4.5))(eslint@9.8.0)(typescript@5.4.5)
       '@angular-eslint/template-parser': 18.1.0(eslint@9.8.0)(typescript@5.4.5)
       eslint: 9.8.0
       typescript: 5.4.5
@@ -8541,8 +8561,8 @@ snapshots:
 
   espree@10.1.0:
     dependencies:
-      acorn: 8.12.1
-      acorn-jsx: 5.3.2(acorn@8.12.1)
+      acorn: 8.14.0
+      acorn-jsx: 5.3.2(acorn@8.14.0)
       eslint-visitor-keys: 4.0.0
 
   espree@9.6.1:
