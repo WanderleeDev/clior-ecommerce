@@ -1,11 +1,12 @@
-import { Directive, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 
-@Directive({
-  selector: '[appRefreshFlowbite]',
+@Component({
+  selector: 'app-root',
   standalone: true,
+  template: '',
 })
-export class RefreshFlowbiteDirective implements OnInit {
+export class RefreshFlowbiteComponent implements OnInit {
   ngOnInit(): void {
     initFlowbite();
     console.log(

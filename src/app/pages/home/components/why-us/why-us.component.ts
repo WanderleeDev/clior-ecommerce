@@ -3,11 +3,12 @@ import {
   Comment,
   TestimonialsComponent,
 } from '../testimonials/testimonials.component';
+import { InfiniteSlideComponent } from '../../../../shared/components/infinite-slide/infinite-slide.component';
 
 @Component({
   selector: 'app-why-us',
   standalone: true,
-  imports: [TestimonialsComponent],
+  imports: [TestimonialsComponent, InfiniteSlideComponent],
   templateUrl: './why-us.component.html',
   styles: `
     :host {
@@ -17,7 +18,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WhyUsComponent {
-  currentSlide = 0;
   testimonials: Comment[] = [
     {
       content:
@@ -41,22 +41,4 @@ export class WhyUsComponent {
       image: 'https://randomuser.me/api/portraits/men/3.jpg',
     },
   ];
-
-  prevSlide() {
-    this.currentSlide =
-      this.currentSlide > 0
-        ? this.currentSlide - 1
-        : this.testimonials.length - 1;
-  }
-
-  nextSlide() {
-    this.currentSlide =
-      this.currentSlide < this.testimonials.length - 1
-        ? this.currentSlide + 1
-        : 0;
-  }
-
-  goToSlide(index: number) {
-    this.currentSlide = index;
-  }
 }

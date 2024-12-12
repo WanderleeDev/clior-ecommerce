@@ -10,13 +10,7 @@ export interface Comment {
 @Component({
   selector: 'app-testimonials',
   standalone: true,
-  imports: [],
   templateUrl: './testimonials.component.html',
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestimonialsComponent {

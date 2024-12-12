@@ -1,12 +1,8 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: '',
-    pathMatch: 'full',
-  },
   {
     path: '',
     component: MainLayoutComponent,
@@ -30,11 +26,18 @@ export const routes: Routes = [
         path: 'auth',
         title: 'Clior | Authentication',
         loadChildren: () => import('./pages/auth/auth.routes'),
+        canActivate: [authGuard],
       },
       {
         path: 'profile',
         title: 'Clior | Profile',
         loadComponent: () => import('./pages/profile/profile.component'),
+        canActivate: [authGuard],
+      },
+      {
+        path: 'contact',
+        title: 'Clior | Contact',
+        loadComponent: () => import('./pages/contact/contact.component'),
       },
       {
         path: 'payments',

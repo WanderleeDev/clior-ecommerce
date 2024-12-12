@@ -1,0 +1,21 @@
+.slider {
+  width: 100%;
+  mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.125);
+  overflow: hidden;
+}
+
+.slider .slide-track {
+  animation: scroll 40s linear infinite;
+  display: flex;
+  /* width: min(calc(250px * 14), 100%); */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-250px * 7));
+  }
+}

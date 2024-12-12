@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { errorTailorImports } from '@ngneat/error-tailor';
-import { InputFlowbiteComponent } from '../../../../../../shared/components/input-flowbite/input-flowbite.component';
 import { ButtonFlowbiteComponent } from '../../../../../../shared/components/button-flowbite/button-flowbite.component';
 import { RegisterFormLayoutComponent } from '../../../../../../layout/register-form-layout.component';
 
@@ -12,7 +11,6 @@ import { RegisterFormLayoutComponent } from '../../../../../../layout/register-f
   imports: [
     errorTailorImports,
     ReactiveFormsModule,
-    InputFlowbiteComponent,
     ButtonFlowbiteComponent,
     RegisterFormLayoutComponent,
   ],
@@ -21,7 +19,6 @@ import { RegisterFormLayoutComponent } from '../../../../../../layout/register-f
     :host {
       display: block;
     }
-
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -37,6 +34,7 @@ export default class PersonalInfoFormComponent {
   constructor(private readonly router: Router) {}
 
   public onSubmit() {
-    this.router.navigate(['/register/step-2']);
+    console.log(this.formRegister.value);
+    this.router.navigate(['/auth/register/step-2']);
   }
 }

@@ -68,10 +68,10 @@ export default class AccountFormComponent {
   public onSubmit(): void {
     if (this.accountForm.invalid) return;
 
-    this.router.navigate(['/register/step-3']);
+    this.router.navigate(['auth/register/step-3']);
   }
 
   public onBackStep(): void {
-    this.router.navigate(['/register/step-1']);
+    this.router.navigate(['auth/register/step-1']);
   }
 }

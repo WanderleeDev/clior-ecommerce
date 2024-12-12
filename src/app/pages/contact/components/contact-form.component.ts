@@ -1,0 +1,47 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-contact-form',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: `
+    <div class="bg-gray-800 rounded-lg p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">Send us a Message</h3>
+      <form class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">First Name</label>
+            <input type="text" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Last Name</label>
+            <input type="text" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+          <input type="email" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Subject</label>
+          <select class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+            <option value="general">General Inquiry</option>
+            <option value="product">Product Information</option>
+            <option value="order">Order Status</option>
+            <option value="support">Technical Support</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Message</label>
+          <textarea rows="4" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+          Send Message
+        </button>
+      </form>
+    </div>
+  `
+})
+export class ContactFormComponent {}

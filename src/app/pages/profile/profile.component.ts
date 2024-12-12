@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RefreshFlowbiteDirective } from '../../shared/directives/refresh-flo3bite.directive';
+import { RefreshFlowbiteComponent } from '../../shared/directives/refresh-flobite.componet';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [],
   templateUrl: './profile.component.html',
-  hostDirectives: [RefreshFlowbiteDirective],
+  hostDirectives: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ProfileComponent {}
+export default class ProfileComponent extends RefreshFlowbiteComponent {}

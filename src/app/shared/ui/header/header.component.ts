@@ -23,16 +23,14 @@ import { UserControlComponent } from '../user-control/user-control.component';
     RouterLink,
   ],
   templateUrl: './header.component.html',
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
+  host: {
+    class: 'z-50 sticky top-0',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   #darkThemeService = inject(DarkThemeService);
-  isLogged = true;
+  isLogged = false;
   hasDarkMode = this.#darkThemeService.getDarkModeComputed();
   isOpenDrawer = model<boolean>(false);
 

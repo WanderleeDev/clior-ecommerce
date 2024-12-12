@@ -26,6 +26,6 @@ export default class HomeComponent {
   readonly #sanitizer = inject(DomSanitizer);
   protected readonly currentTimeVideo = signal(0);
   protected readonly videoUrl = this.#sanitizer.bypassSecurityTrustResourceUrl(
-    'https://www.youtube.com/embed/CJQG8qS7oxM?si=KSnd6oed84QEvv7b'
+    'https://www.youtube.com/embed/CJQG8qS7oxM?si=KSnd6oed84QEvv7b',
   );
 }

@@ -11,7 +11,7 @@ import { RouterOutlet } from '@angular/router';
     <main
       class="min-h-dvh w-full grid grid-rows-[auto_1fr_auto] max-w-[120rem] mx-auto"
     >
-      <app-header class="z-20" />
+      <app-header />
       <div class="grid-layout h-full overflow-x-hidden">
         <div class="grid-area-center content-center h-full">
           <router-outlet />

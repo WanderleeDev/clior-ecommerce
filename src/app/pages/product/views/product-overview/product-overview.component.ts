@@ -15,6 +15,7 @@ import { ProductImageGalleryComponent } from '../../components/product-inage-gal
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
 import { ProductFormOrderComponent } from '../../components/product-form-order/product-form-order.component';
 import { ProductInfoComponent } from '../../components/product-info/product-info.component';
+import { SectionLayoutComponent } from '../../../../layout/section-layout.component';
 
 @Component({
   selector: 'app-product-overview',
@@ -27,11 +28,9 @@ import { ProductInfoComponent } from '../../components/product-info/product-info
     TagComponent,
     ProductFormOrderComponent,
     ProductInfoComponent,
+    SectionLayoutComponent,
   ],
   templateUrl: './product-overview.component.html',
-  host: {
-    class: 'py-10 container mx-auto block',
-  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductOverviewComponent implements OnInit {

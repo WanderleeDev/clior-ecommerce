@@ -1,30 +1,37 @@
 @if (!productData()) {
   <app-loader class="py-32" textComplementary="loading product" />
 }
-@if (productData()) {
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-    <app-product-image-gallery [title]="product.title" />
 
-    <app-product-info [productInfo]="productData()!">
-      <app-tag content="In stock" ngProjectAs="tag" />
-      <app-product-form-order ngProjectAs="extra" />
-    </app-product-info>
-  </div>
+<app-section-layout>
+  @if (productData()) {
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <app-product-image-gallery [title]="product.title" />
 
-  @defer (on viewport) {
-    <section class="mt-12" id="review">
-      <h3 class="text-2xl font-bold text-white mb-6">Customer Reviews</h3>
+      <app-product-info [productInfo]="productData()!">
+        <app-tag content="In stock" ngProjectAs="tag" />
+        <app-product-form-order ngProjectAs="extra" />
+      </app-product-info>
+    </div>
 
-      <div class="grid gap-8 md:grid-cols-2">
-        <div class="space-y-4">
-          @for (comment of comments; track comment.author) {
-            <app-comment [comment]="comment" />
-          }
+    @defer (on viewport) {
+      <section class="mt-12" id="review">
+        <h3 class="text-2xl font-bold text-white mb-6">Customer Reviews</h3>
+
+        <div class="grid gap-8 md:grid-cols-2">
+          <div class="space-y-4">
+            @for (comment of comments; track comment.author) {
+              <app-comment [comment]="comment" />
+            }
+          </div>
+          <app-comment-form />
         </div>
-        <app-comment-form />
-      </div>
-    </section>
-  } @placeholder {
-    <app-loader id="review" class="py-32" textComplementary="loading reviews" />
+      </section>
+    } @placeholder {
+      <app-loader
+        id="review"
+        class="py-32"
+        textComplementary="loading reviews"
+      />
+    }
   }
-}
+</app-section-layout>
