@@ -1,20 +1,33 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../core/store/models/App.model';
 import { AUTH_ACTIONS } from '../../../../core/store/auth/auth.actions';
+import { selectError } from '../../../../core/store/auth/auth.selectors';
+import { AlertComponent } from '../../../../shared/components/alert/alert.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, errorTailorImports],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    errorTailorImports,
+    AlertComponent,
+  ],
   templateUrl: './login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class LoginComponent {
+export default class LoginComponent implements OnDestroy {
   readonly #store: Store<AppState> = inject(Store);
+  readonly errorLogin = this.#store.selectSignal(selectError);
   readonly #formBuilder = inject(FormBuilder);
   formLogin = this.#formBuilder.nonNullable.group({
     email: ['', [Validators.email, Validators.required]],
@@ -27,5 +40,9 @@ export default class LoginComponent {
 
     const { email, password } = this.formLogin.getRawValue();
     this.#store.dispatch(AUTH_ACTIONS.login({ email, password }));
+  }
+
+  ngOnDestroy(): void {
+    this.#store.dispatch(AUTH_ACTIONS.clearError());
   }
 }

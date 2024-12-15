@@ -16,7 +16,6 @@
       id="email"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       placeholder="name@flowbite.com"
-      [controlErrorsTpl]="tpl"
     />
   </div>
   <div class="mb-5 relative">
@@ -27,7 +26,6 @@
     >
     <input
       formControlName="password"
-      [controlErrorsTpl]="tpl"
       type="password"
       id="password"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -57,6 +55,10 @@
   </button>
 </form>
 
+@if (errorLogin().length > 0) {
+  <app-alert [messages]="errorLogin()" title="Login failed" type="error" />
+}
+
 <p
   for="terms"
   class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-center pt-4"
@@ -68,10 +70,3 @@
     >sign up here</a
   >
 </p>
-<ng-template let-error let-text="text" #tpl>
-  <span
-    class="absolute bg-red-500 text-white bottom-0 px-2 translate-y-[110%] text-xs tracking-wide rounded-md border-gray-200 border-[.15rem ] select-none"
-  >
-    {{ text }}
-  </span>
-</ng-template>

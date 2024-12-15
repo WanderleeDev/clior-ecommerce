@@ -34,7 +34,6 @@ export default class PersonalInfoFormComponent {
   constructor(private readonly router: Router) {}
 
   public onSubmit() {
-    console.log(this.formRegister.value);
     this.router.navigate(['/auth/register/step-2']);
   }
 }

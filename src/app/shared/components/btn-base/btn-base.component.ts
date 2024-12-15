@@ -1,23 +1,40 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  ViewEncapsulation,
+} from '@angular/core';
 
 type TypeButton = 'button' | 'submit' | 'reset';
+type VariantButton = 'primary' | 'outline';
+type SpaceButton = 'small' | 'medium';
 
 @Component({
   selector: 'app-btn-base',
   standalone: true,
-  template: `<button
-    class="bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full"
-    [type]="type()"
-    [title]="title()"
-  >
-    <ng-content> Click </ng-content>
-  </button>`,
+  template: `
+    <button
+      class="{{ variant() + ' space-' + space() + ' w-full' }}"
+      [type]="type()"
+      [attr.title]="title()"
+    >
+      <ng-content> Click </ng-content>
+    </button>
+  `,
+  styleUrl: './btn-base.styles.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'w-full',
+    class: 'block',
+    '[class.w-full]': 'maxSize()',
+    '[class.w-max]': '!maxSize()',
   },
 })
 export class BtnBaseComponent {
+  readonly maxSize = input(false, { transform: booleanAttribute });
   readonly type = input<TypeButton>('button');
-  readonly title = input.required<string>();
+  readonly variant = input<VariantButton>('primary');
+  readonly space = input<SpaceButton>('medium');
+  readonly title = input<string>();
 }

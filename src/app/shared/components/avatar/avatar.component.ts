@@ -14,7 +14,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvatarComponent {
-  sizeClass = input('size-8');
+  readonly rounded = input<'full' | 'none' | 'medium'>('full');
+  readonly sizeClass = input('size-8');
+  readonly src = input.required<string>();
+  readonly alt = input.required<string>();
   image =
     'https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png';
 }

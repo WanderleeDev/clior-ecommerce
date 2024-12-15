@@ -1,8 +1,8 @@
-<div [class]="'relative ' + sizeClass()">
-  <img
-    class="rounded-full w-full"
-    [ngSrc]="image"
-    alt="user photo"
-    fill
-  />
+<div
+  [class]="'relative overflow-hidden ' + sizeClass()"
+  [class.rounded-full]="rounded() === 'full'"
+  [class.rounded-lg]="rounded() === 'medium'"
+  [class.rounded-none]="rounded() === 'none'"
+>
+  <img class="w-full" [ngSrc]="src()" [alt]="alt()" fill />
 </div>

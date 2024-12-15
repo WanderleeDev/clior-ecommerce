@@ -7,11 +7,6 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink, NgOptimizedImage],
   templateUrl: './login-options.component.html',
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginOptionsComponent {

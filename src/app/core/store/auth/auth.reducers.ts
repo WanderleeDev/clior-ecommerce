@@ -6,7 +6,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   isLoading: false,
   token: null,
-  error: null,
+  error: [],
   role: null,
 };
 
@@ -14,7 +14,7 @@ export const AUTH_REDUCER = createReducer(
   initialState,
   on(
     AUTH_ACTIONS.login,
-    (state): AuthState => ({ ...state, isLoading: true, error: null }),
+    (state): AuthState => ({ ...state, isLoading: true, error: [] }),
   ),
   on(
     AUTH_ACTIONS.loginSuccess,
@@ -23,7 +23,7 @@ export const AUTH_REDUCER = createReducer(
       ...credentials,
       isAuthenticated: true,
       isLoading: false,
-      error: null,
+      error: [],
     }),
   ),
   on(
@@ -37,5 +37,6 @@ export const AUTH_REDUCER = createReducer(
       role: null,
     }),
   ),
+  on(AUTH_ACTIONS.clearError, (state): AuthState => ({ ...state, error: [] })),
   on(AUTH_ACTIONS.logout, (): AuthState => ({ ...initialState })),
 );

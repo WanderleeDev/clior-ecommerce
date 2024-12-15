@@ -8,7 +8,6 @@ export const authGuard: CanActivateFn = (_route, state) => {
   const router = inject(Router);
   const store = inject(Store<AppState>);
   const isAuthenticated = store.selectSignal(selectIsAuthenticated);
-  console.log(isAuthenticated());
 
   if (state.url.includes('/auth') && isAuthenticated()) {
     return router.createUrlTree(['/profile']);

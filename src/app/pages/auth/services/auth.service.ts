@@ -7,12 +7,23 @@ import { AuthLoginSuccess } from '../interfaces/authResponse.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  login(credentials: Credentials): Observable<AuthLoginSuccess> {
+  public login(credentials: Credentials): Observable<AuthLoginSuccess> {
     console.log(credentials);
-
     return of({
       token: '1234567890',
-      role: 'admin',
+      role: 'user',
     }).pipe(delay(1000));
+
+    // return timer(3000).pipe(
+    //   mergeMap(() =>
+    //     throwError(
+    //       () =>
+    //         new HttpErrorResponse({
+    //           status: 400,
+    //           statusText: 'Invalid credentials',
+    //         }),
+    //     ),
+    //   ),
+    // );
   }
 }

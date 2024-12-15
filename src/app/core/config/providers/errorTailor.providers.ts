@@ -1,5 +1,6 @@
 import { provideErrorTailorConfig } from '@ngneat/error-tailor';
 import { AppProvider } from '.';
+import { ErrorLabelComponent } from '../../../shared/components/error-label/error-label.component';
 
 export const errorTailorProviders: AppProvider = [
   provideErrorTailorConfig({
@@ -20,6 +21,7 @@ export const errorTailorProviders: AppProvider = [
           `A minimum value of ${min} but you have is ${actual}`,
       },
     },
+    controlErrorComponent: ErrorLabelComponent,
     controlErrorsOn: {
       change: true,
     },

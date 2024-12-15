@@ -14,5 +14,5 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
-  links = ['home', 'products'];
+  links = ['home', 'products', 'contact'];
 }

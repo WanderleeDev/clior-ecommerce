@@ -1,0 +1,31 @@
+<figure>
+  @let iconComponent = icons[metric().type];
+  @if (iconComponent) {
+    <div class="text-gray-400 dark:text-gray-500 mb-2">
+      <ng-template *ngComponentOutlet="iconComponent; inputs: iconProps" />
+    </div>
+  }
+
+  <figcaption class="mb-2 text-gray-500 dark:text-gray-400">
+    {{ typeMetric[metric().type] }}
+  </figcaption>
+  <div
+    class="flex items-center gap-1 text-2xl font-bold text-gray-900 dark:text-white"
+  >
+    <span class="block">{{ metric().value }}</span>
+    <app-tag
+      class="scale-90"
+      [bgColor]="status()"
+      content="{{ metric().percentage | percent: '1.1-2' }}"
+    >
+      <app-arrow-up-svg ngProjectAs="icon-left" [size]="16" />
+    </app-tag>
+  </div>
+
+  <span
+    class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400 sm:text-base gap-2"
+  >
+    <app-clock-svg [size]="16" />
+    vs {{ metric().date | date: "MMMM yyyy" }}
+  </span>
+</figure>

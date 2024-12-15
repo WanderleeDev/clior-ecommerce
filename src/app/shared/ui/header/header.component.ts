@@ -8,8 +8,15 @@ import { DarkThemeService } from '../../services/darkTheme.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { RouterLink } from '@angular/router';
 import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
-import { AvatarComponent } from '../../components/avatar/avatar.component';
-import { UserControlComponent } from '../user-control/user-control.component';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../core/store/models/App.model';
+import { selectIsAuthenticated } from '../../../core/store/auth/auth.selectors';
+import { ShoppingCarSvgComponent } from '../../icons/shopping-car-svg.component';
+import { SearchSvgComponent } from '../../icons/search-svg.component';
+import { HamburgerBarComponent } from '../../icons/hamburger-bar.component';
+import { DropdownUserComponent } from '../dropdown-user/dropdown-user.component';
+import { BtnBaseComponent } from '../../components/btn-base/btn-base.component';
+import { AUTH_ACTIONS } from '../../../core/store/auth/auth.actions';
 
 @Component({
   selector: 'app-header',
@@ -18,9 +25,12 @@ import { UserControlComponent } from '../user-control/user-control.component';
     NavbarComponent,
     RouterLink,
     SearchBarComponent,
-    AvatarComponent,
-    UserControlComponent,
     RouterLink,
+    ShoppingCarSvgComponent,
+    SearchSvgComponent,
+    HamburgerBarComponent,
+    DropdownUserComponent,
+    BtnBaseComponent,
   ],
   templateUrl: './header.component.html',
   host: {
@@ -29,8 +39,10 @@ import { UserControlComponent } from '../user-control/user-control.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  #darkThemeService = inject(DarkThemeService);
-  isLogged = false;
+  readonly #darkThemeService = inject(DarkThemeService);
+  readonly #store: Store<AppState> = inject(Store);
+  readonly isLogged = this.#store.selectSignal(selectIsAuthenticated);
+  readonly username = 'fake username';
   hasDarkMode = this.#darkThemeService.getDarkModeComputed();
   isOpenDrawer = model<boolean>(false);
 
@@ -40,5 +52,11 @@ export class HeaderComponent {
 
   public onClick(): void {
     this.#darkThemeService.darkModeToggle();
+  }
+
+  public onSignOut(): void {
+    if (!this.isLogged()) return;
+
+    this.#store.dispatch(AUTH_ACTIONS.logout());
   }
 }

@@ -1,0 +1,30 @@
+<div
+  class="alert"
+  role="alert"
+  [class.alert-success]="type() === 'success'"
+  [class.alert-info]="type() === 'info'"
+  [class.alert-warning]="type() === 'warning'"
+  [class.alert-error]="type() === 'error'"
+>
+  <svg
+    class="alert-icon"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 20 20"
+  >
+    <path
+      d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+    />
+  </svg>
+  <div>
+    <span class="alert-title">{{ title() }}</span>
+    <ul class="alert-messages">
+      @for (message of messages(); track message) {
+        <li>{{ message }}</li>
+      } @empty {
+        <li>Unknown error try again later</li>
+      }
+    </ul>
+  </div>
+</div>

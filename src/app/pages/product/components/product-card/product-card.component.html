@@ -2,7 +2,7 @@
   class="product-card bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 >
   <a
-    class="hover:ring-2 overflow-hidden ring-purple-600 block rounded-lg"
+    class="overflow-hidden block outline-clr"
     title="View product"
     [routerLink]="['/products', product().id]"
   >
@@ -12,10 +12,10 @@
       [title]="product().name"
     >
       @if (product().discount) {
-      <app-tag
-        class="absolute top-2 right-2"
-        content="Up to {{ product().discount | percent }} off"
-      />
+        <app-tag
+          class="absolute top-2 right-2"
+          content="Up to {{ product().discount | percent }} off"
+        />
       }
     </app-image-optimized>
 

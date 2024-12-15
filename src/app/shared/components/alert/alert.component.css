@@ -1,0 +1,39 @@
+:host {
+  transition: opacity 0.3s ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.alert {
+  @apply flex mb-4 text-sm rounded-lg dark:bg-gray-800 mx-auto max-w-sm sm:max-w-md p-8 my-6 ring-4;
+
+  & .alert-icon {
+    @apply flex-shrink-0 inline w-4 h-4 me-3 mt-[2px];
+  }
+
+  & .alert-title {
+    @apply font-medium;
+  }
+
+  & .alert-messages {
+    @apply mt-1.5 list-disc list-inside;
+  }
+}
+
+.alert-success {
+  @apply text-green-800 ring-green-500/50 bg-green-50;
+}
+
+.alert-info {
+  @apply text-blue-800 ring-blue-500/50 bg-blue-50;
+}
+
+.alert-warning {
+  @apply text-yellow-800 ring-yellow-500/50 bg-yellow-50;
+}
+
+.alert-error {
+  @apply text-red-800 ring-red-500/50 bg-red-50;
+}

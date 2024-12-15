@@ -39,12 +39,12 @@
       background: #6b7280;
     }
   }
+
+  .outline-clr {
+    @apply hover:ring-2 hover:ring-blue-600 focus:ring-2 focus:ring-blue-600 outline-blue-600 rounded-lg;
+  }
 }
 
 .grid-area-center {
   grid-column: 2/3;
-}
-
-.my-class {
-  @apply text-red-500;
 }
