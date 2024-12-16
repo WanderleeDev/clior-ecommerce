@@ -6,7 +6,11 @@ import { RouterLink } from '@angular/router';
 import { SectionLayoutComponent } from '../../layout/section-layout.component';
 import { InfoProfileComponent } from './components/info-profile/info-profile.component';
 import { InfoProfile } from './interfaces/InfoProfile.interface';
-import { AvatarComponent } from '../../shared/components/avatar/avatar.component';
+import { BtnBaseComponent } from '../../shared/components/btn-base/btn-base.component';
+import { EditSvgComponent } from '../../shared/icons/edit-svg.component';
+import { PaymentMethodsComponent } from './components/payment-methods/payment-methods.component';
+import { UserSimpleCardComponent } from './components/user-simple-card/user-simple-card.component';
+import { FormEditDataUserComponent } from './components/form-edit-data-user/form-edit-data-user.component';
 
 @Component({
   selector: 'app-profile',
@@ -16,9 +20,20 @@ import { AvatarComponent } from '../../shared/components/avatar/avatar.component
     RouterLink,
     SectionLayoutComponent,
     InfoProfileComponent,
-    AvatarComponent,
+    BtnBaseComponent,
+    EditSvgComponent,
+    PaymentMethodsComponent,
+    UserSimpleCardComponent,
+    FormEditDataUserComponent,
   ],
   templateUrl: './profile.component.html',
+  styles: [
+    `
+      :host {
+        display: contents;
+      }
+    `,
+  ],
   hostDirectives: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -82,6 +97,17 @@ export default class ProfileComponent extends RefreshFlowbiteComponent {
     {
       label: 'last session',
       content: '12:00 PM, 12/12/2024',
+    },
+  ];
+  readonly paymentMethods = [
+    {
+      type: 'visa' as const,
+      lastFourDigits: '7658',
+      expiryDate: '10/2024',
+      logoLight:
+        'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa.svg',
+      logoDark:
+        'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa-dark.svg',
     },
   ];
 }

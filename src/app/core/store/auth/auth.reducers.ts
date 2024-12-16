@@ -3,7 +3,7 @@ import { AuthState } from '../models/Auth.model';
 import { AUTH_ACTIONS } from './auth.actions';
 
 const initialState: AuthState = {
-  isAuthenticated: false,
+  isAuthenticated: true,
   isLoading: false,
   token: null,
   error: [],

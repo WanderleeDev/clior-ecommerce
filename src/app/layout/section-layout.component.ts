@@ -6,7 +6,7 @@ import { LoaderComponent } from '../shared/components/loader/loader.component';
   standalone: true,
   imports: [LoaderComponent],
   template: `
-    <section class="container mx-auto px-4 py-8 bg-blend-multiply">
+    <section class="w-full lg:container md:mx-auto px-4 py-8 bg-blend-multiply">
       <ng-container select="header" />
       <ng-content>
         <app-loader textComplementary="loading section..." />
