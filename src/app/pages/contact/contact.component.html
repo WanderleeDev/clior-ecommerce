@@ -1,27 +1,32 @@
 <app-section-layout>
   <h2
-    class="text-lg md:text-4xl font-bold text-white text-center mb-6 md:mb-16"
+    class="text-3xl font-bold text-white mb-8 text-center"
     ngProjectAs="header"
   >
     Get in touch with our team for any questions or concerns.
   </h2>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-    <app-contact-form></app-contact-form>
-    <app-contact-info></app-contact-info>
+    <app-contact-form />
+    <app-contact-info />
   </div>
 
-  <div class="mb-16">
+  <article class="mb-16">
     <h2 class="text-3xl font-bold text-white mb-8 text-center">
       Find Our Stores
     </h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="md:col-span-2">
-        <app-store-map></app-store-map>
-      </div>
-      <div>
-        <app-store-list></app-store-list>
-      </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+      <app-store-map [center]="centerMap" [(zoom)]="zoomMap" />
+
+      <section class="bg-gray-800 p-6 rounded-lg">
+        <h3 class="text-xl font-semibold text-white mb-4">Our Stores</h3>
+        <div class="space-y-4">
+          @for (store of cliorStores; track $index) {
+            <app-store-direction [store]="store" />
+          }
+        </div>
+      </section>
     </div>
-  </div>
+  </article>
 </app-section-layout>

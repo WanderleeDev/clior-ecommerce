@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RefreshFlowbiteComponent } from '../../shared/directives/refresh-flobite.componet';
 import { MetricData } from './interfaces/MetricData.interface';
+import { DialogService } from '@ngneat/dialog';
 import { CardMetricProfileComponent } from './components/card-metric-profile/card-metric-profile.component';
 import { RouterLink } from '@angular/router';
 import { SectionLayoutComponent } from '../../layout/section-layout.component';
@@ -11,6 +12,7 @@ import { EditSvgComponent } from '../../shared/icons/edit-svg.component';
 import { PaymentMethodsComponent } from './components/payment-methods/payment-methods.component';
 import { UserSimpleCardComponent } from './components/user-simple-card/user-simple-card.component';
 import { FormEditDataUserComponent } from './components/form-edit-data-user/form-edit-data-user.component';
+import { FormPaymentMethodsComponent } from './components/form-payment-methods/form-payment-methods.component';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +26,6 @@ import { FormEditDataUserComponent } from './components/form-edit-data-user/form
     EditSvgComponent,
     PaymentMethodsComponent,
     UserSimpleCardComponent,
-    FormEditDataUserComponent,
   ],
   templateUrl: './profile.component.html',
   styles: [
@@ -38,6 +39,7 @@ import { FormEditDataUserComponent } from './components/form-edit-data-user/form
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProfileComponent extends RefreshFlowbiteComponent {
+  readonly #dialog = inject(DialogService);
   performanceMetrics: MetricData[] = [
     {
       title: 'Orders made',
@@ -110,4 +112,25 @@ export default class ProfileComponent extends RefreshFlowbiteComponent {
         'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa-dark.svg',
     },
   ];
+
+  editDataUser() {
+    this.#dialog.open(FormEditDataUserComponent);
+  }
+
+  editPaymentMethods() {
+    this.#dialog.open(FormPaymentMethodsComponent, {
+      data: this.paymentMethods[0], // Si estás editando un método existente
+    });
+  }
+
+  addPaymentMethod() {
+    const dialogRef = this.#dialog.open(FormPaymentMethodsComponent);
+
+    dialogRef.afterClosed$.subscribe((result) => {
+      if (result) {
+        // Aquí manejarías la lógica para guardar el nuevo método de pago
+        console.log('New payment method:', result);
+      }
+    });
+  }
 }

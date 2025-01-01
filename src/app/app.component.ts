@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { FlowbiteService } from './core/services/flowbite.service';
 import { DarkThemeService } from './shared/services/darkTheme.service';
@@ -17,6 +17,9 @@ export class AppComponent implements OnInit {
   readonly #darkThemeService = inject(DarkThemeService);
   readonly router = inject(Router);
   readonly #platform = inject(PLATFORM_ID);
+  public readonly GM_KEY = signal(
+    'AIzaSyByoFSz_LQJMfPF0O_C7VOCLyBxm1T6G1g',
+  ).asReadonly();
 
   ngOnInit() {
     this.#flowbiteService.loadFlowbite();

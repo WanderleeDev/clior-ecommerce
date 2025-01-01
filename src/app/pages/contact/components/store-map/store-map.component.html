@@ -1,0 +1,44 @@
+<div class="bg-gray-800 rounded-lg p-6 h-96">
+  <div class="rounded-lg overflow-hidden h-full w-full">
+    <!-- <google-map
+      height="100%"
+      width="100%"
+      [center]="center()"
+      [zoom]="zoom()"
+    /> -->
+
+    <google-map
+      mapId="yourMapId"
+      height="100%"
+      width="100%"
+      [center]="center()"
+      [zoom]="zoom()"
+      (mapClick)="addAdvancedMarker($event)"
+    >
+      @for (position of advancedMarkerPositions; track position) {
+        <map-advanced-marker
+          #marker="mapAdvancedMarker"
+          (mapClick)="openInfoWindow(marker)"
+          [position]="position"
+          [options]="advancedMarkerOptions"
+        />
+        <map-info-window />
+      }
+    </google-map>
+  </div>
+  <div class="flex flex-col gap-2">
+    <label
+      for="minmax-range"
+      class="block mb-2 text-sm font-medium dark:text-white"
+      >Zoom ({{ zoom() }})</label
+    >
+    <input
+      class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+      id="minmax-range"
+      type="range"
+      [(ngModel)]="zoom"
+      [min]="0"
+      [max]="20"
+    />
+  </div>
+</div>

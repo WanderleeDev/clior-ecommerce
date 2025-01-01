@@ -6,5 +6,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   imports: [],
   templateUrl: './form-edit-data-user.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'bg-transparent',
+  },
 })
 export class FormEditDataUserComponent {}
