@@ -1,8 +1,8 @@
-<div class="bg-gray-800 rounded-lg p-6">
+<section class="bg-gray-800 rounded-lg p-6">
   <h3 class="text-xl font-semibold text-white mb-4">Contact Information</h3>
   <div class="space-y-4">
     @for (info of contactInfo; track $index) {
-      <div class="flex items-center">
+      <article class="flex items-center">
         <div
           class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-3"
         >
@@ -10,11 +10,11 @@
             <ng-template *ngComponentOutlet="info.icon" />
           </div>
         </div>
-        <div>
-          <p class="text-gray-400 text-sm capitalize">{{ info.name }}</p>
+        <header>
+          <h4 class="text-gray-400 text-sm capitalize">{{ info.name }}</h4>
           <p class="text-white">{{ info.description }}</p>
-        </div>
-      </div>
+        </header>
+      </article>
     }
   </div>
-</div>
+</section>

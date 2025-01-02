@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BaseIconComponent } from './base-icon.component';
+import { BaseIconComponent } from '../base-component/base-icon.component';
 
 @Component({
   selector: 'app-company-svg',

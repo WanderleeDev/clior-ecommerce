@@ -1,26 +1,18 @@
 <div class="bg-gray-800 rounded-lg p-6 h-96">
   <div class="rounded-lg overflow-hidden h-full w-full">
-    <!-- <google-map
-      height="100%"
-      width="100%"
-      [center]="center()"
-      [zoom]="zoom()"
-    /> -->
-
     <google-map
       mapId="yourMapId"
       height="100%"
       width="100%"
       [center]="center()"
       [zoom]="zoom()"
-      (mapClick)="addAdvancedMarker($event)"
     >
-      @for (position of advancedMarkerPositions; track position) {
+      @for (store of stores(); track $index) {
         <map-advanced-marker
           #marker="mapAdvancedMarker"
-          (mapClick)="openInfoWindow(marker)"
-          [position]="position"
-          [options]="advancedMarkerOptions"
+          (mapClick)="openInfoWindow(marker, store)"
+          [position]="store.location"
+          [options]="{ gmpDraggable: false }"
         />
         <map-info-window />
       }

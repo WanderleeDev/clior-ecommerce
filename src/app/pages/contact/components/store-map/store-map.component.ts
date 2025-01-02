@@ -11,6 +11,7 @@ import {
   MapAdvancedMarker,
   MapInfoWindow,
 } from '@angular/google-maps';
+import { StoreLocation } from '../../interfaces/Store.interface';
 
 @Component({
   selector: 'app-store-map',
@@ -21,29 +22,16 @@ import {
 })
 export class StoreMapComponent {
   readonly infoWindowRef = viewChild.required(MapInfoWindow);
+  readonly stores = input.required<StoreLocation[]>();
   readonly center = input.required<google.maps.LatLngLiteral>();
   readonly zoom = model.required<number>();
 
-  advancedMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions = {
-    gmpDraggable: false,
-  };
-  advancedMarkerPositions: google.maps.LatLngLiteral[] = [];
-
-  addAdvancedMarker(event: google.maps.MapMouseEvent) {
-    if (!event.latLng) return;
-
-    this.advancedMarkerPositions.push(event.latLng.toJSON());
-    // this.infoWindowRef()?.open({
-    //   position: event.latLng,
-    // });
-  }
-
-  openInfoWindow(marker: MapAdvancedMarker) {
+  public openInfoWindow(marker: MapAdvancedMarker, store: StoreLocation) {
     const content = `
-      <div class="flex flex-col gap-2">
-        <p class="font-bold">Store name</p>
-        <p>Address</p>
-      </div>
+      <article class="flex flex-col gap-2">
+        <h3>${store.name}</h3>
+        <p>${store.hours}</p>
+      </article>
     `;
 
     this.infoWindowRef().open(marker, false, content);
