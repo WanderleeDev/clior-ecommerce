@@ -67,7 +67,7 @@ export default class AccountFormComponent {
 
   public onSubmit(): void {
     if (this.accountForm.invalid) return;
-
+    
     this.router.navigate(['auth/register/step-3']);
   }
 

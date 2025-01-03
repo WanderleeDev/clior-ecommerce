@@ -9,7 +9,7 @@ import {
   standalone: true,
   imports: [errorTailorImports],
   template: ` <span
-    class="absolute bg-red-500 text-white bottom-0 px-2 translate-y-[110%] text-xs tracking-wide rounded-md border-gray-200 border-[.15rem ] select-none"
+    class="absolute bg-red-500 text-white left-0 bottom-0 px-2 translate-y-[110%] text-xs tracking-wide rounded-md border-gray-200 border-[.15rem ] select-none"
   >
     {{ errorText }}
   </span>`,

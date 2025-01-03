@@ -16,6 +16,7 @@ type SpaceButton = 'small' | 'medium';
   template: `
     <button
       class="{{ variant() + ' space-' + space() + ' w-full' }}"
+      [disabled]="disabled()"
       [type]="type()"
       [attr.title]="title()"
     >
@@ -37,4 +38,5 @@ export class BtnBaseComponent {
   readonly variant = input<VariantButton>('primary');
   readonly space = input<SpaceButton>('medium');
   readonly title = input<string>();
+  readonly disabled = input(false, { transform: booleanAttribute });
 }
