@@ -15,7 +15,9 @@ type SpaceButton = 'small' | 'medium';
   standalone: true,
   template: `
     <button
-      class="{{ variant() + ' space-' + space() + ' w-full' }}"
+      class="{{
+        variant() + ' space-' + space() + ' w-full'
+      }} disabled:opacity-70 disabled:cursor-not-allowed transition-opacity"
       [disabled]="disabled()"
       [type]="type()"
       [attr.title]="title()"

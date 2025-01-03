@@ -2,7 +2,7 @@
   <h3 class="text-xl font-semibold text-white mb-4">Send us a Message</h3>
   <form
     [formGroup]="form"
-    #formRef
+    autocomplete="off"
     errorTailor
     (ngSubmit)="submitForm()"
     class="grid grid-cols-1 gap-4"
@@ -10,88 +10,53 @@
     @for (field of form.controls | keyvalue; track $index) {
       <label
         class="block text-sm font-medium text-gray-300 mb-1 capitalize relative"
-        >{{ field.key }}
-        <input
-          class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-          [formControlName]="field.key"
-          type="text"
-        />
+        [for]="field.key + $index"
+      >
+        {{ field.key }}
+        @if (field.key === "subject") {
+          <select
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            [formControlName]="field.key"
+            aria-placeholder="write your affair"
+            [id]="field.key + $index"
+          >
+            @for (affair of affairs; track affair) {
+              <option [value]="affair.value">{{ affair.label }}</option>
+            }
+          </select>
+        } @else if (field.key === "message") {
+          <textarea
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent resize-none"
+            placeholder="250 characters max"
+            [id]="field.key + $index"
+            [formControlName]="field.key"
+            rows="4"
+          ></textarea>
+          <span
+            class="absolute right-0 bottom-0 translate-y-full text-xs"
+            [class.text-red-500]="messageLength() >= MAX_LENGTH"
+          >
+            {{ messageLength() }} / {{ MAX_LENGTH }}</span
+          >
+        } @else {
+          <input
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            [id]="field.key + $index"
+            [formControlName]="field.key"
+            [placeholder]="['write your', field.key]"
+            type="text"
+          />
+        }
       </label>
     }
+
     <app-btn-base
+      type="submit"
       maxSize
-      type="submit"
       title="{{ isValid ? 'submit message' : 'complete all fields' }}"
-      [disabled]="!isValid"
+      [disabled]="!isValid || isSubmitted()"
     >
-      {{ formRef }}
+      {{ isSubmitted() ? "sending ..." : "send message" }}
     </app-btn-base>
-    <!-- <button
-      type="submit"
-      title="{{ isValid ? 'submit message' : 'complete all fields' }}"
-      [class.cursor-not-allowed]="!isValid"
-      [class.opacity-40]="!isValid"
-      [disabled]="!isValid"
-      class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
-    >
-      Send Message
-    </button> -->
   </form>
-  <!-- <form class="space-y-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-300 mb-1"
-          >First Name</label
-        >
-        <input
-          type="text"
-          class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-        />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-300 mb-1"
-          >Last Name</label
-        >
-        <input
-          type="text"
-          class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-        />
-      </div>
-    </div>
-    <div>
-      <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
-      <input
-        type="email"
-        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-      />
-    </div>
-    <div>
-      <label class="block text-sm font-medium text-gray-300 mb-1"
-        >Subject</label
-      >
-      <select
-        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-      >
-        <option value="general">General Inquiry</option>
-        <option value="product">Product Information</option>
-        <option value="order">Order Status</option>
-        <option value="support">Technical Support</option>
-      </select>
-    </div>
-    <div>
-      <label class="block text-sm font-medium text-gray-300 mb-1"
-        >Message</label
-      >
-      <textarea
-        rows="4"
-        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-      ></textarea>
-    </div>
-    <button
-      type="submit"
-      class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
-    >
-      Send Message
-    </button>
-  </form> -->
 </div>
