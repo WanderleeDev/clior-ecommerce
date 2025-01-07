@@ -11,12 +11,11 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { VoiceControlService } from '../../services/voice-control.service';
 
 @Component({
-  selector: 'app-speech-recognition',
-  standalone: true,
-  imports: [MicrophoneComponent, BarsComponent, NgClass, AsyncPipe],
-  templateUrl: './speech-recognition.component.html',
-  styleUrl: './speech-recognition.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-speech-recognition',
+    imports: [MicrophoneComponent, BarsComponent, NgClass, AsyncPipe],
+    templateUrl: './speech-recognition.component.html',
+    styleUrl: './speech-recognition.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeechRecognitionComponent {
   readonly COLOR_ICON = 'currentColor';

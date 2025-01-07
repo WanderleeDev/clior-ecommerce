@@ -4,16 +4,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 @Component({
-  selector: 'app-button-flowbite',
-  standalone: true,
-  imports: [NgClass],
-  templateUrl: './button-flowbite.component.html',
-  styles: `
+    selector: 'app-button-flowbite',
+    imports: [NgClass],
+    templateUrl: './button-flowbite.component.html',
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonFlowbiteComponent {
   isDisabled = input<boolean>();

@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BaseIconComponent } from '../base-component/base-icon.component';
 
 @Component({
-  selector: 'app-arrow-down-svg',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'app-arrow-down-svg',
+    imports: [],
+    template: `
     <svg
       class="size-3 text-gray-800 dark:text-white pt-1"
       aria-hidden="true"
@@ -22,6 +21,6 @@ import { BaseIconComponent } from '../base-component/base-icon.component';
       />
     </svg>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArrowDownSvgComponent extends BaseIconComponent {}

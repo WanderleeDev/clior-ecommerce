@@ -6,11 +6,10 @@ import { scrollTopViewport } from './shared/utils/scrollTopViewport';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  template: '<router-outlet />',
-  styleUrls: [],
+    selector: 'app-root',
+    imports: [RouterOutlet],
+    template: '<router-outlet />',
+    styleUrls: []
 })
 export class AppComponent implements OnInit {
   readonly #flowbiteService = inject(FlowbiteService);

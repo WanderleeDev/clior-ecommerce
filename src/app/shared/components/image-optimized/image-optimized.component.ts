@@ -16,10 +16,9 @@ type ObjectFit =
   | 'object-scale-down';
 
 @Component({
-  selector: 'app-image-optimized',
-  standalone: true,
-  imports: [NgOptimizedImage],
-  template: `<figure class="relative">
+    selector: 'app-image-optimized',
+    imports: [NgOptimizedImage],
+    template: `<figure class="relative">
     <div
       class="w-full relative rounded-lg bg-[#CED6D9] {{
         customClass()
@@ -38,7 +37,7 @@ type ObjectFit =
     <ng-content />
     <figcaption class="sr-only">{{ title() }}</figcaption>
   </figure>`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageOptimizedComponent {
   readonly customClass = input<string>();

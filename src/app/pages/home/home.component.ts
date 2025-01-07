@@ -11,16 +11,15 @@ import { StoreFrontComponent } from './components/store-front/store-front.compon
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [
-    BannerVideoComponent,
-    WhyUsComponent,
-    StoreFrontComponent,
-    LoaderComponent,
-  ],
-  templateUrl: './home.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-home',
+    imports: [
+        BannerVideoComponent,
+        WhyUsComponent,
+        StoreFrontComponent,
+        LoaderComponent,
+    ],
+    templateUrl: './home.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class HomeComponent {
   readonly #sanitizer = inject(DomSanitizer);

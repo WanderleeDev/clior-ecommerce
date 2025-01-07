@@ -2,11 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-stepper-register',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './stepper-register.component.html',
-  styles: `
+    selector: 'app-stepper-register',
+    imports: [CommonModule],
+    templateUrl: './stepper-register.component.html',
+    styles: `
     :host {
       display: block;
     }
@@ -15,7 +14,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       word-spacing: 0.2rem;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StepperRegisterComponent {
   currentStep = input.required<number>();

@@ -14,11 +14,10 @@ import {
 import { StoreLocation } from '../../interfaces/Store.interface';
 
 @Component({
-  selector: 'app-store-map',
-  standalone: true,
-  imports: [GoogleMap, FormsModule, MapAdvancedMarker, MapInfoWindow],
-  templateUrl: './store-map.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-store-map',
+    imports: [GoogleMap, FormsModule, MapAdvancedMarker, MapInfoWindow],
+    templateUrl: './store-map.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StoreMapComponent {
   readonly infoWindowRef = viewChild.required(MapInfoWindow);

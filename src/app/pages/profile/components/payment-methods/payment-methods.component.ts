@@ -9,8 +9,7 @@ import { NgComponentOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-payment-methods',
-  standalone: true,
-  imports: [NgComponentOutlet, VisaSvgComponent, MastercardSvgComponent],
+  imports: [NgComponentOutlet],
   templateUrl: './payment-methods.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -11,20 +11,19 @@ import { UserMenuUnauthenticatedComponent } from './components/user-menu-unauthe
 import { EmptyUserSvgComponent } from '../../icons/empty-user-svg.component';
 
 @Component({
-  selector: 'app-dropdown-user',
-  standalone: true,
-  imports: [
-    AvatarComponent,
-    ArrowDownSvgComponent,
-    UserMenuAuthenticatedComponent,
-    UserMenuUnauthenticatedComponent,
-    EmptyUserSvgComponent,
-  ],
-  templateUrl: './dropdown-user.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'hidden relative md:block',
-  },
+    selector: 'app-dropdown-user',
+    imports: [
+        AvatarComponent,
+        ArrowDownSvgComponent,
+        UserMenuAuthenticatedComponent,
+        UserMenuUnauthenticatedComponent,
+        EmptyUserSvgComponent,
+    ],
+    templateUrl: './dropdown-user.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'hidden relative md:block',
+    }
 })
 export class DropdownUserComponent {
   readonly isLogged = input.required<boolean>();

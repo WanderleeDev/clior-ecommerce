@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-microphone',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+    selector: 'app-microphone',
+    imports: [CommonModule],
+    template: `
     <svg
       [class]="customClass()"
       [attr.width]="size()"
@@ -17,12 +16,12 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       ></path>
     </svg>
   `,
-  styles: `
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MicrophoneComponent {
   size = input<number>(24);

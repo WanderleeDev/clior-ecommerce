@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BaseIconComponent } from '../base-component/base-icon.component';
 
 @Component({
-  selector: 'app-hamburger-bar',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'app-hamburger-bar',
+    imports: [],
+    template: `
     <svg
       [attr.width]="size()"
       [attr.height]="size()"
@@ -23,6 +22,6 @@ import { BaseIconComponent } from '../base-component/base-icon.component';
       ></path>
     </svg>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HamburgerBarComponent extends BaseIconComponent {}

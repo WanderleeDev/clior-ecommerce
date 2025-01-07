@@ -10,16 +10,15 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-banner-video',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './banner-video.component.html',
-  styles: `
+    selector: 'app-banner-video',
+    imports: [CommonModule],
+    templateUrl: './banner-video.component.html',
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BannerVideoComponent implements AfterViewInit {
   videoRef = viewChild<ElementRef<HTMLVideoElement>>('videoPlayer');

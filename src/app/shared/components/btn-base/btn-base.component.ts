@@ -8,7 +8,7 @@ import {
 
 type TypeButton = 'button' | 'submit' | 'reset';
 type VariantButton = 'primary' | 'outline';
-type SpaceButton = 'small' | 'medium';
+type SpaceButton = 'small' | 'medium' | 'large';
 
 @Component({
   selector: 'app-btn-base',

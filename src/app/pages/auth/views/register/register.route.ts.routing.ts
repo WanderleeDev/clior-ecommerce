@@ -14,13 +14,12 @@ const REGISTER_ROUTES: Routes = [
   },
   {
     path: 'step-2',
-    loadComponent: () => import('./views/account-form/account-form.component'),
+    loadComponent: () => import('./views/account/account.component'),
     title: 'Register - Account Info',
   },
   {
     path: 'step-3',
-    loadComponent: () =>
-      import('./views/confirmation-form/confirmation-form.component'),
+    loadComponent: () => import('./views/confirmation/confirmation.component'),
     title: 'Register - Confirmation',
   },
 ];

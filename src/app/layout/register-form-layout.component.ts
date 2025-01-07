@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { StepperRegisterComponent } from '../pages/auth/views/register/component/stepper-register/stepper-register.component';
+import { StepperRegisterComponent } from '../pages/auth/components/stepper-register/stepper-register.component';
 import { RouterLink } from '@angular/router';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-register-form-layout',
-  standalone: true,
   imports: [StepperRegisterComponent, RouterLink, LoaderComponent],
   template: `
     <div class="grid gap-16 h-full">

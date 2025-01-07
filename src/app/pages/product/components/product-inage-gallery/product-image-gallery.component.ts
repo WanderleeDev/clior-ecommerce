@@ -7,14 +7,13 @@ import {
 import { ImageOptimizedComponent } from '../../../../shared/components/image-optimized/image-optimized.component';
 
 @Component({
-  selector: 'app-product-image-gallery',
-  standalone: true,
-  imports: [ImageOptimizedComponent],
-  templateUrl: './product-image-gallery.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'flex flex-col gap-4',
-  },
+    selector: 'app-product-image-gallery',
+    imports: [ImageOptimizedComponent],
+    templateUrl: './product-image-gallery.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'flex flex-col gap-4',
+    }
 })
 export class ProductImageGalleryComponent {
   readonly images = input<string[]>([

@@ -20,10 +20,12 @@
     color: #0249e4;
     text-decoration: underline;
   }
+
   .grid-layout {
     display: grid;
     grid-template-columns: 0rem 1fr 0rem;
   }
+
   .customScrollbar {
     &::-webkit-scrollbar {
       width: 6px;
@@ -42,6 +44,10 @@
 
   .outline-clr {
     @apply hover:ring-2 hover:ring-blue-600 focus:ring-2 focus:ring-blue-600 outline-blue-600 rounded-lg;
+  }
+
+  .container-style {
+    @apply rounded-lg shadow border p-8 bg-gray-800 border-gray-700;
   }
 }
 

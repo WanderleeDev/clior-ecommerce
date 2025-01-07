@@ -19,24 +19,23 @@ import { BtnBaseComponent } from '../../components/btn-base/btn-base.component';
 import { AUTH_ACTIONS } from '../../../core/store/auth/auth.actions';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [
-    NavbarComponent,
-    RouterLink,
-    SearchBarComponent,
-    RouterLink,
-    ShoppingCarSvgComponent,
-    SearchSvgComponent,
-    HamburgerBarComponent,
-    DropdownUserComponent,
-    BtnBaseComponent,
-  ],
-  templateUrl: './header.component.html',
-  host: {
-    class: 'z-50 sticky top-0',
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-header',
+    imports: [
+        NavbarComponent,
+        RouterLink,
+        SearchBarComponent,
+        RouterLink,
+        ShoppingCarSvgComponent,
+        SearchSvgComponent,
+        HamburgerBarComponent,
+        DropdownUserComponent,
+        BtnBaseComponent,
+    ],
+    templateUrl: './header.component.html',
+    host: {
+        class: 'z-50 sticky top-0',
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   readonly #darkThemeService = inject(DarkThemeService);

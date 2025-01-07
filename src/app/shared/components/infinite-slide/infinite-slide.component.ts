@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-infinite-slide',
-  standalone: true,
-  imports: [],
-  templateUrl: './infinite-slide.component.html',
-  styleUrl: './infinite-slide.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-infinite-slide',
+    imports: [],
+    templateUrl: './infinite-slide.component.html',
+    styleUrl: './infinite-slide.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfiniteSlideComponent {
   readonly numberSlides = input.required<number[], number>({

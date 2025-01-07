@@ -11,11 +11,10 @@ import { RefreshFlowbiteComponent } from '../../../../shared/directives/refresh-
 import { InfiniteScrollDirective } from '../../../../shared/directives/infinite-scroll.directive';
 
 @Component({
-  selector: 'app-products',
-  standalone: true,
-  imports: [SidebarComponent, ProductCardComponent, InfiniteScrollDirective],
-  templateUrl: './products.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-products',
+    imports: [SidebarComponent, ProductCardComponent, InfiniteScrollDirective],
+    templateUrl: './products.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductsComponent extends RefreshFlowbiteComponent {
   #apiProductsService = inject(ApiProductsService);

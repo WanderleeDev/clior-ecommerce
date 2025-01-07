@@ -1,0 +1,28 @@
+<form
+  class="max-w-sm mx-auto w-full sm:max-w-md grid grid-cols-1 gap-8"
+  autocomplete="off"
+  novalidate
+  (ngSubmit)="submitForm()"
+  [formGroup]="form"
+  errorTailor
+>
+  @for (field of fields | keyvalue: null; track field.key; let i = $index) {
+    <div class="relative z-0">
+      <input
+        [type]="field.value.type"
+        [formControlName]="field.key"
+        [id]="field.key"
+        class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none text-white border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        placeholder=" "
+      />
+      <label
+        [for]="field.key"
+        class="absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+        >{{ field.key | camelCaseToSpaced: true }}</label
+      >
+    </div>
+  }
+  <app-btn-base class="ml-auto" type="submit" [disabled]="!isValidForm"
+    >Next</app-btn-base
+  >
+</form>

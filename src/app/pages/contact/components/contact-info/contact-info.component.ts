@@ -5,11 +5,10 @@ import { EmailSvgComponent } from '../../../../shared/icons/email-svg.component'
 import { NgComponentOutlet } from '@angular/common';
 
 @Component({
-  selector: 'app-contact-info',
-  standalone: true,
-  imports: [NgComponentOutlet],
-  templateUrl: './contact-info.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-contact-info',
+    imports: [NgComponentOutlet],
+    templateUrl: './contact-info.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactInfoComponent {
   contactInfo = [

@@ -16,11 +16,10 @@ import { NgComponentOutlet } from '@angular/common';
 import { ClockSvgComponent } from '../../../../shared/icons/clock-svg.component';
 
 @Component({
-  selector: 'app-info-profile',
-  standalone: true,
-  imports: [LabelInfoProfileComponent, NgComponentOutlet],
-  templateUrl: './info-profile.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-info-profile',
+    imports: [LabelInfoProfileComponent, NgComponentOutlet],
+    templateUrl: './info-profile.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoProfileComponent {
   readonly dataUser = input.required<InfoProfile[]>();

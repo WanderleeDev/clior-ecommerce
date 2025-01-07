@@ -17,23 +17,22 @@ interface InputField {
 }
 
 @Component({
-  selector: 'app-input-flowbite',
-  standalone: true,
-  imports: [errorTailorImports, ReactiveFormsModule],
-  templateUrl: './input-flowbite.component.html',
-  styles: `
+    selector: 'app-input-flowbite',
+    imports: [errorTailorImports, ReactiveFormsModule],
+    templateUrl: './input-flowbite.component.html',
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: InputFlowbiteComponent,
-      multi: true,
-    }
-  ]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: InputFlowbiteComponent,
+            multi: true,
+        }
+    ]
 })
 export class InputFlowbiteComponent<T> implements ControlValueAccessor, OnDestroy {
   #controlSubscription?: Subscription;

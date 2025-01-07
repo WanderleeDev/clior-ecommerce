@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BaseIconComponent } from '../base-component/base-icon.component';
 
 @Component({
-  selector: 'app-search-svg',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'app-search-svg',
+    imports: [],
+    template: `
     <svg
       [attr.width]="size()"
       [attr.height]="size()"
@@ -23,6 +22,6 @@ import { BaseIconComponent } from '../base-component/base-icon.component';
       />
     </svg>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchSvgComponent extends BaseIconComponent {}

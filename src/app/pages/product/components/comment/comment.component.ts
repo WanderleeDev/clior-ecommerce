@@ -9,16 +9,15 @@ export interface Comment {
 }
 
 @Component({
-  selector: 'app-comment',
-  standalone: true,
-  imports: [RatingComponent],
-  templateUrl: './comment.component.html',
-  styles: `
+    selector: 'app-comment',
+    imports: [RatingComponent],
+    templateUrl: './comment.component.html',
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentComponent {
   readonly comment = input.required<Comment>();

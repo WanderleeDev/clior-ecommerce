@@ -8,19 +8,18 @@ import { RouterLink } from '@angular/router';
 import { ImageOptimizedComponent } from '../../../../shared/components/image-optimized/image-optimized.component';
 
 @Component({
-  selector: 'app-product-card',
-  standalone: true,
-  imports: [
-    TagComponent,
-    CurrencyPipe,
-    RatingComponent,
-    BtnBaseComponent,
-    PercentPipe,
-    RouterLink,
-    ImageOptimizedComponent,
-  ],
-  templateUrl: './product-card.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-product-card',
+    imports: [
+        TagComponent,
+        CurrencyPipe,
+        RatingComponent,
+        BtnBaseComponent,
+        PercentPipe,
+        RouterLink,
+        ImageOptimizedComponent,
+    ],
+    templateUrl: './product-card.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductCardComponent {
   readonly product = input.required<Product>();

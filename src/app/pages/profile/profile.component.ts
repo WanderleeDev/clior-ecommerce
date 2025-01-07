@@ -15,28 +15,27 @@ import { FormEditDataUserComponent } from './components/form-edit-data-user/form
 import { FormPaymentMethodsComponent } from './components/form-payment-methods/form-payment-methods.component';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [
-    CardMetricProfileComponent,
-    RouterLink,
-    SectionLayoutComponent,
-    InfoProfileComponent,
-    BtnBaseComponent,
-    EditSvgComponent,
-    PaymentMethodsComponent,
-    UserSimpleCardComponent,
-  ],
-  templateUrl: './profile.component.html',
-  styles: [
-    `
+    selector: 'app-profile',
+    imports: [
+        CardMetricProfileComponent,
+        RouterLink,
+        SectionLayoutComponent,
+        InfoProfileComponent,
+        BtnBaseComponent,
+        EditSvgComponent,
+        PaymentMethodsComponent,
+        UserSimpleCardComponent,
+    ],
+    templateUrl: './profile.component.html',
+    styles: [
+        `
       :host {
         display: contents;
       }
     `,
-  ],
-  hostDirectives: [],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    hostDirectives: [],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProfileComponent extends RefreshFlowbiteComponent {
   readonly #dialog = inject(DialogService);

@@ -2,17 +2,16 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-cms',
-  standalone: true,
-  imports: [
-    CommonModule,
-  ],
-  templateUrl: './cms.component.html',
-  styles: `
+    selector: 'app-cms',
+    imports: [
+        CommonModule,
+    ],
+    templateUrl: './cms.component.html',
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class CmsComponent { }

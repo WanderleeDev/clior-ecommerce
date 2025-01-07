@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-bars',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+    selector: 'app-bars',
+    imports: [CommonModule],
+    template: `
     <svg
       [class]="customClass()"
       [attr.width]="size()"
@@ -105,12 +104,12 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       </rect>
     </svg>
   `,
-  styles: `
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BarsComponent {
   size = input<number>(24);

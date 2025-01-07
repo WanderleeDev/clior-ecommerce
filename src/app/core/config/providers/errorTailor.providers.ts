@@ -10,7 +10,7 @@ export const errorTailorProviders: AppProvider = [
         500: 'Server error',
         required: 'This field is required',
         email: 'Please enter a valid email address',
-        pattern: 'Enter a valid format as indicated at the start',
+        pattern: 'Format invalid',
         minlength: ({ requiredLength, actualLength }) =>
           `Expect ${requiredLength} but got ${actualLength}`,
         maxlength: ({ requiredLength, actualLength }) =>
@@ -21,7 +21,7 @@ export const errorTailorProviders: AppProvider = [
           `A maximum value of ${max} but you have is ${actual}`,
         invalidAddress: (e) => `Address isn't valid: ${e}`,
         password: 'Must be at least 6 characters long',
-        confirmPassword: 'Do not match',
+        passwordMatchValidator: 'Do not match',
         CheckboxRequiredValidator: 'You must agree to the terms and conditions',
       },
     },

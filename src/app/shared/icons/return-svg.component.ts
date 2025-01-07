@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BaseIconComponent } from '../base-component/base-icon.component';
 
 @Component({
-  selector: 'app-return-svg',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'app-return-svg',
+    imports: [],
+    template: `
     <svg
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
@@ -23,6 +22,6 @@ import { BaseIconComponent } from '../base-component/base-icon.component';
       ></path>
     </svg>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReturnSvgComponent extends BaseIconComponent {}

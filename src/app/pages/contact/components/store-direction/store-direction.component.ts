@@ -6,11 +6,10 @@ import { HomeSvgComponent } from '../../../../shared/icons/home-svg.component';
 import { NgComponentOutlet } from '@angular/common';
 
 @Component({
-  selector: 'app-store-direction',
-  standalone: true,
-  imports: [NgComponentOutlet],
-  templateUrl: './store-direction.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-store-direction',
+    imports: [NgComponentOutlet],
+    templateUrl: './store-direction.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StoreDirectionComponent {
   readonly store = input.required<StoreLocation>();

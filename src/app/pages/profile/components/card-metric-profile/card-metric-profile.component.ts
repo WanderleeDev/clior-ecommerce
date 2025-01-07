@@ -15,18 +15,17 @@ import { ShoppingCarSvgComponent } from '../../../../shared/icons/shopping-car-s
 import { ReturnSvgComponent } from '../../../../shared/icons/return-svg.component';
 
 @Component({
-  selector: 'app-card-metric-profile',
-  standalone: true,
-  imports: [
-    TagComponent,
-    PercentPipe,
-    ClockSvgComponent,
-    DatePipe,
-    ArrowUpSvgComponent,
-    NgComponentOutlet,
-  ],
-  templateUrl: './card-metric-profile.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-card-metric-profile',
+    imports: [
+        TagComponent,
+        PercentPipe,
+        ClockSvgComponent,
+        DatePipe,
+        ArrowUpSvgComponent,
+        NgComponentOutlet,
+    ],
+    templateUrl: './card-metric-profile.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardMetricProfileComponent {
   readonly metric = input.required<MetricData>();

@@ -9,11 +9,10 @@ export interface Comment {
 }
 
 @Component({
-  selector: 'app-comment-form',
-  standalone: true,
-  imports: [RatingComponent],
-  templateUrl: './comment-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-comment-form',
+    imports: [RatingComponent],
+    templateUrl: './comment-form.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentFormComponent {
   // @Output() onSubmit = new EventEmitter<{ rating: number; comment: string }>();

@@ -4,10 +4,9 @@ import { FooterComponent } from '../shared/ui/footer/footer.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-main-layout',
-  standalone: true,
-  imports: [HeaderComponent, FooterComponent, RouterOutlet],
-  template: `
+    selector: 'app-main-layout',
+    imports: [HeaderComponent, FooterComponent, RouterOutlet],
+    template: `
     <main
       class="min-h-dvh w-full grid grid-rows-[auto_1fr_auto] max-w-[120rem] mx-auto"
     >
@@ -20,11 +19,11 @@ import { RouterOutlet } from '@angular/router';
       <app-footer />
     </main>
   `,
-  styles: `
+    styles: `
     :host {
       display: contents;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainLayoutComponent {}

@@ -18,20 +18,19 @@ import { ProductInfoComponent } from '../../components/product-info/product-info
 import { SectionLayoutComponent } from '../../../../layout/section-layout.component';
 
 @Component({
-  selector: 'app-product-overview',
-  standalone: true,
-  imports: [
-    CommentComponent,
-    CommentFormComponent,
-    LoaderComponent,
-    ProductImageGalleryComponent,
-    TagComponent,
-    ProductFormOrderComponent,
-    ProductInfoComponent,
-    SectionLayoutComponent,
-  ],
-  templateUrl: './product-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-product-overview',
+    imports: [
+        CommentComponent,
+        CommentFormComponent,
+        LoaderComponent,
+        ProductImageGalleryComponent,
+        TagComponent,
+        ProductFormOrderComponent,
+        ProductInfoComponent,
+        SectionLayoutComponent,
+    ],
+    templateUrl: './product-overview.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductOverviewComponent implements OnInit {
   protected readonly id = input.required<string>();

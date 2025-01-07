@@ -8,22 +8,21 @@ import { StoreLocation, Location } from './interfaces/Store.interface';
 import { FormsModule } from '@angular/forms';
 import { storeMockup } from './mockup/stores.mockup';
 @Component({
-  selector: 'app-contact',
-  standalone: true,
-  imports: [
-    ContactFormComponent,
-    ContactInfoComponent,
-    StoreMapComponent,
-    SectionLayoutComponent,
-    StoreDirectionComponent,
-    FormsModule,
-  ],
-  styles: `
+    selector: 'app-contact',
+    imports: [
+        ContactFormComponent,
+        ContactInfoComponent,
+        StoreMapComponent,
+        SectionLayoutComponent,
+        StoreDirectionComponent,
+        FormsModule,
+    ],
+    styles: `
     .active-card {
       @apply bg-sky-600/20;
     }
   `,
-  templateUrl: './contact.component.html',
+    templateUrl: './contact.component.html'
 })
 export default class ContactComponent implements OnInit {
   readonly cliorStores = signal<StoreLocation[]>(storeMockup);

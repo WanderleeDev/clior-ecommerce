@@ -2,16 +2,15 @@ import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-avatar',
-  standalone: true,
-  imports: [NgOptimizedImage],
-  templateUrl: './avatar.component.html',
-  styles: `
+    selector: 'app-avatar',
+    imports: [NgOptimizedImage],
+    templateUrl: './avatar.component.html',
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarComponent {
   readonly rounded = input<'full' | 'none' | 'medium'>('full');

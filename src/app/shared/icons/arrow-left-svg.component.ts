@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-arrow-left-svg',
-  standalone: true,
-  imports: [],
-  template: `<svg
+    selector: 'app-arrow-left-svg',
+    imports: [],
+    template: `<svg
     class="size-6 text-gray-800 dark:text-white"
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
@@ -19,11 +18,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       d="M5 12h14M5 12l4-4m-4 4 4 4"
     />
   </svg> `,
-  styles: `
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArrowLeftSvgComponent {}
