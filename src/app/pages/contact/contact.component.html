@@ -23,9 +23,9 @@
         [stores]="cliorStores()"
       />
 
-      <section class="container-style p-6 h-96 overflow-y-auto customScrollbar">
+      <section class="container-style p-6 h-96">
         <h3 class="text-xl font-semibold text-white mb-4">Our Stores</h3>
-        <div class="space-y-4">
+        <div class="space-y-4 overflow-y-auto customScrollbar h-72">
           @for (store of cliorStores(); track $index) {
             <app-store-direction [store]="store">
               <button

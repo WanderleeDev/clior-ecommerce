@@ -8,13 +8,15 @@
       [zoom]="zoom()"
     >
       @for (store of stores(); track $index) {
-        <map-advanced-marker
-          #marker="mapAdvancedMarker"
-          (mapClick)="openInfoWindow(marker, store)"
-          [position]="store.location"
-          [options]="{ gmpDraggable: false }"
-        />
-        <map-info-window />
+        <div aria-hidden="true">
+          <map-advanced-marker
+            #marker="mapAdvancedMarker"
+            (mapClick)="openInfoWindow(marker, store)"
+            [position]="store.location"
+            [options]="{ gmpDraggable: false }"
+          />
+          <map-info-window />
+        </div>
       }
     </google-map>
   </div>

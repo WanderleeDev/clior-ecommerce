@@ -4,12 +4,12 @@ import {
   Field,
   NgFromType,
 } from '../../../../shared/base-component/base-form.component';
-import { PersonalData } from '../../interfaces/PersonalData.interface';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
 import { KeyValuePipe } from '@angular/common';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { CamelCaseToSpacedPipe } from '../../../../shared/pipes/camel-case-to-spaced.pipe';
+import { PersonalData } from '../../interfaces/Form.interface';
 
 @Component({
   selector: 'app-personal-form',

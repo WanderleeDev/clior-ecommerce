@@ -1,3 +1,45 @@
-<article
-  class="container-style max-w-sm mx-auto w-full sm:max-w-md grid grid-cols-1 gap-4"
-></article>
+<section
+  class="container-style max-w-sm mx-auto w-full sm:max-w-md grid grid-cols-1 gap-6"
+>
+  <h2 class="sr-only">Final step to confirm or edit your data</h2>
+
+  <article>
+    <header class="flex gap-2 justify-between items-center">
+      <h3 class="text-xl font-bold text-white">Personal data</h3>
+      <app-btn-base (click)="navigateTo(1)">Change</app-btn-base>
+    </header>
+    <ul class="text-sm">
+      @for (data of personalData | keyvalue: null; track data.key) {
+        <li class="flex gap-4 items-center">
+          <span class="text-gray-100 font-semibold">
+            {{ data.key | camelCaseToSpaced: true }} :
+          </span>
+          <span class="text-gray-500 font-medium">{{
+            data.value || "unknown data"
+          }}</span>
+        </li>
+      }
+    </ul>
+  </article>
+
+  <article>
+    <header class="flex gap-2 justify-between items-center">
+      <h3 class="text-xl font-bold text-white">Account data</h3>
+      <app-btn-base (click)="navigateTo(2)">Change</app-btn-base>
+    </header>
+    <ul class="text-sm">
+      @for (data of accountData | keyvalue: null; track data.key) {
+        <li class="flex gap-4 items-center">
+          <span class="text-gray-100 font-semibold">
+            {{ data.key | camelCaseToSpaced: true }} :
+          </span>
+          <span class="text-gray-500 font-medium">{{
+            data.value || "unknown data"
+          }}</span>
+        </li>
+      }
+    </ul>
+  </article>
+
+  <ng-content />
+</section>

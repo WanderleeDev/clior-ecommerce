@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   BaseFormComponent,
+  Field,
   NgFromType,
 } from '../../../../shared/base-component/base-form.component';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,10 +10,16 @@ import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-bas
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { ContactForm } from '../../interfaces/Contact.interface';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-contact-form',
-  imports: [ReactiveFormsModule, errorTailorImports, BtnBaseComponent],
+  imports: [
+    ReactiveFormsModule,
+    errorTailorImports,
+    BtnBaseComponent,
+    KeyValuePipe,
+  ],
   templateUrl: './contact-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -31,6 +38,11 @@ export class ContactFormComponent extends BaseFormComponent<ContactForm> {
     ),
     { initialValue: 0 },
   );
+
+  protected readonly fields: Field<Pick<ContactForm, 'email' | 'name'>> = {
+    name: { type: 'text' },
+    email: { type: 'email' },
+  };
 
   protected override initForm(): FormGroup<NgFromType<ContactForm>> {
     return this.fb.group({

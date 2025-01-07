@@ -12,13 +12,7 @@ import { ArrowRightSvgComponent } from '../../../../shared/icons/arrow-right-svg
 import { CamelCaseToSpacedPipe } from '../../../../shared/pipes/camel-case-to-spaced.pipe';
 import { passwordMatchValidator } from '../../../../shared/utils/validators';
 import { emailRgx, passwordRgx } from '../../../../shared/utils/regex';
-
-interface AccountForm {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  secretKey: string;
-}
+import { AccountData } from '../../interfaces/Form.interface';
 
 @Component({
   selector: 'app-account-form',
@@ -34,7 +28,7 @@ interface AccountForm {
   templateUrl: './account-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountFormComponent extends BaseFormComponent<AccountForm> {
+export class AccountFormComponent extends BaseFormComponent<AccountData> {
   protected override initForm() {
     return (this.form = this.fb.group({
       email: [
@@ -58,7 +52,7 @@ export class AccountFormComponent extends BaseFormComponent<AccountForm> {
     }));
   }
 
-  protected readonly fields: Field<AccountForm> = {
+  protected readonly fields: Field<AccountData> = {
     email: { type: 'email' },
     password: { type: 'password' },
     confirmPassword: { type: 'password' },
