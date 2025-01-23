@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   BaseFormComponent,
   Field,
-  NgFromType,
+  NgFormType,
 } from '../../../../shared/base-component/base-form.component';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
@@ -37,7 +37,7 @@ export class PersonalFormComponent extends BaseFormComponent<PersonalData> {
     Validators.maxLength(50),
   ];
 
-  protected override initForm(): FormGroup<NgFromType<PersonalData>> {
+  protected override initForm(): FormGroup<NgFormType<PersonalData>> {
     return this.fb.group({
       name: [
         '',

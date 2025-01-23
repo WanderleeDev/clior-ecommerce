@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Card } from '../../interface/SimpleCard.interface';
+import { Card } from '../../interfaces/SimpleCard.interface';
 
 @Component({
   selector: 'app-simple-card',

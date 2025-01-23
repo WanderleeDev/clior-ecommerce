@@ -1,6 +1,6 @@
 import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { IProduct } from '../../../pages/homee/interfaces/IProduct.interface';
+import { ProductInfo } from '../../../pages/product/model/Product.model';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { RouterLink } from '@angular/router';
 
@@ -17,5 +17,5 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardProductComponent {
-  productData = input.required<IProduct>();
+  productData = input.required<ProductInfo>();
 }

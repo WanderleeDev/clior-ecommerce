@@ -1,9 +1,11 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   inject,
   input,
   model,
+  signal,
 } from '@angular/core';
 import { ImageErrorService } from '../../services/image-error.service';
 import { NgOptimizedImage } from '@angular/common';
@@ -16,34 +18,20 @@ type ObjectFit =
   | 'object-scale-down';
 
 @Component({
-    selector: 'app-image-optimized',
-    imports: [NgOptimizedImage],
-    template: `<figure class="relative">
-    <div
-      class="w-full relative rounded-lg bg-[#CED6D9] {{
-        customClass()
-      }} overflow-hidden"
-    >
-      @let image = imageBase() || placeholderImage;
-
-      <img
-        class="{{ fitOption() }}"
-        (error)="handleErrorImage()"
-        [ngSrc]="image"
-        [alt]="title()"
-        fill
-      />
-    </div>
-    <ng-content />
-    <figcaption class="sr-only">{{ title() }}</figcaption>
-  </figure>`,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-image-optimized',
+  imports: [NgOptimizedImage],
+  templateUrl: 'image-optimized.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageOptimizedComponent {
-  readonly customClass = input<string>();
+  protected readonly hasLoadError = signal(false);
   readonly imageBase = model.required<string>();
   readonly title = input.required<string>();
+  readonly customClass = input<string>();
   readonly fitOption = input<ObjectFit>('object-contain');
+  readonly priority = input(false, {
+    transform: booleanAttribute,
+  });
 
   readonly #imageErrorService = inject(ImageErrorService);
   protected readonly placeholderImage =

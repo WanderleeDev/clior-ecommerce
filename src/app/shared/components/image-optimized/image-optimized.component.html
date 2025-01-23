@@ -1,0 +1,20 @@
+<figure class="relative">
+  <div
+    class="w-full relative rounded-lg bg-[#CED6D9] {{
+      customClass()
+    }} overflow-hidden"
+  >
+    @let image = imageBase() || placeholderImage;
+
+    <img
+      class="{{ fitOption() }}"
+      (error)="handleErrorImage()"
+      [ngSrc]="image"
+      [alt]="title()"
+      [priority]="priority()"
+      fill
+    />
+  </div>
+  <ng-content />
+  <figcaption class="sr-only">{{ title() }}</figcaption>
+</figure>

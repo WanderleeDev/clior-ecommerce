@@ -1,0 +1,16 @@
+<figure class="bg-gray-800 p-6 rounded-lg h-full w-full min-w-96">
+  <p class="text-gray-300 mb-4">"{{ comment().content }}"</p>
+  <div class="flex items-center">
+    <img
+      [src]="comment().image"
+      [alt]="comment().author"
+      class="w-10 h-10 rounded-full mr-3"
+    />
+    <div>
+      <figcaption class="text-white font-medium">
+        {{ comment().author }}
+      </figcaption>
+      <p class="text-gray-400 text-sm">{{ comment().title }}</p>
+    </div>
+  </div>
+</figure>

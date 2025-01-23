@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   BaseFormComponent,
-  NgFromType,
+  NgFormType,
 } from '../../../../shared/base-component/base-form.component';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { errorTailorImports } from '@ngneat/error-tailor';
@@ -16,7 +16,7 @@ import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-bas
 export class ConfirmFormComponent extends BaseFormComponent<{
   confirm: boolean;
 }> {
-  protected override initForm(): FormGroup<NgFromType<{ confirm: boolean }>> {
+  protected override initForm(): FormGroup<NgFormType<{ confirm: boolean }>> {
     return this.fb.group({
       confirm: [false, Validators.requiredTrue],
     });

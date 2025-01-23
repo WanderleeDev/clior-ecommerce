@@ -1,21 +1,14 @@
-:host {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
 .container-stars {
-  display: inline-flex;
-  flex-flow: row nowrap;
   transition: color 0.1s ease-in-out;
-  &:hover > svg {
+
+  &:hover > button {
     color: rgb(252, 185, 61);
   }
 
-  svg {
+  button {
     cursor: pointer;
     transition: color 0.1s ease-in-out;
-    &:hover ~ svg {
+    &:hover ~ button {
       color: currentColor;
     }
   }

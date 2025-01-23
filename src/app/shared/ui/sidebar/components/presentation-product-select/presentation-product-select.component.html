@@ -1,0 +1,23 @@
+<div class="space-y-2">
+  <span class="text-white text-sm font-semibold capitalize">{{ label() }}</span>
+  <div class="space-y-2">
+    @for (type of typePresentations; track type) {
+      <label
+        class="flex items-center space-x-3 text-sm text-gray-400"
+        [for]="'presentation-' + type"
+      >
+        <input
+          class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded"
+          #checkbox
+          type="checkbox"
+          name="presentation"
+          [id]="'presentation-' + type"
+          [disabled]="isDisabled"
+          (change)="onSelectPresentation(type, checkbox.checked)"
+          (blur)="onTouch && onTouch()"
+        />
+        <span class="capitalize">{{ type }}</span>
+      </label>
+    }
+  </div>
+</div>

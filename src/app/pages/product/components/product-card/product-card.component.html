@@ -10,6 +10,7 @@
       customClass="h-48"
       [imageBase]="product().thumbnail"
       [title]="product().name"
+      priority
     >
       @if (product().discount) {
         <app-tag

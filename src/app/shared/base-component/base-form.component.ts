@@ -2,14 +2,41 @@ import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormGroup, FormControl, NonNullableFormBuilder } from '@angular/forms';
 
 /**
- * Type definition for creating strongly-typed Angular form structures
+ * Type definition for creating strongly-typed Angular form structures.
+ * Creates a mapped type that converts a data interface into a form structure.
+ * Arrays are mapped to FormControl<Array>
+ * Objects are mapped to nested FormGroups
+ * Primitive values are mapped to FormControl<Value>
+ *
  * @template T - The interface/type representing the form data structure
  * @returns A type with FormControl for primitive values and nested FormGroups for objects
+ *
+ * @example
+ * interface UserForm {
+ *   name: string;
+ *   tags: string[];
+ *   address: {
+ *     street: string;
+ *     city: string;
+ *   }
+ * }
+ *
+ * // Results in:
+ * {
+ *   name: FormControl<string>;
+ *   tags: FormControl<string[]>;
+ *   address: FormGroup<{
+ *     street: FormControl<string>;
+ *     city: FormControl<string>;
+ *   }>;
+ * }
  */
-export type NgFromType<T> = {
-  [K in keyof T]: T[K] extends object
-    ? FormGroup<NgFromType<T[K]>>
-    : FormControl<T[K]>;
+export type NgFormType<T> = {
+  [K in keyof T]: T[K] extends unknown[]
+    ? FormControl<T[K]>
+    : T[K] extends object
+      ? FormGroup<NgFormType<T[K]>>
+      : FormControl<T[K]>;
 };
 
 /**
@@ -29,7 +56,7 @@ export type NgFromType<T> = {
  * }
  *
  * class UserFormComponent extends BaseFormComponent<UserForm> {
- *   protected initForm(): FormGroup<NgFromType<UserForm>> {
+ *   protected initForm(): FormGroup<NgFormType<UserForm>> {
  *     return this.fb.group({
  *       name: [''],
  *       email: [''],
@@ -79,7 +106,7 @@ export abstract class BaseFormComponent<T> {
   protected readonly fb = inject(NonNullableFormBuilder);
 
   /** The strongly-typed form instance */
-  protected form: FormGroup<NgFromType<T>>;
+  protected form: FormGroup<NgFormType<T>>;
 
   /**
    * Constructor initializes the form by calling initForm()
@@ -109,7 +136,7 @@ export abstract class BaseFormComponent<T> {
    * Must be implemented by child classes
    * @returns A strongly-typed FormGroup instance
    */
-  protected abstract initForm(): FormGroup<NgFromType<T>>;
+  protected abstract initForm(): FormGroup<NgFormType<T>>;
 
   /**
    * Handle form submission

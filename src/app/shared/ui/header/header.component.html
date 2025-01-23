@@ -11,7 +11,7 @@
     </a>
     <div class="flex md:order-2 items-center gap-2">
       <app-btn-base
-        class="md:hidden"
+        class="hidden xs:block md:hidden"
         data-collapse-toggle="navbar-search"
         aria-controls="navbar-search"
         aria-expanded="false"
@@ -25,7 +25,12 @@
       <div class="hidden md:block">
         <app-search-bar [hasMobileVersion]="false" />
       </div>
-      <app-btn-base title="shopping car" variant="primary" space="small">
+      <app-btn-base
+        class="hidden xs:block"
+        title="shopping car"
+        variant="primary"
+        space="small"
+      >
         <app-shopping-car-svg />
       </app-btn-base>
 

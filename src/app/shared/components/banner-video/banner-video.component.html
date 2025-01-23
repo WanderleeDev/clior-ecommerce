@@ -1,10 +1,10 @@
 <div
-  class="w-full h-full relative after:inset-0 after:absolute after:bg-black/20 after:bg-blend-multiply"
+  class="relative h-dvh min-w-dvw after:inset-0 after:absolute after:bg-black/10 after:bg-blend-multiply overflow-hidden after:z-20"
 >
   <video
     #videoPlayer
     (timeupdate)="onProgress(videoPlayer)"
-    class="w-full h-full object-cover bg-gray-700 bg-blend-multiply aspect-video"
+    class="w-auto h-auto min-w-full min-h-full absolute object-cover bg-gray-700 bg-blend-multiply aspect-video top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 z-10"
     [src]="videoUrl()"
     muted
     autoplay

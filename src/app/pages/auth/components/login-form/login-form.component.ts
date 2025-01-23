@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   BaseFormComponent,
   Field,
-  NgFromType,
+  NgFormType,
 } from '../../../../shared/base-component/base-form.component';
 import { ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { errorTailorImports } from '@ngneat/error-tailor';
@@ -28,7 +28,7 @@ interface LoginForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent extends BaseFormComponent<LoginForm> {
-  protected override initForm(): FormGroup<NgFromType<LoginForm>> {
+  protected override initForm(): FormGroup<NgFormType<LoginForm>> {
     return this.fb.group({
       email: [
         '',

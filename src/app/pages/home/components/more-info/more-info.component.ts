@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PhoneSvgComponent } from '../../../../shared/icons/phone-svg.component';
 import { EmailSvgComponent } from '../../../../shared/icons/email-svg.component';
 import { NgComponentOutlet } from '@angular/common';
+import { SectionLayoutComponent } from '../../../../layout/section-layout.component';
 
 @Component({
   selector: 'app-more-info',
-  imports: [NgComponentOutlet],
+  imports: [NgComponentOutlet, SectionLayoutComponent],
   templateUrl: './more-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

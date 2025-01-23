@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   BaseFormComponent,
   Field,
-  NgFromType,
+  NgFormType,
 } from '../../../../shared/base-component/base-form.component';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { errorTailorImports } from '@ngneat/error-tailor';
@@ -44,7 +44,7 @@ export class ContactFormComponent extends BaseFormComponent<ContactForm> {
     email: { type: 'email' },
   };
 
-  protected override initForm(): FormGroup<NgFromType<ContactForm>> {
+  protected override initForm(): FormGroup<NgFormType<ContactForm>> {
     return this.fb.group({
       name: [
         '',
