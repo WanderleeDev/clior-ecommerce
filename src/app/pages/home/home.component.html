@@ -6,6 +6,17 @@
   />
   <app-store-front />
   <app-brand-info />
-  <app-testimonials class="contents" [testimonials]="testimonials" />
-  <app-more-info />
+
+  @defer (on viewport) {
+    <app-testimonials class="contents" [testimonials]="testimonials" />
+  } @placeholder {
+    <app-loader class="py-32" textComplementary="loading section ..." />
+  }
+
+  @defer (on viewport) {
+    <app-collaborating-brands class="contents" />
+    <app-more-info class="py-12" />
+  } @placeholder {
+    <app-loader class="py-32" textComplementary="loading section ..." />
+  }
 </section>

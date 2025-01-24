@@ -11,6 +11,8 @@ import { BrandInfoComponent } from './components/brand-info/brand-info.component
 import { MoreInfoComponent } from './components/more-info/more-info.component';
 import { Comment } from '../../shared/interfaces/Comment.interface';
 import { TestimonialsComponent } from './components/testimonials/testimonials.component';
+import { CollaboratingBrandsComponent } from './components/collaborating-brands/collaborating-brands.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +22,8 @@ import { TestimonialsComponent } from './components/testimonials/testimonials.co
     BrandInfoComponent,
     MoreInfoComponent,
     TestimonialsComponent,
+    CollaboratingBrandsComponent,
+    LoaderComponent,
   ],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
