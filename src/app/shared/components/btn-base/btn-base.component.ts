@@ -17,7 +17,7 @@ type SpaceButton = 'small' | 'medium' | 'large';
     <button
       class="{{
         variant() + ' space-' + space() + ' w-full'
-      }} disabled:opacity-70 disabled:cursor-not-allowed transition-opacity"
+      }} disabled:opacity-70 disabled:cursor-not-allowed transition-all"
       [disabled]="disabled()"
       [type]="type()"
       [attr.title]="title()"

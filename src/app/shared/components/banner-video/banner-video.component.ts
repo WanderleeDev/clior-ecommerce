@@ -10,20 +10,15 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'app-banner-video',
-    imports: [CommonModule],
-    templateUrl: './banner-video.component.html',
-    styles: `
-    :host {
-      display: block;
-    }
-  `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-banner-video',
+  imports: [CommonModule],
+  templateUrl: './banner-video.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BannerVideoComponent implements AfterViewInit {
   videoRef = viewChild<ElementRef<HTMLVideoElement>>('videoPlayer');
   videoUrl = input.required<string>();
-  currentTime = model<number>()
+  currentTime = model<number>();
 
   ngAfterViewInit(): void {
     if (this.videoRef()?.nativeElement instanceof HTMLVideoElement) {

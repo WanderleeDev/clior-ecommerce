@@ -1,34 +1,43 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RatingComponent } from '../../../../shared/components/rating/rating.component';
-
-export interface Comment {
-  author: string;
-  date: string;
-  content: string;
-  rating: number;
-}
+import {
+  BaseFormComponent,
+  NgFormType,
+} from '../../../../shared/base-component/base-form.component';
+import { ReviewDTO } from '../../model/Review.model';
+import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
+import { errorTailorImports } from '@ngneat/error-tailor';
 
 @Component({
-    selector: 'app-comment-form',
-    imports: [RatingComponent],
-    templateUrl: './comment-form.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-comment-form',
+  imports: [
+    RatingComponent,
+    ReactiveFormsModule,
+    BtnBaseComponent,
+    errorTailorImports,
+  ],
+  templateUrl: './comment-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentFormComponent {
-  // @Output() onSubmit = new EventEmitter<{ rating: number; comment: string }>();
-
-  rating = 0;
-  comment = '';
-
-  setRating(value: number) {
-    this.rating = value;
+export class CommentFormComponent extends BaseFormComponent<ReviewDTO> {
+  protected override initForm(): FormGroup<NgFormType<ReviewDTO>> {
+    return this.fb.group({
+      comment: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(300),
+        ],
+      ],
+      rating: [0, [Validators.min(0), Validators.max(5)]],
+    });
   }
 
-  submitComment() {
-    if (this.rating && this.comment.trim()) {
-      // this.onSubmit.emit({ rating: this.rating, comment: this.comment });
-      this.rating = 0;
-      this.comment = '';
-    }
+  protected override submitForm(): void {
+    if (!this.isValidForm) return;
+
+    console.log(this.formValues);
   }
 }

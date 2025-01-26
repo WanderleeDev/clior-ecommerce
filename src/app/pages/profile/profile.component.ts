@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RefreshFlowbiteComponent } from '../../shared/directives/refresh-flobite.componet';
 import { MetricData } from './interfaces/MetricData.interface';
 import { DialogService } from '@ngneat/dialog';
 import { CardMetricProfileComponent } from './components/card-metric-profile/card-metric-profile.component';
@@ -15,31 +14,24 @@ import { FormEditDataUserComponent } from './components/form-edit-data-user/form
 import { FormPaymentMethodsComponent } from './components/form-payment-methods/form-payment-methods.component';
 
 @Component({
-    selector: 'app-profile',
-    imports: [
-        CardMetricProfileComponent,
-        RouterLink,
-        SectionLayoutComponent,
-        InfoProfileComponent,
-        BtnBaseComponent,
-        EditSvgComponent,
-        PaymentMethodsComponent,
-        UserSimpleCardComponent,
-    ],
-    templateUrl: './profile.component.html',
-    styles: [
-        `
-      :host {
-        display: contents;
-      }
-    `,
-    ],
-    hostDirectives: [],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-profile',
+  imports: [
+    CardMetricProfileComponent,
+    RouterLink,
+    SectionLayoutComponent,
+    InfoProfileComponent,
+    BtnBaseComponent,
+    EditSvgComponent,
+    PaymentMethodsComponent,
+    UserSimpleCardComponent,
+  ],
+  templateUrl: './profile.component.html',
+  hostDirectives: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ProfileComponent extends RefreshFlowbiteComponent {
+export default class ProfileComponent {
   readonly #dialog = inject(DialogService);
-  performanceMetrics: MetricData[] = [
+  protected readonly performanceMetrics: MetricData[] = [
     {
       title: 'Orders made',
       value: 20,
@@ -73,7 +65,7 @@ export default class ProfileComponent extends RefreshFlowbiteComponent {
       type: 'returns',
     },
   ];
-  userInfo: InfoProfile[] = [
+  protected readonly userInfo: InfoProfile[] = [
     { label: 'email address', content: 'helene@example.com' },
     {
       label: 'home address',
@@ -112,11 +104,11 @@ export default class ProfileComponent extends RefreshFlowbiteComponent {
     },
   ];
 
-  editDataUser() {
+  public editDataUser() {
     this.#dialog.open(FormEditDataUserComponent);
   }
 
-  editPaymentMethods() {
+  public editPaymentMethods() {
     this.#dialog.open(FormPaymentMethodsComponent, {
       data: this.paymentMethods[0], // Si estás editando un método existente
     });

@@ -1,24 +1,13 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RatingComponent } from '../../../../shared/components/rating/rating.component';
-
-export interface Comment {
-  author: string;
-  date: string;
-  content: string;
-  rating: number;
-}
+import { ReviewComment } from '../../model/Review.model';
 
 @Component({
-    selector: 'app-comment',
-    imports: [RatingComponent],
-    templateUrl: './comment.component.html',
-    styles: `
-    :host {
-      display: block;
-    }
-  `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-comment',
+  imports: [RatingComponent],
+  templateUrl: './comment.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentComponent {
-  readonly comment = input.required<Comment>();
+  readonly comment = input.required<ReviewComment>();
 }

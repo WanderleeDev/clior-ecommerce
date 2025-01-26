@@ -10,8 +10,6 @@ import {
 import { SearchSvgComponent } from '../../icons/search-svg.component';
 import { RatingSelectComponent } from './components/rating-select/rating-select.component';
 import { PresentationProductSelectComponent } from './components/presentation-product-select/presentation-product-select.component';
-import { RefreshFlowbiteDirective } from '../../directives/refresh-flo3bite.directive';
-import { RefreshFlowbiteComponent } from '../../directives/refresh-flobite.componet';
 
 interface SidebarProducts {
   brand: string;
@@ -35,7 +33,6 @@ interface SidebarProducts {
   host: {
     'aria-hidden': 'false',
   },
-  hostDirectives: [RefreshFlowbiteDirective],
 })
 export class SidebarComponent extends BaseFormComponent<SidebarProducts> {
   protected readonly MIN_PRICE = 0;

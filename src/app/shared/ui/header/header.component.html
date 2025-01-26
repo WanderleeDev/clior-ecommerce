@@ -1,42 +1,19 @@
-<header class="bg-white border-gray-200 dark:bg-gray-900">
-  <div
-    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
-  >
-    <a
-      routerLink="/home"
-      class="self-center text-3xl font-semibold whitespace-nowrap dark:text-white block border-t-2 border-b-2 uppercase tracking-widest"
+<div class="fixed top-0 w-full z-50">
+  <nav class="border-gray-200 bg-gray-900 h-20">
+    <div
+      class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto"
     >
-      Clior
-      <h1 class="sr-only">Clior Ecommerce</h1>
-    </a>
-    <div class="flex md:order-2 items-center gap-2">
-      <app-btn-base
-        class="hidden xs:block md:hidden"
-        data-collapse-toggle="navbar-search"
-        aria-controls="navbar-search"
-        aria-expanded="false"
-        title="search"
-        variant="primary"
-        space="small"
-      >
-        <app-search-svg />
-      </app-btn-base>
+      <app-clior-logo-link class="pl-4" />
 
-      <div class="hidden md:block">
-        <app-search-bar [hasMobileVersion]="false" />
-      </div>
-      <app-btn-base
-        class="hidden xs:block"
-        title="shopping car"
-        variant="primary"
-        space="small"
-      >
-        <app-shopping-car-svg />
-      </app-btn-base>
+      <div class="flex lg:order-2 gap-2 items-center py-4 px-4">
+        <app-search-bar class="hidden lg:block" />
 
-      <ng-container>
+        <app-shopping-dropdown />
+
+        <app-dropdown-user />
+
         <app-btn-base
-          class="md:hidden"
+          class="lg:hidden"
           title="open main menu"
           variant="outline"
           space="small"
@@ -46,25 +23,33 @@
         >
           <app-hamburger-bar />
         </app-btn-base>
+      </div>
 
-        <app-dropdown-user [isLogged]="isLogged()" [username]="username">
-          <app-btn-base
-            (click)="onSignOut()"
-            title="Logout"
-            maxSize
-            ngProjectAs="sign-out-btn"
-          >
-            Sign out
-          </app-btn-base>
-        </app-dropdown-user>
-      </ng-container>
+      <div
+        class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1"
+        id="navbar-search"
+      >
+        <ul
+          class="flex flex-col gap-1 p-4 lg:p-0 font-medium border rounded-bl-lg rounded-br-lg lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0 bg-gray-800 lg:bg-gray-900 border-gray-700"
+        >
+          <li class="block lg:hidden pb-2">
+            <app-search-bar />
+          </li>
+          @for (route of basicRoutes; track route) {
+            <li>
+              <app-link-base
+                class="contents"
+                [href]="'/' + route"
+                customClass="text-white capitalize py-2 px-3 rounded-sm lg:p-0 hover:bg-blue-500  transition-colors duration-300 lg:hover:bg-transparent"
+                activeClass="lg:underline bg-blue-500 lg:bg-transparent"
+                wMax
+              >
+                {{ route }}
+              </app-link-base>
+            </li>
+          }
+        </ul>
+      </div>
     </div>
-    <div
-      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-      id="navbar-search"
-    >
-      <app-search-bar [hasMobileVersion]="true" />
-      <app-navbar />
-    </div>
-  </div>
-</header>
+  </nav>
+</div>

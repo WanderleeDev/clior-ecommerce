@@ -1,0 +1,12 @@
+<footer class="mt-6 space-y-4">
+  <div class="flex items-center justify-between text-gray-100">
+    <span class="text-base font-medium md:text-lg">Total</span>
+    <span class="text-base font-medium md:text-lg">{{
+      totalPrice() | currency
+    }}</span>
+  </div>
+
+  <div class="grid gap-3 md:grid-cols-2">
+    <ng-content />
+  </div>
+</footer>

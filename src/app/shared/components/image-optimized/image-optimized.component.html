@@ -1,8 +1,8 @@
 <figure class="relative">
   <div
-    class="w-full relative rounded-lg bg-[#CED6D9] {{
-      customClass()
-    }} overflow-hidden"
+    class="w-full relative rounded-lg overflow-hidden"
+    [class]="customClass()"
+    [class.bg-[#CED6D9]]="bgBase()"
   >
     @let image = imageBase() || placeholderImage;
 

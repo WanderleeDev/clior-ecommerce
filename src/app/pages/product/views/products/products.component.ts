@@ -7,16 +7,15 @@ import {
 import { SidebarComponent } from '../../../../shared/ui/sidebar/sidebar.component';
 import { ApiProductsService } from '../../services/api-products.service';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
-import { RefreshFlowbiteComponent } from '../../../../shared/directives/refresh-flobite.componet';
 import { InfiniteScrollDirective } from '../../../../shared/directives/infinite-scroll.directive';
 
 @Component({
-    selector: 'app-products',
-    imports: [SidebarComponent, ProductCardComponent, InfiniteScrollDirective],
-    templateUrl: './products.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-products',
+  imports: [SidebarComponent, ProductCardComponent, InfiniteScrollDirective],
+  templateUrl: './products.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ProductsComponent extends RefreshFlowbiteComponent {
+export default class ProductsComponent {
   #apiProductsService = inject(ApiProductsService);
   ref = viewChild(InfiniteScrollDirective);
   protected readonly products = this.#apiProductsService.getProducts();

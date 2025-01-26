@@ -1,0 +1,77 @@
+<app-dropdown
+  dropdownId="dropdown-user"
+  ariaLabelledBy="dropdown user"
+  *ngrxLet="{ isLogged: isLogged$, user: user$ } as data"
+>
+  <div
+    class="flex gap-3 items-center px-2 hover:bg-gray-500 p-1 rounded-lg"
+    ngProjectAs="button"
+  >
+    @if (data.isLogged && data.user.image) {
+      <app-avatar
+        [src]="data.user.image"
+        [alt]="data.user.firstName"
+        sizeClass="size-10"
+      />
+    } @else {
+      <app-empty-user-svg />
+    }
+    <app-arrow-down-svg />
+  </div>
+
+  <ng-container ngProjectAs="body">
+    @if (data.isLogged) {
+      <div
+        class="py-3 px-4 text-sm font-semibold text-white capitalize divide-y shadow bg-gray-700 divide-gray-600"
+      >
+        {{ data.user.firstName }}
+      </div>
+      <app-divider [height]="1" color="#4b5553" />
+    }
+
+    <ul class="py-1 text-gray-300">
+      @if (data.isLogged) {
+        @for (route of authenticatedRoutes; track route.title) {
+          <li>
+            <a
+              [routerLink]="route.path"
+              class="block py-2 px-4 text-sm hover:bg-gray-600 text-gray-400 hover:text-white"
+              >{{ route.title }}</a
+            >
+          </li>
+        }
+      } @else {
+        @for (option of unauthenticatedOptions; track option.title) {
+          <li>
+            <button
+              type="button"
+              class="flex gap-4 flex-row-reverse justify-center py-2 px-4 text-sm hover:bg-gray-600 text-gray-400 hover:text-white w-full"
+            >
+              Login with {{ option.title }}
+              <ng-container [ngComponentOutlet]="option.icon"></ng-container>
+            </button>
+          </li>
+        }
+      }
+    </ul>
+
+    <app-divider [height]="1" color="#4b5553" />
+
+    <div class="py-2 px-4">
+      @if (data.isLogged) {
+        <app-btn-base
+          (click)="signOut()"
+          title="Logout"
+          maxSize
+          ngProjectAs="sign-out-btn"
+        >
+          Sign out
+        </app-btn-base>
+      } @else {
+        <app-link-base href="/auth/login" customClass="primary">
+          Sign in to your account
+        </app-link-base>
+      }
+    </div>
+  </ng-container>
+</app-dropdown>

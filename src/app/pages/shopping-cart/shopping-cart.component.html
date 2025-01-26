@@ -1,0 +1,38 @@
+<section
+  class="max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-gray-800 rounded-xl shadow-sm p-4 md:p-6"
+>
+  <app-shopping-cart-header
+    [totalProducts]="(totalProducts$ | ngrxPush) || 0"
+  />
+
+  <div
+    class="bg-gray-900 rounded-md"
+    *ngrxLet="
+      myProducts$ as products;
+      error as e;
+      complete as c;
+      suspenseTpl: loading
+    "
+  >
+    @if (e) {
+      <app-alert type="error" [messages]="[e.message]" />
+    }
+
+    @for (product of products; track product.id) {
+      <app-shopping-cart-card [product]="product" />
+    } @empty {
+      <app-empty-shopping-cart />
+    }
+  </div>
+
+  <app-divider spacingY="md" />
+
+  <app-shopping-cart-footer [totalPrice]="(totalPrice$ | ngrxPush) || 0">
+    <app-btn-base maxSize> Send Order </app-btn-base>
+    <app-btn-base variant="outline" maxSize> Send </app-btn-base>
+  </app-shopping-cart-footer>
+</section>
+
+<ng-template #loading>
+  <p>Loading...</p>
+</ng-template>

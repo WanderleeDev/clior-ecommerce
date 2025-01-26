@@ -23,6 +23,12 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/product/product.routing'),
       },
       {
+        path: 'shopping-cart',
+        title: 'Clior | Shopping Cart',
+        loadComponent: () =>
+          import('./pages/shopping-cart/shopping-cart.component'),
+      },
+      {
         path: 'auth',
         title: 'Clior | Authentication',
         loadChildren: () => import('./pages/auth/auth.routes'),

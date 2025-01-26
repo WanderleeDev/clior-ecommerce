@@ -32,6 +32,9 @@ export class ImageOptimizedComponent {
   readonly priority = input(false, {
     transform: booleanAttribute,
   });
+  readonly bgBase = input(false, {
+    transform: booleanAttribute,
+  });
 
   readonly #imageErrorService = inject(ImageErrorService);
   protected readonly placeholderImage =
