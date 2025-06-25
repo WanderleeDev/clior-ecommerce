@@ -12,7 +12,7 @@ const AUTH_ROUTES: Routes = [
   },
   {
     path: 'register',
-    loadChildren: () => import('./views/register/register.route.ts.routing'),
+    loadChildren: () => import('./register.routes'),
   },
 ];
 

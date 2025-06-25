@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RegisterFormLayoutComponent } from '../../../../../../layout/register-form-layout.component';
+import { RegisterFormLayoutComponent } from '../../../../layout/register-step-layout.component';
 import { ConfirmFormComponent } from '../../../../components/confirm-form/confirm-form.component';
 import { PreviousDataUserComponent } from '../../../../components/previous-data-user/previous-data-user.component';
 

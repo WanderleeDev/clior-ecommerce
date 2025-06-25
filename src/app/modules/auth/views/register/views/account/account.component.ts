@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { RegisterFormLayoutComponent } from '../../../../../../layout/register-form-layout.component';
 import { AccountFormComponent } from '../../../../components/account-form/account-form.component';
+import { RegisterStepLayoutComponent } from '../../../../layout/register-step-layout.component';
 
 @Component({
   selector: 'app-account',
-  imports: [RegisterFormLayoutComponent, AccountFormComponent],
+  imports: [RegisterStepLayoutComponent, AccountFormComponent],
   template: `
     <app-register-form-layout [currentStep]="2">
       <app-account-form />

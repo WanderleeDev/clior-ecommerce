@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { StepperRegisterComponent } from '../modules/auth/components/stepper-register/stepper-register.component';
+import { StepperRegisterComponent } from '../components/stepper-register/stepper-register.component';
 import { RouterLink } from '@angular/router';
-import { LoaderComponent } from '../shared/components/loader/loader.component';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 
 @Component({
-  selector: 'app-register-form-layout',
+  selector: 'app-register-step-layout',
   imports: [StepperRegisterComponent, RouterLink, LoaderComponent],
   template: `
     <div class="grid gap-16 h-full">
@@ -30,6 +30,6 @@ import { LoaderComponent } from '../shared/components/loader/loader.component';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterFormLayoutComponent {
+export class RegisterStepLayoutComponent {
   currentStep = input.required<number>();
 }

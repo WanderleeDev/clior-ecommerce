@@ -1,5 +1,6 @@
 <form
   class="max-w-sm mx-auto w-full sm:max-w-md grid grid-cols-1 gap-8"
+  (ngSubmit)="submitForm()"
   autocomplete="off"
   novalidate
   [formGroup]="form"
@@ -22,7 +23,7 @@
     </div>
   }
   <div class="flex justify-between gap-8 items-center">
-    <app-btn-base>
+    <app-btn-base (click)="navigateToStepOne()">
       <app-arrow-left-svg />
       Prev
     </app-btn-base>

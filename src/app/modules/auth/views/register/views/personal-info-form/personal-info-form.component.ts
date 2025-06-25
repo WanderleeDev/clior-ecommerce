@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RegisterFormLayoutComponent } from '../../../../../../layout/register-form-layout.component';
+import { RegisterFormLayoutComponent } from '../../../../layout/register-step-layout.component';
 import { PersonalFormComponent } from '../../../../components/personal-form/personal-form.component';
 
 @Component({

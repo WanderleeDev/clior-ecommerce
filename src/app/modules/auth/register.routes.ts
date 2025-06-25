@@ -9,17 +9,19 @@ const REGISTER_ROUTES: Routes = [
   {
     path: 'step-1',
     loadComponent: () =>
-      import('./views/personal-info-form/personal-info-form.component'),
+      import('./views/register-step-1/register-step-1.component'),
     title: 'Register - Personal Info',
   },
   {
     path: 'step-2',
-    loadComponent: () => import('./views/account/account.component'),
+    loadComponent: () =>
+      import('./views/register-step-2/register-step-2.component'),
     title: 'Register - Account Info',
   },
   {
     path: 'step-3',
-    loadComponent: () => import('./views/confirmation/confirmation.component'),
+    loadComponent: () =>
+      import('./views/register-step-3/register-step-3.component'),
     title: 'Register - Confirmation',
   },
 ];
