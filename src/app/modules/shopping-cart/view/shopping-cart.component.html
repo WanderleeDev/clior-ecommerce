@@ -1,0 +1,50 @@
+<section
+  class="max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-gray-800 rounded-xl shadow-sm p-4 md:p-6"
+>
+  <app-shopping-cart-header [totalProducts]="totalProducts()" />
+
+  <div
+    class="bg-gray-900 rounded-md max-h-[28rem] overflow-y-scroll overflow-x-hidden customScrollbar"
+  >
+    @for (product of products(); track product.id) {
+      <app-shopping-cart-card [product]="product">
+        <div class="flex items-center gap-3">
+          <app-btn-base
+            (click)="decrementProduct(product.id)"
+            variant="outline"
+            class="scale-90"
+          >
+            -
+          </app-btn-base>
+
+          <span class="w-4 text-center text-md font-semibold">{{
+            product.quantity
+          }}</span>
+          <app-btn-base
+            (click)="incrementProduct(product.id)"
+            variant="outline"
+            class="scale-90"
+          >
+            +
+          </app-btn-base>
+        </div>
+        <app-btn-base (click)="removeProduct(product.id)" variant="danger">
+          Remove
+        </app-btn-base>
+      </app-shopping-cart-card>
+    } @empty {
+      <app-empty-shopping-cart />
+    }
+  </div>
+
+  @if (products().length > 0) {
+    <app-divider spacingY="md" />
+
+    <app-shopping-cart-footer [totalPrice]="totalPrice()">
+      <app-btn-base maxSize> Send Order </app-btn-base>
+      <app-btn-base variant="outline" maxSize (click)="clearCart()">
+        Clear list
+      </app-btn-base>
+    </app-shopping-cart-footer>
+  }
+</section>

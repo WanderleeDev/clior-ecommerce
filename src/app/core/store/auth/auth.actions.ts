@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { AuthLoginSuccess } from '../../../pages/auth/interfaces/authResponse.interface';
+import { AuthLoginSuccess } from '../../../modules/auth/interfaces/authResponse.interface';
 
 export const AUTH_ACTIONS = createActionGroup({
   source: 'Auth',

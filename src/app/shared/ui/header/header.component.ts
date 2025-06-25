@@ -6,7 +6,7 @@ import { SearchBarComponent } from '../../components/search-bar/search-bar.compo
 import { DropdownUserComponent } from '../../components/dropdown-user/dropdown-user.component';
 import { BtnBaseComponent } from '../../components/btn-base/btn-base.component';
 import { HamburgerBarComponent } from '../../icons/hamburger-bar.component';
-import { ShoppingDropdownComponent } from '../../../pages/shopping-cart/components/shopping-dropdown/shopping-dropdown.component';
+import { ShoppingDropdownComponent } from '../../../modules/shopping-cart/components/shopping-dropdown/shopping-dropdown.component';
 
 @Component({
   selector: 'app-header',

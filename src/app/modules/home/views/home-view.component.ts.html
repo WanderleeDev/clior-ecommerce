@@ -1,0 +1,20 @@
+<section class="bg-white dark:bg-gray-900 bg-blend-multiply h-full grid">
+  <app-banner-video
+    class="col-[1/2] row-[1/2]"
+    videoUrl="assets/banner.mp4"
+    [(currentTime)]="currentTimeVideo"
+  />
+  <app-store-front />
+  <app-brand-info />
+
+  @defer (on viewport) {
+  <app-testimonials class="contents" [testimonials]="testimonials" />
+  } @placeholder {
+  <app-loader class="py-32" textComplementary="loading section ..." />
+  } @defer (on viewport) {
+  <app-collaborating-brands class="contents" />
+  <app-more-info class="py-12" />
+  } @placeholder {
+  <app-loader class="py-32" textComplementary="loading section ..." />
+  }
+</section>

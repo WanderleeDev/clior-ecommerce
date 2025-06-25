@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 type TypeButton = 'button' | 'submit' | 'reset';
-type VariantButton = 'primary' | 'outline';
+type VariantButton = 'primary' | 'outline' | 'danger';
 type SpaceButton = 'small' | 'medium' | 'large';
 
 @Component({

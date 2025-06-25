@@ -1,6 +1,6 @@
 import { ActionReducerMap } from '@ngrx/store';
 import { AUTH_REDUCER } from './auth/auth.reducers';
-import { SHOPPING_CART_REDUCER } from './shoppingCart/shoppingCart.reducers';
+import { SHOPPING_CART_REDUCER } from '../../modules/shopping-cart/store/shoppingCart.reducers';
 import { AppState } from './models/App.model';
 import * as authEffects from './auth/auth.effects';
 import * as sharedEffects from './shared/shared.effects';

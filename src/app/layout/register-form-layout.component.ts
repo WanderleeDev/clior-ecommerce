@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { StepperRegisterComponent } from '../pages/auth/components/stepper-register/stepper-register.component';
+import { StepperRegisterComponent } from '../modules/auth/components/stepper-register/stepper-register.component';
 import { RouterLink } from '@angular/router';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 

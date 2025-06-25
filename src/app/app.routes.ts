@@ -15,23 +15,23 @@ export const routes: Routes = [
       {
         path: 'home',
         title: 'Clior | Home',
-        loadComponent: () => import('./pages/home/home.component'),
+        loadComponent: () => import('./modules/home/views/home-view.component'),
       },
       {
         path: 'products',
         title: 'Clior | Products',
-        loadChildren: () => import('./pages/product/product.routing'),
+        loadChildren: () => import('./modules/product/product.routing'),
       },
       {
         path: 'shopping-cart',
         title: 'Clior | Shopping Cart',
         loadComponent: () =>
-          import('./pages/shopping-cart/shopping-cart.component'),
+          import('./modules/shopping-cart/view/shopping-cart.component'),
       },
       {
         path: 'auth',
         title: 'Clior | Authentication',
-        loadChildren: () => import('./pages/auth/auth.routes'),
+        loadChildren: () => import('./modules/auth/auth.routes'),
         canActivate: [authGuard],
       },
       {
@@ -43,7 +43,8 @@ export const routes: Routes = [
       {
         path: 'contact',
         title: 'Clior | Contact',
-        loadComponent: () => import('./pages/contact/contact.component'),
+        loadComponent: () =>
+          import('./modules/contact/views/contact.component'),
       },
       {
         path: 'payments',

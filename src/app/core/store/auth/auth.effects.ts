@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AUTH_ACTIONS } from './auth.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
-import { AuthService } from '../../../pages/auth/services/auth.service';
+import { AuthService } from '../../../modules/auth/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SHARED_ACTIONS } from '../shared/shared.action';
 

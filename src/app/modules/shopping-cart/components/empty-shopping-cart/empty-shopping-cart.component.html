@@ -1,0 +1,24 @@
+<div class="rounded-md py-4 select-none">
+  @if (variant() === "detailed") {
+    <app-image-optimized
+      [imageBase]="imageEmptyCart"
+      [title]="'Empty cart'"
+      customClass="size-48 mix-blend-plus-lighter brightness-110 ml-8"
+    />
+    <div class="flex justify-center items-center gap-2 flex-col">
+      <p class="text-lg font-medium text-white">Your cart is empty</p>
+      <p class="text-sm text-gray-400">
+        Looks like you haven’t added anything to your cart yet.
+      </p>
+      <app-link-base href="/products" underline="">
+        View Products
+      </app-link-base>
+    </div>
+  } @else {
+    <app-image-optimized
+      [imageBase]="imageEmptyCart"
+      [title]="'Empty cart'"
+      customClass="size-24 mix-blend-plus-lighter brightness-110"
+    />
+  }
+</div>
