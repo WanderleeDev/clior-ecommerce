@@ -1,6 +1,12 @@
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideZoneChangeDetection } from '@angular/core';
-import { provideClientHydration } from '@angular/platform-browser';
+import {
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
+import {
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
 import {
   provideRouter,
   withComponentInputBinding,
@@ -10,8 +16,9 @@ import { routes } from '../../../app.routes';
 import { AppProvider } from '.';
 
 export const angularProviders: AppProvider = [
-  provideZoneChangeDetection({ eventCoalescing: true }),
+  provideBrowserGlobalErrorListeners(),
+  provideZonelessChangeDetection(),
   provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
-  provideClientHydration(),
+  provideClientHydration(withEventReplay()),
   provideHttpClient(withFetch()),
 ];

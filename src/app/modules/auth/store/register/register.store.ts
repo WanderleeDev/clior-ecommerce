@@ -4,6 +4,7 @@ import {
   withComputed,
   withMethods,
   withState,
+  withProps,
 } from '@ngrx/signals';
 import { RegisterPayload, RegisterState } from './models/Register.state';
 import {
@@ -28,53 +29,51 @@ export const RegisterStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
 
-  withComputed((store) => ({
-    isReadyToRegister: computed(
-      () => store.step1() && store.step2() && store.step3(),
-    ),
+  withProps(() => ({
+    router: inject(Router),
+    authService: inject(AuthService),
+  })),
+
+  withComputed(({ step1, step2, step3 }) => ({
+    isReadyToRegister: computed(() => step1() && step2() && step3()),
     registerPayload: computed(
       (): RegisterPayload => ({
-        step1: store.step1(),
-        step2: store.step2(),
-        step3: store.step3(),
+        step1: step1(),
+        step2: step2(),
+        step3: step3(),
       }),
     ),
   })),
 
-  withMethods(
-    (store, router = inject(Router), authService = inject(AuthService)) => ({
-      setDataStep1: (data: RegisterStep1) => {
-        patchState(store, (state) => ({ ...state, step1: data }));
-        router.navigateByUrl('/auth/register/step-2');
-      },
+  withMethods(({ router, authService, ...store }) => ({
+    setDataStep1: (data: RegisterStep1) => {
+      patchState(store, () => ({ step1: data }));
+      router.navigateByUrl('/auth/register/step-2');
+    },
 
-      setDataStep2: (data: RegisterStep2) => {
-        patchState(store, (state) => ({ ...state, step2: data }));
-        router.navigateByUrl('/auth/register/step-3');
-      },
+    setDataStep2: (data: RegisterStep2) => {
+      patchState(store, () => ({ step2: data }));
+      router.navigateByUrl('/auth/register/step-3');
+    },
 
-      setDataStep3: (data: RegisterStep3) => {
-        patchState(store, (state) => ({
-          ...state,
-          step3: data,
-        }));
-      },
+    setDataStep3: (data: RegisterStep3) => {
+      patchState(store, () => ({ step3: data }));
+    },
 
-      sendRegister: async () => {
-        if (!store.isReadyToRegister()) return;
+    sendRegister: async () => {
+      if (!store.isReadyToRegister()) return;
 
-        patchState(store, { isSubmitting: true });
-        await authService.register(store.registerPayload());
-        patchState(store, initialState);
-      },
+      patchState(store, { isSubmitting: true });
+      await authService.register(store.registerPayload());
+      patchState(store, initialState);
+    },
 
-      navigateByStep: (step: Steps) => {
-        if (step > 3 || step <= 0 || store.isSubmitting()) return;
+    navigateByStep: (step: Steps) => {
+      if (step > 3 || step <= 0 || store.isSubmitting()) return;
 
-        router.navigateByUrl(`/auth/register/step-${step}`);
-      },
+      router.navigateByUrl(`/auth/register/step-${step}`);
+    },
 
-      clearSteps: () => patchState(store, initialState),
-    }),
-  ),
+    clearSteps: () => patchState(store, initialState),
+  })),
 );
