@@ -85,6 +85,9 @@ importers:
       '@ngrx/store-devtools':
         specifier: ^19.2.1
         version: 19.2.1(@angular/core@20.0.5(@angular/compiler@20.0.5)(rxjs@7.8.2)(zone.js@0.15.1))(@ngrx/store@19.2.1(@angular/core@20.0.5(@angular/compiler@20.0.5)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2)
+      css-select:
+        specifier: ^5.1.0
+        version: 5.2.1
       express:
         specifier: ^4.21.2
         version: 4.21.2
@@ -132,7 +135,7 @@ importers:
         specifier: 20.1.1
         version: 20.1.1(chokidar@4.0.3)(eslint@9.30.0(jiti@1.21.7))(typescript-eslint@8.35.0(eslint@9.30.0(jiti@1.21.7))(typescript@5.8.3))(typescript@5.8.3)
       eslint:
-        specifier: ^9.28.0
+        specifier: ^9.30.0
         version: 9.30.0(jiti@1.21.7)
       eslint-config-prettier:
         specifier: ^9.1.0
@@ -171,7 +174,7 @@ importers:
         specifier: ~5.8.3
         version: 5.8.3
       typescript-eslint:
-        specifier: ^8.33.1
+        specifier: ^8.35.0
         version: 8.35.0(eslint@9.30.0(jiti@1.21.7))(typescript@5.8.3)
 
 packages:
