@@ -10,7 +10,12 @@ import {
   templateUrl: './loader.component.html',
   styles: `
     :host {
-      display: block;
+      transition: linear .2s opacity, transform .2s opacity
+
+      @starting-style {
+        opacity: 0,
+        transform: translateY(2rem)
+      }
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

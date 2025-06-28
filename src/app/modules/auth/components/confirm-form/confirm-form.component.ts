@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   BaseFormComponent,
   NgFormType,
@@ -6,6 +6,8 @@ import {
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
+import { RegisterStore } from '../../store/register/register.store';
+import { RegisterStep3 } from '../../store/register/models/RegisterStep.model';
 
 @Component({
   selector: 'app-confirm-form',
@@ -13,16 +15,18 @@ import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-bas
   templateUrl: './confirm-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmFormComponent extends BaseFormComponent<{
-  confirm: boolean;
-}> {
-  protected override initForm(): FormGroup<NgFormType<{ confirm: boolean }>> {
+export class ConfirmFormComponent extends BaseFormComponent<RegisterStep3> {
+  readonly #registerStore = inject(RegisterStore);
+  protected override initForm(): FormGroup<NgFormType<RegisterStep3>> {
     return this.fb.group({
-      confirm: [false, Validators.requiredTrue],
+      acceptTermAndConditions: [false, Validators.requiredTrue],
     });
   }
 
-  protected override submitForm(): void {
+  protected override async submitForm(): Promise<void> {
     if (!this.isValidForm) return;
+
+    this.#registerStore.setDataStep3(this.form.getRawValue());
+    await this.#registerStore.sendRegister();
   }
 }

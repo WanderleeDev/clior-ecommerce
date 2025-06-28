@@ -6,10 +6,12 @@
   <article>
     <header class="flex gap-2 justify-between items-center">
       <h3 class="text-xl font-bold text-white">Personal data</h3>
-      <app-btn-base (click)="navigateTo(1)">Change</app-btn-base>
+      <app-btn-base [disabled]="isSubmitting()" (click)="navigateTo(1)"
+        >Change</app-btn-base
+      >
     </header>
     <ul class="text-sm">
-      @for (data of personalData | keyvalue: null; track data.key) {
+      @for (data of dataStep1 | keyvalue: null; track data.key) {
         <li class="flex gap-4 items-center">
           <span class="text-gray-100 font-semibold">
             {{ data.key | camelCaseToSpaced: true }} :
@@ -25,10 +27,12 @@
   <article>
     <header class="flex gap-2 justify-between items-center">
       <h3 class="text-xl font-bold text-white">Account data</h3>
-      <app-btn-base (click)="navigateTo(2)">Change</app-btn-base>
+      <app-btn-base [disabled]="isSubmitting()" (click)="navigateTo(2)"
+        >Change</app-btn-base
+      >
     </header>
     <ul class="text-sm">
-      @for (data of accountData | keyvalue: null; track data.key) {
+      @for (data of dataStep2 | keyvalue: null; track data.key) {
         <li class="flex gap-4 items-center">
           <span class="text-gray-100 font-semibold">
             {{ data.key | camelCaseToSpaced: true }} :
