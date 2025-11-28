@@ -1,0 +1,52 @@
+<div class="relative">
+  <div class="flex gap-2 w-full">
+    <app-speech-recognition />
+    <div class="relative flex gap-4">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      >
+        <app-search-svg [size]="18" class="text-gray-400" />
+      </div>
+      <input
+        type="text"
+        class="block w-full p-2 ps-10 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Search..."
+        [value]="searchTerm()"
+        (input)="searchTerm.set($event.target.value)"
+      />
+    </div>
+  </div>
+  <ul
+    class="absolute left-0 right-0 top-[110%] w-full text-sm font-medium bg-gray-800 border border-gray-700 h-40 overflow-y-scroll customScrollbar text-gray-300 rounded-lg shadow-lg z-10"
+  >
+    @if (productResource.isLoading()) {
+      <li
+        class="w-full px-4 py-2 border-b border-gray-700 last:border-b-0 first:rounded-t-lg last:rounded-b-lg"
+      >
+        <app-loader textComplementary="Searching..." />
+      </li>
+    } @else if (productResource.error()) {
+      <li
+        class="w-full px-4 py-2 border-b border-gray-700 last:border-b-0 first:rounded-t-lg last:rounded-b-lg text-red-400"
+      >
+        Error loading products. Please try again.
+      </li>
+    } @else {
+      @for (product of productResource.value(); track $index) {
+        <li
+          class="w-full px-4 py-2 border-b border-gray-700 last:border-b-0 first:rounded-t-lg last:rounded-b-lg cursor-pointer hover:bg-gray-700 hover:text-white transition-colors duration-200"
+        >
+          <a [routerLink]="['/products', product.id]">
+            {{ product.name }}
+          </a>
+        </li>
+      } @empty {
+        <li
+          class="w-full px-4 py-2 border-b border-gray-700 last:border-b-0 first:rounded-t-lg last:rounded-b-lg text-gray-400"
+        >
+          No products found
+        </li>
+      }
+    }
+  </ul>
+</div>

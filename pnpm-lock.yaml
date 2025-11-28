@@ -47,9 +47,21 @@ importers:
       '@ngneat/error-tailor':
         specifier: ^5.0.1
         version: 5.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))
+      '@ngrx/component':
+        specifier: ^20.1.0
+        version: 20.1.0(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@ngrx/component-store':
+        specifier: ^20.1.0
+        version: 20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@ngrx/signals':
+        specifier: ^20.1.0
+        version: 20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@ngrx/store':
         specifier: ^20.1.0
         version: 20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@ngrx/store-devtools':
+        specifier: ^20.1.0
+        version: 20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(@ngrx/store@20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2)
       css-select:
         specifier: ^5.2.2
         version: 5.2.2
@@ -68,9 +80,6 @@ importers:
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
-      zone.js:
-        specifier: ~0.15.1
-        version: 0.15.1
     devDependencies:
       '@angular/build':
         specifier: ^21.0.1
@@ -1287,6 +1296,19 @@ packages:
     peerDependencies:
       '@angular/core': '>=17.0.0'
 
+  '@ngrx/component-store@20.1.0':
+    resolution: {integrity: sha512-hInHO7bwyxlUfJTSgdZ+8i0aiE3Ll0D5Y5qGy1heebrNG1Y3nrmLaGh1Yeq/dXeXJiN4Z9owEro+BaCfGOEn+Q==}
+    peerDependencies:
+      '@angular/core': ^20.0.0
+      rxjs: ^6.5.3 || ^7.5.0
+
+  '@ngrx/component@20.1.0':
+    resolution: {integrity: sha512-EFQdAYbSV1tkxunHviGAjNXPcv6/JQb2r1TMoin/XJYC2+r7QwBVj1lmCC1OZnhCXYXytqKmweb4g9ZkT/TYhA==}
+    peerDependencies:
+      '@angular/common': ^20.0.0
+      '@angular/core': ^20.0.0
+      rxjs: ^6.5.3 || ^7.5.0
+
   '@ngrx/eslint-plugin@19.2.1':
     resolution: {integrity: sha512-6NquOZRc6y6uWdct7ygYh83KMenTCy4dz3+W3+g5wdohtvH2uHmdOnEuA4FW7PHSP0DJKwSN2GgmS6PYs4TEvg==}
     peerDependencies:
@@ -1294,6 +1316,22 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '*'
       typescript-eslint: ^8.0.0
+
+  '@ngrx/signals@20.1.0':
+    resolution: {integrity: sha512-ARAHp5yA131Sw6FEtY8XtYcdGcwW5lgpZaJoDIRxc6i12VO3ZDZYp3M/FQhpIDMDXkXHR+pDqoitrqvzI69aQA==}
+    peerDependencies:
+      '@angular/core': ^20.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
+
+  '@ngrx/store-devtools@20.1.0':
+    resolution: {integrity: sha512-4N6X/uAfjiCFcuauX2gG+6TnDAuixrfMfUVebLYvifLkrDmqDO8lbeH+Lhk3EVGnpUih4yJiCaU437awVyKckw==}
+    peerDependencies:
+      '@angular/core': ^20.0.0
+      '@ngrx/store': 20.1.0
+      rxjs: ^6.5.3 || ^7.5.0
 
   '@ngrx/store@20.1.0':
     resolution: {integrity: sha512-o8j3CGAGedm+BIb+QDhNXrVaU//n9uF0wH0HZWtXHmW1mjRBaQiUA+ZPMUkDwAeN8KuOcoIEC+2QUXxXGVI7ow==}
@@ -5228,6 +5266,19 @@ snapshots:
       '@angular/core': 21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1)
       tslib: 2.5.0
 
+  '@ngrx/component-store@20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/core': 21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
+  '@ngrx/component@20.1.0(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/common': 21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@angular/core': 21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
   '@ngrx/eslint-plugin@19.2.1(@typescript-eslint/utils@8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(typescript-eslint@8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/utils': 8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
@@ -5236,6 +5287,20 @@ snapshots:
       strip-json-comments: 3.1.1
       typescript: 5.9.3
       typescript-eslint: 8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+
+  '@ngrx/signals@20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/core': 21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1)
+      tslib: 2.8.1
+    optionalDependencies:
+      rxjs: 7.8.2
+
+  '@ngrx/store-devtools@20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(@ngrx/store@20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/core': 21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1)
+      '@ngrx/store': 20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      rxjs: 7.8.2
+      tslib: 2.8.1
 
   '@ngrx/store@20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)':
     dependencies:
@@ -8344,4 +8409,5 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zone.js@0.15.1: {}
+  zone.js@0.15.1:
+    optional: true

@@ -41,20 +41,30 @@
   <div
     class="p-4 md:ml-64 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
   >
-    @for (product of products; track product.id) {
-      <app-product-card [product]="product">
-        <app-btn-base
-          class="basis-3/6 grow"
-          [title]="'Add to cart'"
-          (click)="addProduct($event, product)"
-        >
-          Add to cart
-        </app-btn-base>
-      </app-product-card>
-    } @empty {
+    @if (productsResource.isLoading()) {
       <div class="col-span-full text-center">
-        <p class="text-gray-500">No products found</p>
+        <p class="text-gray-500">Loading...</p>
       </div>
+    } @else if (productsResource.error()) {
+      <div class="col-span-full text-center">
+        <p class="text-gray-500">Error loading products</p>
+      </div>
+    } @else {
+      @for (product of productsResource.value(); track product.id) {
+        <app-product-card [product]="product">
+          <app-btn-base
+            class="basis-3/6 grow"
+            [title]="'Add to cart'"
+            (click)="addProduct($event, product)"
+          >
+            Add to cart
+          </app-btn-base>
+        </app-product-card>
+      } @empty {
+        <div class="col-span-full text-center">
+          <p class="text-gray-500">No products found</p>
+        </div>
+      }
     }
     <!-- <span #container appInfiniteScroll (action)="loadMore()"></span> -->
   </div>

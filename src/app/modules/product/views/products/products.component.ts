@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  resource,
+} from '@angular/core';
 import { SidebarComponent } from '../../../../shared/ui/sidebar/sidebar.component';
 import { ProductsService } from '../../services/products.service';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
@@ -7,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../core/store/models/App.model';
 import { SHOPPING_CART_ACTIONS } from '../../../shopping-cart/store/shoppingCart.actions';
 import { Product } from '../../model/Product.model';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-products',
@@ -17,11 +23,20 @@ import { Product } from '../../model/Product.model';
 export default class ProductsComponent {
   #store = inject(Store<AppState>);
   #productsService = inject(ProductsService);
-  protected readonly products = this.#productsService.getProducts();
+  productsResource = resource({
+    loader: async () => {
+      return fetch(
+        'https://hashbrown-chat.xamperu33.workers.dev/products',
+      ).then((res) => res.json());
+    },
+    defaultValue: [],
+  });
+  protected readonly products = toSignal(this.#productsService.getProducts());
 
   count = 0;
 
   public addProduct(e: Event, product: Product) {
+    this.productsResource.value();
     e.preventDefault();
     e.stopPropagation();
     this.#store.dispatch(

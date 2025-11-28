@@ -3,13 +3,11 @@ import {
   Component,
   inject,
   input,
-  OnInit,
-  signal,
+  resource,
 } from '@angular/core';
 import { CommentFormComponent } from '../../components/comment-form/comment-form.component';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
 import { ProductsService } from '../../services/products.service';
-import { Product } from '../../model/Product.model';
 import { ProductImageGalleryComponent } from '../../components/product-inage-gallery/product-image-gallery.component';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
 import { ProductFormOrderComponent } from '../../components/product-form-order/product-form-order.component';
@@ -17,6 +15,9 @@ import { ProductInfoComponent } from '../../components/product-info/product-info
 import { SectionLayoutComponent } from '../../../../layout/section-layout.component';
 import { ReviewComment } from '../../model/Review.model';
 import { ListReviewsComponent } from '../../components/list-reviews/list-reviews.component';
+import { NotFound } from '../../../../shared/components/not found/not-found.component';
+import { ButtonFlowbiteComponent } from '../../../../shared/components/button-flowbite/button-flowbite.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-overview',
@@ -29,22 +30,20 @@ import { ListReviewsComponent } from '../../components/list-reviews/list-reviews
     ProductInfoComponent,
     SectionLayoutComponent,
     ListReviewsComponent,
+    NotFound,
+    ButtonFlowbiteComponent,
   ],
   templateUrl: './product-overview.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ProductOverviewComponent implements OnInit {
+export default class ProductOverviewComponent {
   protected readonly id = input.required<string>();
-  protected readonly productData = signal<Product | null>(null);
   readonly #productService = inject(ProductsService);
-  product = {
-    id: 1,
-    title:
-      'Apple iMac 24" All-In-One Computer, Apple M1, 8GB RAM, 256GB SSD, Mac OS, Pink',
-    imageUrl:
-      'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-blue-selection-hero-202310?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1697301104671',
-    price: 1249.99,
-  };
+  readonly #router = inject(Router);
+  readonly productResource = resource({
+    params: () => this.id(),
+    loader: async ({ params }) => this.#productService.getProductById(params),
+  });
 
   protected readonly comments: ReviewComment[] = [
     {
@@ -70,16 +69,16 @@ export default class ProductOverviewComponent implements OnInit {
     },
   ];
 
-  ngOnInit(): void {
-    this.productData.set(this.#productService.getProductById(this.id()));
-  }
-
-  addComment(data: { rating: number; comment: string }) {
+  public addComment(data: { rating: number; comment: string }) {
     this.comments.unshift({
       username: 'You',
       date: 'Just now',
       comment: data.comment,
       rating: data.rating,
     });
+  }
+
+  public navigateToProducts() {
+    this.#router.navigate(['/products']);
   }
 }

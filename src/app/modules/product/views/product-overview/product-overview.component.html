@@ -1,13 +1,18 @@
-@if (!productData()) {
-  <app-loader class="py-32" textComplementary="loading product" />
-}
-
 <app-section-layout>
-  @if (productData()) {
+  @if (this.productResource.isLoading()) {
+    <app-loader class="py-32" textComplementary="loading product" />
+  } @else if (this.productResource.error()) {
+    <app-not-found message="Oops! Products not found">
+      <app-button-flowbite
+        label="Back to products"
+        (click)="this.navigateToProducts()"
+      />
+    </app-not-found>
+  } @else if (this.productResource.hasValue()) {
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-      <app-product-image-gallery [title]="product.title" />
+      <app-product-image-gallery [title]="this.productResource.value().name" />
 
-      <app-product-info [productInfo]="productData()!">
+      <app-product-info [productInfo]="this.productResource.value()">
         <app-tag content="In stock" ngProjectAs="tag" />
         <app-product-form-order ngProjectAs="extra" />
       </app-product-info>

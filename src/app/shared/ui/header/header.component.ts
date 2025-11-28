@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { LinkBaseComponent } from '../../components/link-base/link-base.component';
 import { CliorLogoLinkComponent } from '../../components/clior-logo-link/clior-logo-link.component';
-import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import { SearchBarComponent } from '../../../modules/product/components/search-bar/search-bar.component';
 import { DropdownUserComponent } from '../../components/dropdown-user/dropdown-user.component';
 import { BtnBaseComponent } from '../../components/btn-base/btn-base.component';
 import { HamburgerBarComponent } from '../../icons/hamburger-bar.component';
