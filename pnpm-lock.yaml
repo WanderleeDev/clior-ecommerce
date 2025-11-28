@@ -42,7 +42,7 @@ importers:
         specifier: ^21.0.1
         version: 21.0.1(5vofetl6eb5bvykc2ntp44xxne)
       '@ngneat/dialog':
-        specifier: ^5.1.2
+        specifier: ^5.2.0
         version: 5.2.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))
       '@ngneat/error-tailor':
         specifier: ^5.0.1
@@ -51,7 +51,7 @@ importers:
         specifier: ^20.1.0
         version: 20.1.0(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       css-select:
-        specifier: ^5.1.0
+        specifier: ^5.2.2
         version: 5.2.2
       express:
         specifier: ^4.21.2
@@ -88,31 +88,31 @@ importers:
         specifier: ^0.0.4
         version: 0.0.4
       '@types/express':
-        specifier: ^4.17.23
+        specifier: ^4.17.25
         version: 4.17.25
       '@types/jasmine':
-        specifier: ~5.1.8
+        specifier: ~5.1.13
         version: 5.1.13
       '@types/node':
-        specifier: ^18.19.113
+        specifier: ^18.19.130
         version: 18.19.130
       '@typescript-eslint/utils':
-        specifier: ^8.35.0
+        specifier: ^8.48.0
         version: 8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
       angular-eslint:
         specifier: 21.0.1
         version: 21.0.1(chokidar@4.0.3)(eslint@9.39.1(jiti@1.21.7))(typescript-eslint@8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(typescript@5.9.3)
       eslint:
-        specifier: ^9.30.0
+        specifier: ^9.39.1
         version: 9.39.1(jiti@1.21.7)
       eslint-config-prettier:
-        specifier: ^9.1.0
+        specifier: ^9.1.2
         version: 9.1.2(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-prettier:
-        specifier: ^5.5.1
+        specifier: ^5.5.4
         version: 5.5.4(eslint-config-prettier@9.1.2(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.1)
       glob:
-        specifier: ^11.0.3
+        specifier: ^11.1.0
         version: 11.1.0
       jasmine-core:
         specifier: ~5.1.2
@@ -133,22 +133,22 @@ importers:
         specifier: ~2.1.0
         version: 2.1.0(jasmine-core@5.1.2)(karma-jasmine@5.1.0(karma@6.4.4))(karma@6.4.4)
       prettier:
-        specifier: ^3.6.2
+        specifier: ^3.7.1
         version: 3.7.1
       prettier-eslint:
         specifier: ^16.4.2
         version: 16.4.2(typescript@5.9.3)
       rimraf:
-        specifier: ^6.0.1
+        specifier: ^6.1.2
         version: 6.1.2
       tailwindcss:
-        specifier: ^3.4.17
+        specifier: ^3.4.18
         version: 3.4.18
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
       typescript-eslint:
-        specifier: ^8.35.0
+        specifier: ^8.48.0
         version: 8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
 
 packages:
