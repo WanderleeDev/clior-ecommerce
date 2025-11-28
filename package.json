@@ -26,6 +26,7 @@
     "@angular/ssr": "^21.0.1",
     "@ngneat/dialog": "^5.1.2",
     "@ngneat/error-tailor": "^5.0.1",
+    "@ngrx/store": "^20.1.0",
     "css-select": "^5.1.0",
     "express": "^4.21.2",
     "flowbite": "^2.5.2",
