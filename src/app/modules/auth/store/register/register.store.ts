@@ -11,12 +11,12 @@ import {
   RegisterStep1,
   RegisterStep2,
   RegisterStep3,
+  Steps
 } from './models/RegisterStep.model';
 import { computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
-export type Steps = 1 | 2 | 3;
 
 const initialState: RegisterState = {
   step1: null,

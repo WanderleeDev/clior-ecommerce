@@ -7,10 +7,11 @@ import {
 import { KeyValuePipe } from '@angular/common';
 import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
 import { CamelCaseToSpacedPipe } from '../../../../shared/pipes/camel-case-to-spaced.pipe';
-import { RegisterStore, Steps } from '../../store/register/register.store';
+import { RegisterStore } from '../../store/register/register.store';
 import {
   RegisterStep1,
   RegisterStep2,
+  Steps
 } from '../../store/register/models/RegisterStep.model';
 
 @Component({

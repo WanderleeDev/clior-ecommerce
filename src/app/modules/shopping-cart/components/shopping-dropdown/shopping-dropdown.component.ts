@@ -5,7 +5,7 @@ import { LinkBaseComponent } from '../../../../shared/components/link-base/link-
 import { EmptyShoppingCartComponent } from '../empty-shopping-cart/empty-shopping-cart.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../core/store/models/App.model';
-import { selectProducts } from '../../store/shoppingCart.selectors';
+import { selectProducts, selectQuantityProducts } from '../../store/shoppingCart.selectors';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
 
 @Component({
@@ -23,4 +23,5 @@ import { TagComponent } from '../../../../shared/components/tag/tag.component';
 export class ShoppingDropdownComponent {
   readonly #store: Store<AppState> = inject(Store);
   readonly products = this.#store.selectSignal(selectProducts);
+  readonly quantityProducts = this.#store.selectSignal(selectQuantityProducts);
 }

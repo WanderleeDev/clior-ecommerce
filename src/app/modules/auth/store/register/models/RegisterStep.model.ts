@@ -15,3 +15,5 @@ export interface RegisterStep2 {
 export interface RegisterStep3 {
   acceptTermAndConditions: boolean;
 }
+
+export type Steps = 1 | 2 | 3;

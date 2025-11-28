@@ -14,7 +14,6 @@ import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-bas
 import { KeyValuePipe } from '@angular/common';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { CamelCaseToSpacedPipe } from '../../../../shared/pipes/camel-case-to-spaced.pipe';
-import { PersonalData } from '../../interfaces/Form.interface';
 import { RegisterStore } from '../../store/register/register.store';
 import { RegisterStep1 } from '../../store/register/models/RegisterStep.model';
 
@@ -62,7 +61,7 @@ export class PersonalFormComponent
     }
   }
 
-  protected override initForm(): FormGroup<NgFormType<PersonalData>> {
+  protected override initForm(): FormGroup<NgFormType<RegisterStep1>> {
     return this.fb.group({
       name: [
         '',

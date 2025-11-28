@@ -10,11 +10,11 @@ import {
   templateUrl: './loader.component.html',
   styles: `
     :host {
-      transition: linear .2s opacity, transform .2s opacity
+      transition: linear 0.2s opacity, transform 0.2s opacity;
 
       @starting-style {
-        opacity: 0,
-        transform: translateY(2rem)
+        opacity: 0;
+        transform: translateY(2rem);
       }
     }
   `,

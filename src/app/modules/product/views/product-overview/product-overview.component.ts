@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { CommentFormComponent } from '../../components/comment-form/comment-form.component';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
-import { ApiProductsService } from '../../services/api-products.service';
+import { ProductsService } from '../../services/products.service';
 import { Product } from '../../model/Product.model';
 import { ProductImageGalleryComponent } from '../../components/product-inage-gallery/product-image-gallery.component';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
@@ -36,7 +36,7 @@ import { ListReviewsComponent } from '../../components/list-reviews/list-reviews
 export default class ProductOverviewComponent implements OnInit {
   protected readonly id = input.required<string>();
   protected readonly productData = signal<Product | null>(null);
-  readonly #productService = inject(ApiProductsService);
+  readonly #productService = inject(ProductsService);
   product = {
     id: 1,
     title:

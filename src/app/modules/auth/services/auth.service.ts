@@ -1,9 +1,17 @@
 import { inject, Injectable } from '@angular/core';
-import { Credentials } from '../interfaces/credentials.interface';
-import { delay, Observable, of } from 'rxjs';
-import { AuthLoginSuccess } from '../interfaces/authResponse.interface';
 import { RegisterPayload } from '../store/register/models/Register.state';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+
+interface Credentials {
+  email: string;
+  password: string;
+}
+
+interface AuthLoginSuccess {
+  token: string;
+  role: 'user' | 'admin';
+}
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +23,7 @@ export class AuthService {
     return of({
       token: '1234567890',
       role: 'user',
-    }).pipe(delay(1000));
+    });
 
     // return timer(3000).pipe(
     //   mergeMap(() =>

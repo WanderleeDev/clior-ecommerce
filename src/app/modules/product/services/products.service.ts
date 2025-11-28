@@ -5,7 +5,7 @@ import { generateRandomId } from '../../../shared/utils/generateRandomId';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiProductsService {
+export class ProductsService {
   readonly #mockProducts: Product[] = [
     {
       id: generateRandomId(),

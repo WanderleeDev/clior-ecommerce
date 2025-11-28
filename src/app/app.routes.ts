@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout.component';
-import { authGuard } from './core/guards/auth.guard';
+
 
 export const routes: Routes = [
   {
@@ -32,13 +32,11 @@ export const routes: Routes = [
         path: 'auth',
         title: 'Clior | Authentication',
         loadChildren: () => import('./modules/auth/auth.routes'),
-        canActivate: [authGuard],
       },
       {
         path: 'profile',
         title: 'Clior | Profile',
         loadComponent: () => import('./pages/profile/profile.component'),
-        canActivate: [authGuard],
       },
       {
         path: 'contact',

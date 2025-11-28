@@ -1,11 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DropdownComponent } from '../../ui/dropdown/dropdown.component';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { EmptyUserSvgComponent } from '../../icons/empty-user-svg.component';
 import { ArrowDownSvgComponent } from '../../icons/arrow-down-svg.component';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../core/store/models/App.model';
-import { selectIsAuthenticated } from '../../../core/store/auth/auth.selectors';
 import { LetDirective } from '@ngrx/component';
 import { BtnBaseComponent } from '../btn-base/btn-base.component';
 import { DividerComponent } from '../divider/divider.component';
@@ -14,7 +11,22 @@ import { GoogleSvgComponent } from '../../icons/google-svg.component';
 import { AppleSvgComponent } from '../../icons/apple-svg.component';
 import { NgComponentOutlet } from '@angular/common';
 import { LinkBaseComponent } from '../link-base/link-base.component';
-import { selectUserState } from '../../../core/store/user/user.seletors';
+
+
+export const NULL_USER = {
+  id: '0000-0000-0000',
+  firstName: 'Guest',
+  lastName: 'User',
+  age: 0,
+  image: null,
+  email: 'email@notprovided.error',
+  phone: '000-000-0000',
+  role: 'guest',
+  address: 'No address provided',
+  city: 'No city provided',
+  state: 'No state provided',
+  zip: 'No zip provided',
+};
 
 @Component({
   selector: 'app-dropdown-user',
@@ -34,9 +46,10 @@ import { selectUserState } from '../../../core/store/user/user.seletors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DropdownUserComponent {
-  readonly #store: Store<AppState> = inject(Store);
-  protected readonly isLogged$ = this.#store.select(selectIsAuthenticated);
-  protected readonly user$ = this.#store.select(selectUserState);
+  // TODO: Add a service to handle authentication and user state
+  protected readonly isLogged$ = true
+  //  TODO: Replace with actual user state from store
+  protected readonly user$ = NULL_USER
   protected readonly authenticatedRoutes = [
     {
       title: 'My profile',

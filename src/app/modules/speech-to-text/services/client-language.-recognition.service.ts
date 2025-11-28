@@ -1,4 +1,4 @@
-import { Injectable, afterRender } from '@angular/core';
+import { Injectable, afterNextRender } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +7,7 @@ export class ClientLanguageRecognitionService {
   #clientLanguage: null | string = null;
 
   constructor() {
-    afterRender(() => {
+    afterNextRender(() => {
     const language = window.navigator.language || window.navigator.languages[0];
 
       this.#clientLanguage = language || null;

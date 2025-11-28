@@ -8,10 +8,10 @@ export const SHOPPING_CART_FEATURE = createFeature({
   reducer: SHOPPING_CART_REDUCER,
   extraSelectors: ({ selectProducts }) => ({
     selectTotalPriceProducts: createSelector(selectProducts, (products) =>
-      products.reduce((prev, acc) => prev + acc.price * acc.quantity, 0),
+      products?.reduce((prev, acc) => prev + acc.price * acc.quantity, 0),
     ),
     selectQuantityProducts: createSelector(selectProducts, (products) =>
-      products.reduce((prev, acc) => prev + acc.quantity, 0),
+      products?.reduce((prev, acc) => prev + acc.quantity, 0),
     ),
   }),
 });

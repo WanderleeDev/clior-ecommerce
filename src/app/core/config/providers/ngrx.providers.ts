@@ -1,12 +1,11 @@
 import { isDevMode } from '@angular/core';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
+import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { AppProvider } from '.';
-import { ROOT_EFFECTS, ROOT_REDUCERS } from '../../store/app.state';
+import { SHOPPING_CART_FEATURE } from '../../../modules/shopping-cart/store/shoppingCart.selectors';
 
 export const ngrxProviders: AppProvider = [
-  provideStore(ROOT_REDUCERS),
+  provideStore(),
+  provideState(SHOPPING_CART_FEATURE),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-  provideEffects(ROOT_EFFECTS),
 ];

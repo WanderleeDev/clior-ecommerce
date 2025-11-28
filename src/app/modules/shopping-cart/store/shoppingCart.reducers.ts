@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { ShoppingCartState } from './models/ShoppinCart.state';
+import { ShoppingCartState } from './models/ShoppingCart.state';
 import { SHOPPING_CART_ACTIONS } from './shoppingCart.actions';
 
 const initialState: ShoppingCartState = {
@@ -12,12 +12,9 @@ export const SHOPPING_CART_REDUCER = createReducer(
     SHOPPING_CART_ACTIONS.addProduct,
     (state, { product }): ShoppingCartState => {
       const hasProduct = state.products.find((p) => p.id === product.id);
-      console.log(Boolean(hasProduct));
-
       if (!hasProduct) {
         return { products: [...state.products, product] };
       }
-      console.log('pase');
 
       return {
         products: state.products.map((p) =>
