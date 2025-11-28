@@ -1,11 +1,9 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
     selector: 'app-cms',
-    imports: [
-        CommonModule,
-    ],
+    imports: [],
     templateUrl: './cms.component.html',
     styles: `
     :host {

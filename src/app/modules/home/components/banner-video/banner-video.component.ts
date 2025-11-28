@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -11,7 +11,7 @@ import {
 
 @Component({
   selector: 'app-banner-video',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './banner-video.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
     selector: 'app-bars',
-    imports: [CommonModule],
+    imports: [],
     template: `
     <svg
       [class]="customClass()"
