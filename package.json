@@ -44,7 +44,7 @@
     "@types/jasmine": "~5.1.8",
     "@types/node": "^18.19.113",
     "@typescript-eslint/utils": "^8.35.0",
-    "angular-eslint": "20.1.1",
+    "angular-eslint": "21.0.1",
     "eslint": "^9.30.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.5.1",
