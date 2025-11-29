@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { BtnBaseComponent } from '../../components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../base-component/btn-base.component';
 import { BrandSelectComponent } from './components/brand-select/brand-select.component';
 import { PriceRangeComponent } from './components/price-range/price-range.component';
 import {

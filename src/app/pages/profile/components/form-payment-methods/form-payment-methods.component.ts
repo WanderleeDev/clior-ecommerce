@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogRef } from '@ngneat/dialog';
-import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../../../shared/base-component/btn-base.component';
 
 @Component({
-    selector: 'app-form-payment-methods',
-    imports: [ReactiveFormsModule, BtnBaseComponent],
-    templateUrl: './form-payment-methods.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-form-payment-methods',
+  imports: [ReactiveFormsModule, BtnBaseComponent],
+  templateUrl: './form-payment-methods.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormPaymentMethodsComponent {
   private readonly fb = inject(FormBuilder);

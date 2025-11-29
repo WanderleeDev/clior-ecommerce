@@ -10,7 +10,7 @@ import {
   NgFormType,
 } from '../../../../shared/base-component/base-form.component';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../../../shared/base-component/btn-base.component';
 import { KeyValuePipe } from '@angular/common';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { CamelCaseToSpacedPipe } from '../../../../shared/pipes/camel-case-to-spaced.pipe';

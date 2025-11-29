@@ -5,7 +5,7 @@ import {
 } from '../../../../shared/base-component/base-form.component';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { errorTailorImports } from '@ngneat/error-tailor';
-import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../../../shared/base-component/btn-base.component';
 import { RegisterStore } from '../../store/register/register.store';
 import { RegisterStep3 } from '../../store/register/models/RegisterStep.model';
 

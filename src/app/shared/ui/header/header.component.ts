@@ -4,7 +4,7 @@ import { LinkBaseComponent } from '../../components/link-base/link-base.componen
 import { CliorLogoLinkComponent } from '../../components/clior-logo-link/clior-logo-link.component';
 import { SearchBarComponent } from '../../../modules/product/components/search-bar/search-bar.component';
 import { DropdownUserComponent } from '../../components/dropdown-user/dropdown-user.component';
-import { BtnBaseComponent } from '../../components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../base-component/btn-base.component';
 import { HamburgerBarComponent } from '../../icons/hamburger-bar.component';
 import { ShoppingDropdownComponent } from '../../../modules/shopping-cart/components/shopping-dropdown/shopping-dropdown.component';
 

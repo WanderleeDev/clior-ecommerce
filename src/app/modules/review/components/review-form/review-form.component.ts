@@ -6,7 +6,7 @@ import {
 } from '../../../../shared/base-component/base-form.component';
 import { ReviewDTO } from '../../models/review.model';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../../../shared/base-component/btn-base.component';
 import { errorTailorImports } from '@ngneat/error-tailor';
 
 @Component({

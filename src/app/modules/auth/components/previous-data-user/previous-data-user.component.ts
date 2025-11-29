@@ -5,13 +5,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { KeyValuePipe } from '@angular/common';
-import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../../../shared/base-component/btn-base.component';
 import { CamelCaseToSpacedPipe } from '../../../../shared/pipes/camel-case-to-spaced.pipe';
 import { RegisterStore } from '../../store/register/register.store';
 import {
   RegisterStep1,
   RegisterStep2,
-  Steps
+  Steps,
 } from '../../store/register/models/RegisterStep.model';
 
 @Component({

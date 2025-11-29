@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../core/store/models/App.model';
-import { BtnBaseComponent } from '../../../shared/components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../../shared/base-component/btn-base.component';
 import { DividerComponent } from '../../../shared/components/divider/divider.component';
 import { EmptyShoppingCartComponent } from '../components/empty-shopping-cart/empty-shopping-cart.component';
 import { ShoppingCartCardComponent } from '../components/shopping-cart-card/shopping-cart-card.component';

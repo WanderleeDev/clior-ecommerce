@@ -7,7 +7,7 @@ import {
 import { ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { KeyValuePipe } from '@angular/common';
-import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../../../shared/base-component/btn-base.component';
 import { emailRgx, passwordRgx } from '../../../../shared/utils/regex';
 
 interface LoginForm {

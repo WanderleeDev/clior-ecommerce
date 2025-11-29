@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { SectionLayoutComponent } from '../../layout/section-layout.component';
 import { InfoProfileComponent } from './components/info-profile/info-profile.component';
 import { InfoProfile } from './interfaces/InfoProfile.interface';
-import { BtnBaseComponent } from '../../shared/components/btn-base/btn-base.component';
+import { BtnBaseComponent } from '../../shared/base-component/btn-base.component';
 import { EditSvgComponent } from '../../shared/icons/edit-svg.component';
 import { PaymentMethodsComponent } from './components/payment-methods/payment-methods.component';
 import { UserSimpleCardComponent } from './components/user-simple-card/user-simple-card.component';
