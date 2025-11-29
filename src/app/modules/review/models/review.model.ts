@@ -5,8 +5,10 @@ export interface Review {
   rating: number;
 }
 
-export interface ReviewComment
-  extends Pick<Review, 'rating' | 'comment' | 'username'> {
+export interface ReviewComment extends Pick<
+  Review,
+  'rating' | 'comment' | 'username'
+> {
   date: string;
 }
 

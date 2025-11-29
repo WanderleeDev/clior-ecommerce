@@ -1,13 +1,6 @@
-<div
-  class="alert"
-  role="alert"
-  [class.alert-success]="type() === 'success'"
-  [class.alert-info]="type() === 'info'"
-  [class.alert-warning]="type() === 'warning'"
-  [class.alert-error]="type() === 'error'"
->
+<div role="alert" [class]="baseStyles.container + ' ' + variantStyles[type()]">
   <svg
-    class="alert-icon"
+    [class]="baseStyles.icon"
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"
@@ -18,8 +11,8 @@
     />
   </svg>
   <div>
-    <span class="alert-title">{{ title() }}</span>
-    <ul class="alert-messages">
+    <span [class]="baseStyles.title">{{ title() }}</span>
+    <ul [class]="baseStyles.messages">
       @for (message of messages(); track message) {
         <li>{{ message }}</li>
       } @empty {

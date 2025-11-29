@@ -23,8 +23,8 @@
         <h3 class="text-2xl font-bold text-white mb-6">Customer Reviews</h3>
 
         <div class="grid gap-8 md:grid-cols-2">
-          <app-list-reviews [reviews]="comments" />
-          <app-comment-form />
+          <app-review-list [reviews]="reviews()" />
+          <app-review-form />
         </div>
       </section>
     } @placeholder {

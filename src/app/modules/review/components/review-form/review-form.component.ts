@@ -4,23 +4,23 @@ import {
   BaseFormComponent,
   NgFormType,
 } from '../../../../shared/base-component/base-form.component';
-import { ReviewDTO } from '../../model/Review.model';
+import { ReviewDTO } from '../../models/review.model';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BtnBaseComponent } from '../../../../shared/components/btn-base/btn-base.component';
 import { errorTailorImports } from '@ngneat/error-tailor';
 
 @Component({
-  selector: 'app-comment-form',
+  selector: 'app-review-form',
   imports: [
     RatingComponent,
     ReactiveFormsModule,
     BtnBaseComponent,
     errorTailorImports,
   ],
-  templateUrl: './comment-form.component.html',
+  templateUrl: './review-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentFormComponent extends BaseFormComponent<ReviewDTO> {
+export class ReviewFormComponent extends BaseFormComponent<ReviewDTO> {
   protected override initForm(): FormGroup<NgFormType<ReviewDTO>> {
     return this.fb.group({
       comment: [

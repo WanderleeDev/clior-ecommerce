@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-not-found',
-  imports: [NgOptimizedImage],
+  imports: [],
   template: `
     <div
       class="flex flex-col items-center justify-center min-h-[400px] px-4 py-8"

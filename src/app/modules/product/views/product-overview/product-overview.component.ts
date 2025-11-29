@@ -1,20 +1,23 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   input,
   resource,
+  signal,
 } from '@angular/core';
-import { CommentFormComponent } from '../../components/comment-form/comment-form.component';
+import { ReviewsService } from '../../../review/services/reviews.service';
+import { ReviewFormComponent } from '../../../review/components/review-form/review-form.component';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
 import { ProductsService } from '../../services/products.service';
-import { ProductImageGalleryComponent } from '../../components/product-inage-gallery/product-image-gallery.component';
+import { ProductImageGalleryComponent } from '../../components/product-image-gallery/product-image-gallery.component';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
 import { ProductFormOrderComponent } from '../../components/product-form-order/product-form-order.component';
 import { ProductInfoComponent } from '../../components/product-info/product-info.component';
 import { SectionLayoutComponent } from '../../../../layout/section-layout.component';
-import { ReviewComment } from '../../model/Review.model';
-import { ListReviewsComponent } from '../../components/list-reviews/list-reviews.component';
+import { ReviewComment } from '../../../review/models/review.model';
+import { ReviewListComponent } from '../../../review/components/review-list/review-list.component';
 import { NotFound } from '../../../../shared/components/not found/not-found.component';
 import { ButtonFlowbiteComponent } from '../../../../shared/components/button-flowbite/button-flowbite.component';
 import { Router } from '@angular/router';
@@ -22,14 +25,14 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-product-overview',
   imports: [
-    CommentFormComponent,
+    ReviewFormComponent,
     LoaderComponent,
     ProductImageGalleryComponent,
     TagComponent,
     ProductFormOrderComponent,
     ProductInfoComponent,
     SectionLayoutComponent,
-    ListReviewsComponent,
+    ReviewListComponent,
     NotFound,
     ButtonFlowbiteComponent,
   ],
@@ -45,37 +48,30 @@ export default class ProductOverviewComponent {
     loader: async ({ params }) => this.#productService.getProductById(params),
   });
 
-  protected readonly comments: ReviewComment[] = [
-    {
-      username: 'John Doe',
-      date: '2 days ago',
-      comment:
-        'Amazing product! The display is incredibly crisp and the performance is outstanding. Highly recommend for both professional work and casual use.',
-      rating: 5,
-    },
-    {
-      username: 'Sarah Smith',
-      date: '1 week ago',
-      comment:
-        'Beautiful design and great performance. The only downside is the limited port selection, but overall very satisfied with the purchase.',
-      rating: 4,
-    },
-    {
-      username: 'Mike Johnson',
-      date: '2 weeks ago',
-      comment:
-        'The M1 chip is a game changer. Everything runs smoothly and the battery life is incredible. Worth every penny!',
-      rating: 5,
-    },
-  ];
+  readonly #reviewsService = inject(ReviewsService);
+  protected readonly reviews = signal<ReviewComment[]>([]);
+
+  constructor() {
+    effect(() => {
+      const id = this.id();
+      if (id) {
+        this.#reviewsService.getReviewsByProductId(id).subscribe((reviews) => {
+          this.reviews.set(reviews);
+        });
+      }
+    });
+  }
 
   public addComment(data: { rating: number; comment: string }) {
-    this.comments.unshift({
+    const newReview: ReviewComment = {
       username: 'You',
       date: 'Just now',
       comment: data.comment,
       rating: data.rating,
-    });
+    };
+
+    this.reviews.update((prev) => [newReview, ...prev]);
+    this.#reviewsService.addReview(this.id(), data).subscribe();
   }
 
   public navigateToProducts() {

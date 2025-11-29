@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RatingComponent } from '../../../../shared/components/rating/rating.component';
-import { ReviewComment } from '../../model/Review.model';
+import { ReviewComment } from '../../models/review.model';
 
 @Component({
-  selector: 'app-comment',
+  selector: 'app-review-card',
   imports: [RatingComponent],
-  templateUrl: './comment.component.html',
+  templateUrl: './review-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentComponent {
+export class ReviewCardComponent {
   readonly comment = input.required<ReviewComment>();
 }
