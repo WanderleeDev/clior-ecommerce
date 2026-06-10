@@ -1,8 +1,0 @@
-<div
-  [class]="'relative overflow-hidden ' + sizeClass()"
-  [class.rounded-full]="rounded() === 'full'"
-  [class.rounded-lg]="rounded() === 'medium'"
-  [class.rounded-none]="rounded() === 'none'"
->
-  <img class="w-full" [ngSrc]="src()" [alt]="alt()" fill placeholder="blur" />
-</div>
