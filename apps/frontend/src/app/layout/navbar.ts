@@ -23,7 +23,7 @@ import { ThemeSelect } from './theme-select';
         <div class="hidden items-center gap-6 text-sm lg:flex">
           <a routerLink="/catalogo" class="hover:text-accent">Tienda +</a>
           <a routerLink="/marcas" class="hover:text-accent">Marcas</a>
-           <a routerLink="/opiniones" class="hover:text-accent">Opiniones +</a>
+           <a routerLink="/blog" class="hover:text-accent">Blog</a>
           <a routerLink="/ayuda" class="hover:text-accent">Nosotros</a>
           <a routerLink="/ayuda" class="hover:text-accent">Ayuda +</a>
           <a routerLink="/contacto" class="hover:text-accent">Contáctanos</a>
@@ -76,10 +76,10 @@ import { ThemeSelect } from './theme-select';
               >Marcas</a
             >
             <a
-              routerLink="/opiniones"
+              routerLink="/blog"
               (click)="close()"
               class="rounded-2xl px-4 py-3 hover:bg-surface"
-              >Opiniones +</a
+              >Blog</a
             >
             <a
               routerLink="/ayuda"

@@ -42,9 +42,9 @@ export const appRoutes: Route[] = [
     title: 'Clior Pets | Ayuda',
   },
   {
-    path: 'opiniones',
-    loadComponent: () => import('./opiniones/opiniones-page').then((m) => m.OpinionsPage),
-    title: 'Clior Pets | Opiniones',
+    path: 'blog',
+    loadComponent: () => import('./blog/blog-page').then((m) => m.BlogPage),
+    title: 'Clior Pets | Blog',
   },
   {
     path: 'contacto',
