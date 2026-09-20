@@ -9,30 +9,23 @@ import { ThemeSelectService } from 'ngx-theme-stack';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (theme.isHydrated()) {
-      <details class="theme-menu">
-        <summary
-          aria-label="Elegir tema"
-          class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full border border-line text-foreground hover:border-accent [&::-webkit-details-marker]:hidden"
-        >
-          <ngx-iconify [icon]="icon(selected())" [size]="20" />
-        </summary>
-        <div class="absolute right-0 top-12 z-50 w-44 overflow-hidden rounded-2xl border border-line bg-background shadow-xl">
-          @for (t of options; track t.value) {
-            <button
-              type="button"
-              (click)="theme.select(t.value)"
-              [attr.aria-current]="selected() === t.value"
-              class="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-surface aria-[current=true]:bg-surface aria-[current=true]:font-bold"
-            >
-              <ngx-iconify [icon]="t.icon" [size]="18" />
-              <span>{{ t.label }}</span>
-              @if (selected() === t.value) {
-                <ngx-iconify icon="lucide:check" [size]="16" class="ml-auto text-accent" />
-              }
-            </button>
-          }
-        </div>
-      </details>
+      <select
+        class="theme-select"
+        name="select-theme"
+        aria-label="Elegir tema"
+        [value]="selected()"
+        (change)="onThemeChange($event)"
+      >
+        <button>
+          <selectedcontent></selectedcontent>
+        </button>
+        @for (t of options; track t.value) {
+          <option [value]="t.value">
+            <ngx-iconify class="opt-icon" [icon]="t.icon" [size]="18" />
+            <span class="opt-label">{{ t.label }}</span>
+          </option>
+        }
+      </select>
     } @else {
       <div
         style="width: 40px; height: 40px; border-radius: 9999px; background: var(--surface);"
@@ -40,15 +33,132 @@ import { ThemeSelectService } from 'ngx-theme-stack';
     }
   `,
   styles: `
-    .theme-menu { position: relative; }
-    .theme-menu[open] > summary { border-color: var(--accent); }
-    .theme-menu > div { animation: theme-in 120ms ease-out; }
-    @keyframes theme-in {
-      from { opacity: 0; translate: 0 -4px; }
-      to { opacity: 1; translate: 0 0; }
+    .theme-select,
+    .theme-select::picker(select) {
+      appearance: base-select;
     }
+
+    .theme-select {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      height: 2.5rem;
+      min-width: 2.5rem;
+      max-width: 11rem;
+      padding-inline: 0.625rem;
+      border: 1px solid var(--line);
+      border-radius: 9999px;
+      background: var(--background);
+      color: var(--foreground);
+      font-size: 0.875rem;
+      cursor: pointer;
+      field-sizing: content;
+    }
+
+    .theme-select:hover,
+    .theme-select:focus-visible {
+      border-color: var(--accent);
+    }
+
+    .theme-select::picker-icon {
+      color: var(--muted);
+      transition: rotate 160ms ease;
+    }
+
+    .theme-select:open::picker-icon {
+      rotate: 180deg;
+    }
+
+    .theme-select > button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-select selectedcontent {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-select selectedcontent .opt-icon {
+      display: inline-flex;
+    }
+
+    .theme-select selectedcontent .opt-label {
+      display: none;
+    }
+
+    @container (min-width: 0) {}
+
+    .theme-select::picker(select) {
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: var(--background);
+      box-shadow: 0 12px 32px rgb(0 0 0 / 0.16);
+      padding: 0.25rem;
+      opacity: 0;
+      transition: opacity 160ms ease, display 160ms allow-discrete, overlay 160ms allow-discrete;
+    }
+
+    .theme-select:open::picker(select) {
+      opacity: 1;
+    }
+
+    @starting-style {
+      .theme-select:open::picker(select) {
+        opacity: 0;
+      }
+    }
+
+    .theme-select option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0.875rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--foreground);
+    }
+
+    .theme-select option:hover,
+    .theme-select option:focus-visible {
+      background: var(--surface);
+    }
+
+    .theme-select option:checked {
+      font-weight: 700;
+      background: var(--surface);
+    }
+
+    .theme-select option::checkmark {
+      order: 1;
+      margin-inline-start: auto;
+      color: var(--accent);
+    }
+
+    @supports not (appearance: base-select) {
+      .theme-select {
+        appearance: none;
+        padding-inline-end: 2rem;
+        background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+          linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+        background-position: calc(100% - 1rem) 50%, calc(100% - 0.7rem) 50%;
+        background-size: 0.3rem 0.3rem;
+        background-repeat: no-repeat;
+      }
+      .theme-select selectedcontent,
+      .theme-select > button {
+        display: none;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .theme-menu > div { animation: none; }
+      .theme-select,
+      .theme-select::picker(select),
+      .theme-select::picker-icon {
+        transition: none;
+      }
     }
   `,
 })
@@ -66,7 +176,8 @@ export class ThemeSelect {
     return this.theme.selectedTheme();
   }
 
-  protected icon(value: string): string {
-    return this.options.find((o) => o.value === value)?.icon ?? 'lucide:monitor';
+  protected onThemeChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.theme.select(value);
   }
 }
