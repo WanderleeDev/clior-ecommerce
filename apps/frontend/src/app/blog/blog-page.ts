@@ -88,6 +88,11 @@ export class BlogPage {
   protected readonly featuredList = FEATURED_LIST_POSTS;
 
   protected readonly activeCategory = signal('Todos');
+  protected readonly currentSlide = signal(0);
+
+  protected totalSlides(): number {
+    return Math.max(1, Math.ceil(this.recommended.length / 3));
+  }
 
   protected filteredPosts() {
     const cat = this.activeCategory();
@@ -97,5 +102,15 @@ export class BlogPage {
 
   protected setCategory(cat: string): void {
     this.activeCategory.set(cat);
+  }
+
+  protected nextPage(): void {
+    this.currentSlide.update((i) => (i + 1) % this.totalSlides());
+  }
+
+  protected prevPage(): void {
+    this.currentSlide.update((i) =>
+      i === 0 ? this.totalSlides() - 1 : i - 1,
+    );
   }
 }
