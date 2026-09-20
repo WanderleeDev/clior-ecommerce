@@ -67,6 +67,9 @@ export const appRoutes: Route[] = [
   {
     path: 'cuenta',
     loadComponent: () => import('./account/account-page').then((m) => m.AccountPage),
+    canActivate: [
+      () => import('./auth/presentation/guards/auth.guard').then((m) => m.authGuard),
+    ],
     title: 'Clior Pets | Mi cuenta',
   },
   {

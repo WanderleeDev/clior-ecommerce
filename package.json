@@ -10,6 +10,8 @@
     "@angular/compiler-cli": "~21.2.0",
     "@angular/language-service": "~21.2.0",
     "@eslint/js": "^9.8.0",
+    "@iconify/types": "^2.0.0",
+    "@nestjs/cli": "^12.0.1",
     "@nx/angular": "^22.7.5",
     "@nx/devkit": "22.7.5",
     "@nx/eslint": "22.7.5",
@@ -22,6 +24,7 @@
     "@swc-node/register": "~1.11.1",
     "@swc/core": "~1.15.5",
     "@swc/helpers": "~0.5.18",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/express": "^4.17.21",
     "@types/node": "20.19.9",
     "@typescript-eslint/utils": "^8.40.0",
@@ -30,8 +33,11 @@
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-playwright": "^1.6.2",
     "jsdom": "^27.1.0",
+    "ngx-iconify-stack": "^1.2.8",
+    "ngx-theme-stack": "^3.9.4",
     "nx": "22.7.5",
     "prettier": "~3.6.2",
+    "tailwindcss": "^4.3.3",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0",
@@ -47,7 +53,21 @@
     "@angular/platform-server": "~21.2.0",
     "@angular/router": "~21.2.0",
     "@angular/ssr": "~21.2.0",
+    "@iconify-json/lucide": "^1.0.0",
+    "@iconify-json/noto": "^1.0.0",
+    "@ngrx/signals": "^22.0.1",
     "express": "^4.21.2",
-    "rxjs": "~7.8.0"
+    "iconify-icon": "^3.0.2",
+    "rxjs": "~7.8.0",
+    "zod": "^4.6.5"
+  },
+  "scripts": {
+    "ngx-theme-stack:sync": "nx generate ngx-theme-stack:sync --project frontend",
+    "ngx-theme-stack:skill": "nx generate ngx-theme-stack:skill --project frontend",
+    "prebuild": "pnpm run ngx-theme-stack:sync && pnpm run ngx-iconify-stack:generate-icons",
+    "prestart": "pnpm run ngx-theme-stack:sync",
+    "ngx-iconify-stack:generate-icons": "nx generate ngx-iconify-stack:generate-icon-subset --project frontend",
+    "ngx-iconify-stack:add-icon": "nx generate ngx-iconify-stack:add-icon --project frontend",
+    "ngx-iconify-stack:skill": "nx generate ngx-iconify-stack:skill --project frontend"
   }
 }
