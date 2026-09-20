@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
-import { BLOG_POSTS, CATEGORIES } from './blog-data.adapter';
 
 export const RECOMMENDED_POSTS = [
   {
@@ -81,27 +80,14 @@ export const FEATURED_LIST_POSTS = [
   styleUrl: './blog-page.css',
 })
 export class BlogPage {
-  protected readonly posts = BLOG_POSTS;
-  protected readonly categories = CATEGORIES;
   protected readonly recommended = RECOMMENDED_POSTS;
   protected readonly featuredMain = FEATURED_MAIN_POST;
   protected readonly featuredList = FEATURED_LIST_POSTS;
 
-  protected readonly activeCategory = signal('Todos');
   protected readonly currentSlide = signal(0);
 
   protected totalSlides(): number {
     return Math.max(1, Math.ceil(this.recommended.length / 3));
-  }
-
-  protected filteredPosts() {
-    const cat = this.activeCategory();
-    if (cat === 'Todos') return this.posts;
-    return this.posts.filter((p) => p.category === cat);
-  }
-
-  protected setCategory(cat: string): void {
-    this.activeCategory.set(cat);
   }
 
   protected nextPage(): void {

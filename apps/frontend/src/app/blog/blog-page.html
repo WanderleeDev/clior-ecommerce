@@ -78,6 +78,40 @@
   <h2 class="mt-3 max-w-2xl font-display text-3xl font-extrabold md:text-4xl">
     Artículos <span class="text-muted">destacados.</span>
   </h2>
+
+  <div class="mt-8 flex flex-wrap gap-2">
+    <button
+      type="button"
+      class="rounded-full bg-accent px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-accent-ink"
+    >
+      Perros
+    </button>
+    <button
+      type="button"
+      class="rounded-full border border-line px-5 py-2.5 text-sm font-medium text-foreground hover:border-accent hover:text-accent"
+    >
+      Gatos
+    </button>
+    <button
+      type="button"
+      class="rounded-full border border-line px-5 py-2.5 text-sm font-medium text-foreground hover:border-accent hover:text-accent"
+    >
+      Nutrición
+    </button>
+    <button
+      type="button"
+      class="rounded-full border border-line px-5 py-2.5 text-sm font-medium text-foreground hover:border-accent hover:text-accent"
+    >
+      Salud
+    </button>
+    <button
+      type="button"
+      class="rounded-full border border-line px-5 py-2.5 text-sm font-medium text-foreground hover:border-accent hover:text-accent"
+    >
+      Entrenamiento
+    </button>
+  </div>
+
   <div class="mt-8 grid items-stretch gap-5 md:grid-cols-[1.7fr_1.3fr]">
     <a
       [href]="featuredMain.href"
@@ -138,53 +172,5 @@
         </a>
       }
     </div>
-  </div>
-
-  <div class="mt-8 flex flex-wrap gap-2">
-    @for (cat of categories; track cat) {
-      <button
-        type="button"
-        (click)="setCategory(cat)"
-        [class]="cat === activeCategory() ? 'rounded-full bg-accent px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-accent-ink' : 'rounded-full border border-line px-5 py-2.5 text-sm font-medium text-foreground hover:border-accent hover:text-accent'"
-      >
-        {{ cat }}
-      </button>
-    }
-  </div>
-</section>
-
-<section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6" aria-label="Todos los artículos">
-  <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-    @for (post of filteredPosts(); track post.slug) {
-      <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface">
-        <div class="relative aspect-video overflow-hidden">
-          <img
-            [src]="post.image"
-            [alt]="post.imageAlt"
-            loading="lazy"
-            width="600"
-            height="338"
-            class="h-full w-full object-cover"
-          />
-        </div>
-        <div class="flex flex-1 flex-col p-5">
-          <p class="text-xs uppercase tracking-wide text-muted">
-            {{ post.category }} · {{ post.date }}
-          </p>
-          <h3 class="mt-2 line-clamp-2 font-display text-base font-bold leading-snug">
-            <a [href]="'/blog/' + post.slug">{{ post.title }}</a>
-          </h3>
-          <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">
-            {{ post.excerpt }}
-          </p>
-          <p class="mt-auto flex items-center justify-between pt-4 text-sm">
-            <span class="text-muted">{{ post.author }}</span>
-            <a [href]="'/blog/' + post.slug" class="font-medium text-accent hover:underline">
-              Leer más →
-            </a>
-          </p>
-        </div>
-      </article>
-    }
   </div>
 </section>
