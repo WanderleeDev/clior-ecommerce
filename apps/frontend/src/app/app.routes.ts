@@ -47,6 +47,29 @@ export const appRoutes: Route[] = [
     title: 'Clior Pets | Blog',
   },
   {
+    path: 'ingresar',
+    loadComponent: () =>
+      import('./auth/presentation/views/login.view').then((m) => m.LoginView),
+    title: 'Clior Pets | Iniciar sesión',
+  },
+  {
+    path: 'registro',
+    loadComponent: () =>
+      import('./auth/presentation/views/register.view').then((m) => m.RegisterView),
+    title: 'Clior Pets | Crear cuenta',
+  },
+  {
+    path: 'recuperar',
+    loadComponent: () =>
+      import('./auth/presentation/views/recover.view').then((m) => m.RecoverView),
+    title: 'Clior Pets | Recuperar contraseña',
+  },
+  {
+    path: 'cuenta',
+    loadComponent: () => import('./account/account-page').then((m) => m.AccountPage),
+    title: 'Clior Pets | Mi cuenta',
+  },
+  {
     path: 'contacto',
     loadComponent: () =>
       import('./contact/contact-page').then((m) => m.ContactPage),
