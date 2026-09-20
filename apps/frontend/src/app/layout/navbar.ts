@@ -35,6 +35,13 @@ import { ThemeSelect } from './theme-select';
           >
             <ngx-iconify icon="noto:shopping-cart" [size]="22" />
           </a>
+          <a
+            routerLink="/cuenta"
+            aria-label="Mi cuenta"
+            class="flex h-10 w-10 items-center justify-center rounded-full border border-line text-foreground hover:border-accent"
+          >
+            <ngx-iconify icon="lucide:user" [size]="20" />
+          </a>
           <app-theme-select />
           <a
             routerLink="/catalogo"
