@@ -2,15 +2,16 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { FormField, email, form, required, submit } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { SectionTag } from '../../../shared/components/section-tag';
+import { AuthShell } from '../components/auth-shell';
 import { AuthUsecase } from '../../domain/ports/in/auth.usecase';
 
 @Component({
   selector: 'app-recover-view',
   standalone: true,
-  imports: [FormField, RouterLink, SectionTag],
+  imports: [FormField, RouterLink, SectionTag, AuthShell],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section class="mx-auto max-w-md px-4 py-10 sm:px-6">
+    <app-auth-shell image="/banner-blog.png" imageAlt="Perro golden y gato atigrado descansando juntos sobre el pasto">
       <app-section-tag label="Mi cuenta" />
       <h1 class="mt-3 font-display text-3xl font-extrabold md:text-4xl">
         Recupera <span class="text-muted">tu acceso.</span>
@@ -78,7 +79,7 @@ import { AuthUsecase } from '../../domain/ports/in/auth.usecase';
           </a>
         </p>
       }
-    </section>
+    </app-auth-shell>
   `,
 })
 export class RecoverView {

@@ -2,16 +2,17 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { FormField, email, form, required, submit } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
 import { SectionTag } from '../../../shared/components/section-tag';
+import { AuthShell } from '../components/auth-shell';
 import { AuthUsecase } from '../../domain/ports/in/auth.usecase';
 import { AuthStore } from '../state/auth.store';
 
 @Component({
   selector: 'app-login-view',
   standalone: true,
-  imports: [FormField, RouterLink, SectionTag],
+  imports: [FormField, RouterLink, SectionTag, AuthShell],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section class="mx-auto max-w-md px-4 py-10 sm:px-6">
+    <app-auth-shell image="/banner-blog.png" imageAlt="Perro golden y gato atigrado descansando juntos sobre el pasto">
       <app-section-tag label="Mi cuenta" />
       <h1 class="mt-3 font-display text-3xl font-extrabold md:text-4xl">
         Inicia <span class="text-muted">sesión.</span>
@@ -88,7 +89,7 @@ import { AuthStore } from '../state/auth.store';
           </a>
         </p>
       </div>
-    </section>
+    </app-auth-shell>
   `,
 })
 export class LoginView {
