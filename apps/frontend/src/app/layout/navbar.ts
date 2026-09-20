@@ -1,12 +1,12 @@
 import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgxIconify } from 'ngx-iconify-stack';
 import { ThemeSelect } from './theme-select';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, NgxIconify, ThemeSelect],
+  imports: [RouterLink, RouterLinkActive, NgxIconify, ThemeSelect],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
@@ -21,11 +21,11 @@ import { ThemeSelect } from './theme-select';
           Clior&nbsp;<span class="text-accent">Pets</span>
         </a>
         <div class="hidden items-center gap-6 text-sm lg:flex">
-          <a routerLink="/catalogo" class="hover:text-accent">Tienda +</a>
-          <a routerLink="/marcas" class="hover:text-accent">Marcas</a>
-          <a routerLink="/blog" class="hover:text-accent">Blog +</a>
-          <a routerLink="/ayuda" class="hover:text-accent">Ayuda</a>
-          <a routerLink="/contacto" class="hover:text-accent">Contáctanos +</a>
+          <a routerLink="/catalogo" routerLinkActive="text-accent font-bold" class="hover:text-accent">Tienda +</a>
+          <a routerLink="/marcas" routerLinkActive="text-accent font-bold" class="hover:text-accent">Marcas</a>
+          <a routerLink="/blog" routerLinkActive="text-accent font-bold" class="hover:text-accent">Blog +</a>
+          <a routerLink="/ayuda" routerLinkActive="text-accent font-bold" class="hover:text-accent">Ayuda</a>
+          <a routerLink="/contacto" routerLinkActive="text-accent font-bold" class="hover:text-accent">Contáctanos +</a>
         </div>
         <div class="flex items-center gap-2 sm:gap-3">
           <a
@@ -71,30 +71,35 @@ import { ThemeSelect } from './theme-select';
           <div class="grid gap-1 text-sm">
             <a
               routerLink="/catalogo"
+              routerLinkActive="bg-surface text-accent font-bold"
               (click)="close()"
               class="rounded-2xl px-4 py-3 hover:bg-surface"
               >Tienda +</a
             >
             <a
               routerLink="/marcas"
+              routerLinkActive="bg-surface text-accent font-bold"
               (click)="close()"
               class="rounded-2xl px-4 py-3 hover:bg-surface"
               >Marcas</a
             >
             <a
               routerLink="/blog"
+              routerLinkActive="bg-surface text-accent font-bold"
               (click)="close()"
               class="rounded-2xl px-4 py-3 hover:bg-surface"
               >Blog +</a
             >
             <a
               routerLink="/ayuda"
+              routerLinkActive="bg-surface text-accent font-bold"
               (click)="close()"
               class="rounded-2xl px-4 py-3 hover:bg-surface"
               >Ayuda</a
             >
             <a
               routerLink="/contacto"
+              routerLinkActive="bg-surface text-accent font-bold"
               (click)="close()"
               class="rounded-2xl px-4 py-3 hover:bg-surface"
               >Contáctanos +</a
