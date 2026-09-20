@@ -1,0 +1,12 @@
+// Prisma 6.7+ multi-file schema — root file with generator and datasource.
+// All models live in the prisma/models/*.prisma files.
+// See prisma.config.ts for the folder binding.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}

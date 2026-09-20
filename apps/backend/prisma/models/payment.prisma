@@ -1,0 +1,14 @@
+model Payment {
+  id        String        @id @default(uuid())
+  orderId   String        @unique
+  provider  String
+  statusId  String
+  reference String?
+  createdAt DateTime      @default(now())
+
+  order  Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status PaymentStatus @relation(fields: [statusId], references: [id])
+
+  @@index([statusId])
+  @@map("payments")
+}

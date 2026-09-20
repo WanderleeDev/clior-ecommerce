@@ -1,0 +1,9 @@
+model OrderStatus {
+  id    String @id @default(uuid())
+  code  String @unique // 'pending' | 'paid' | 'shipped' | 'completed' | 'cancelled'
+  label String
+
+  orders Order[]
+
+  @@map("order_statuses")
+}

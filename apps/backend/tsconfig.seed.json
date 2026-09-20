@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "outDir": "./dist-seed",
+    "rootDir": "./",
+    "types": ["node"]
+  },
+  "include": ["prisma/**/*.ts"],
+  "exclude": ["node_modules", "dist", "dist-seed"]
+}

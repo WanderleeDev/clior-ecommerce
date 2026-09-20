@@ -1,0 +1,18 @@
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  priceCents  Int
+  imageUrl    String?
+  categoryId  String?
+  stock       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category   Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  orderItems OrderItem[]
+  reviews    Review[]
+
+  @@index([categoryId])
+  @@map("products")
+}

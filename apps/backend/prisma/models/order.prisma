@@ -1,0 +1,19 @@
+model Order {
+  id        String   @id @default(uuid())
+  userId    String
+  addressId String
+  statusId  String
+  total     Int      // centavos, DERIVADO: total = Σ(OrderItem.qty × OrderItem.unitPriceCents)
+  createdAt DateTime @default(now())
+
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address Address     @relation(fields: [addressId], references: [id])
+  status  OrderStatus @relation(fields: [statusId], references: [id])
+  items   OrderItem[]
+  payment Payment?
+
+  @@index([userId])
+  @@index([addressId])
+  @@index([statusId])
+  @@map("orders")
+}

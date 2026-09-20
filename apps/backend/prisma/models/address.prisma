@@ -1,0 +1,17 @@
+model Address {
+  id         String    @id @default(uuid())
+  userId     String
+  label      String?
+  line1      String
+  line2      String?
+  city       String
+  province   String
+  postalCode String
+  isDefault  Boolean   @default(false)
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+
+  @@index([userId])
+  @@map("addresses")
+}

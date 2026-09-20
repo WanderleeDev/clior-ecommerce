@@ -1,0 +1,9 @@
+model PaymentStatus {
+  id    String @id @default(uuid())
+  code  String @unique // 'pending' | 'captured' | 'refunded' | 'failed'
+  label String
+
+  payments Payment[]
+
+  @@map("payment_statuses")
+}

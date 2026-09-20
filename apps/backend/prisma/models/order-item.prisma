@@ -1,0 +1,14 @@
+model OrderItem {
+  id             String @id @default(uuid())
+  orderId        String
+  productId      String
+  qty            Int
+  unitPriceCents Int // CONGELADO al momento de la compra, inmutable
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}
