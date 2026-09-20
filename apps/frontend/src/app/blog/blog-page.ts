@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
-import { NgxIconify } from 'ngx-iconify-stack';
 import { BLOG_POSTS, CATEGORIES } from './blog-data.adapter';
 
 export const RECOMMENDED_POSTS = [
@@ -76,7 +75,7 @@ export const FEATURED_LIST_POSTS = [
 
 @Component({
   selector: 'app-blog-page',
-  imports: [NgxIconify],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-page.html',
   styleUrl: './blog-page.css',

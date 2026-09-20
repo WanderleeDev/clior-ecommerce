@@ -1,171 +1,122 @@
-<section class="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-  <div class="relative overflow-hidden rounded-3xl bg-surface">
+<section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 md:pt-10">
+  <div class="relative flex min-h-[360px] items-center overflow-hidden rounded-3xl border border-line bg-surface md:min-h-[480px]">
     <img
       src="/banner.png"
-      alt="Banner Blog Clior Pets"
-      loading="lazy"
+      alt="Perro dálmata y gato mirando a la cámara bajo un cielo despejado"
+      loading="eager"
+      fetchpriority="high"
       class="absolute inset-0 h-full w-full object-cover"
     />
-    <div class="relative px-8 py-16 sm:px-10 md:py-20">
-      <h2 class="font-display text-4xl font-extrabold md:text-5xl">
+    <div class="relative max-w-2xl p-8 md:p-14">
+      <h1 class="font-display text-4xl font-extrabold leading-[1.05] md:text-5xl lg:text-6xl">
         ¡Bienvenido!
-      </h2>
-      <p class="mt-4 max-w-lg text-lg leading-relaxed text-muted">
+      </h1>
+      <p class="mt-5 max-w-lg text-base leading-relaxed text-muted md:text-lg">
         Aquí encontrarás los mejores consejos y novedades para tener mascotas más felices.
       </p>
     </div>
   </div>
 </section>
 
-  <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-label="Contenido recomendado">
-  <h2 class="font-display text-2xl font-extrabold uppercase tracking-[0.18em] text-accent">
-    CONTENIDO RECOMENDADO
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6" aria-label="Contenido recomendado">
+  <h2 class="mt-3 max-w-2xl font-display text-3xl font-extrabold md:text-4xl">
+    Contenido <span class="text-muted">recomendado.</span>
   </h2>
-  <div class="mt-6 flex gap-4 overflow-x-auto scrollbar-hide">
+  <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
     @for (post of recommended; track post.title) {
-      <a
-        [href]="post.href"
-        class="group relative flex w-64 shrink-0 flex-col gap-3 rounded-2xl border border-line bg-surface p-4 transition-transform hover:-translate-y-1"
-      >
-        <img
-          [src]="post.image"
-          [alt]="post.imageAlt"
-          loading="lazy"
-          width="240"
-          height="160"
-          class="aspect-[3/2] w-full rounded-xl object-cover"
-        />
-        <h3 class="font-display text-base font-bold leading-snug group-hover:text-accent">
-          {{ post.title }}
-        </h3>
-        <div class="flex items-center justify-between text-xs text-muted">
-          <span>{{ post.readTime }} · {{ post.date }}</span>
-          <span class="rounded-full bg-accent/10 px-2 py-1 text-accent">{{ post.category }}</span>
-        </div>
-      </a>
-    }
-  </div>
-</section>
-
-<section
-  class="mx-auto max-w-7xl px-4 py-10 sm:px-6"
-  aria-label="Artículos destacados"
->
-  <div class="grid gap-8 md:grid-cols-[2fr_1fr]">
-    <a
-      [href]="featuredMain.href"
-      class="group relative block overflow-hidden rounded-3xl border border-line bg-surface"
-    >
-      <img
-        [src]="featuredMain.image"
-        [alt]="featuredMain.imageAlt"
-        loading="lazy"
-        width="600"
-        height="400"
-        class="aspect-[3/2] w-full object-cover transition-transform group-hover:scale-105"
-      />
-      <div class="p-6">
-        <div class="flex items-center gap-2 text-xs text-muted">
-          <ngx-iconify icon="lucide:clock" [size]="12" />
-          <span>{{ featuredMain.readTime }} · {{ featuredMain.date }}</span>
-          <span class="rounded-full bg-accent/10 px-2 py-0.5 text-accent">{{ featuredMain.category }}</span>
-        </div>
-        <h3 class="mt-2 font-display text-xl font-extrabold leading-snug">
-          {{ featuredMain.title }}
-        </h3>
-        <p class="mt-2 text-sm leading-relaxed text-muted line-clamp-2">
-          {{ featuredMain.excerpt }}
-        </p>
-        <span class="mt-3 inline-flex items-center gap-1 text-sm font-medium text-accent">
-          Leer más
-          <ngx-iconify icon="lucide:arrow-right" [size]="16" />
-        </span>
-      </div>
-    </a>
-
-    <div class="space-y-3">
-      @for (post of featuredList; track post.title) {
-        <a
-          [href]="post.href"
-          class="group flex gap-3 rounded-2xl border border-line bg-surface p-3 transition-colors hover:border-accent"
-        >
+      <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface">
+        <div class="relative aspect-video overflow-hidden">
           <img
             [src]="post.image"
             [alt]="post.imageAlt"
             loading="lazy"
-            width="80"
-            height="60"
-            class="w-20 shrink-0 rounded-lg object-cover"
+            width="600"
+            height="338"
+            class="h-full w-full object-cover"
           />
-          <div class="flex min-w-0 flex-col justify-center">
-            <h4 class="line-clamp-2 font-display text-sm font-bold leading-snug group-hover:text-accent">
+        </div>
+        <div class="flex flex-1 flex-col p-5">
+          <p class="text-xs uppercase tracking-wide text-muted">
+            {{ post.readTime }} · {{ post.date }}
+          </p>
+          <h3 class="mt-2 line-clamp-2 font-display text-base font-bold leading-snug">
+            <a [href]="post.href">{{ post.title }}</a>
+          </h3>
+          <p class="mt-auto flex items-center justify-between pt-4 text-sm">
+            <span class="text-muted">{{ post.readTime }}</span>
+            <a [href]="post.href" class="font-medium text-accent hover:underline">
+              {{ post.category }} →
+            </a>
+          </p>
+        </div>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6" aria-label="Artículos destacados">
+  <h2 class="mt-3 max-w-2xl font-display text-3xl font-extrabold md:text-4xl">
+    Artículos <span class="text-muted">destacados.</span>
+  </h2>
+  <div class="mt-8 grid items-stretch gap-5 md:grid-cols-[1fr_1.25fr]">
+    <a
+      [href]="featuredMain.href"
+      class="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface"
+    >
+      <div class="relative aspect-video overflow-hidden">
+        <img
+          [src]="featuredMain.image"
+          [alt]="featuredMain.imageAlt"
+          loading="lazy"
+          width="600"
+          height="338"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="flex flex-1 flex-col p-5">
+        <p class="text-xs uppercase tracking-wide text-muted">
+          {{ featuredMain.readTime }} · {{ featuredMain.date }}
+        </p>
+        <h3 class="mt-1 line-clamp-2 font-display text-lg font-bold leading-snug">
+          {{ featuredMain.title }}
+        </h3>
+        <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">
+          {{ featuredMain.excerpt }}
+        </p>
+        <p class="mt-auto flex items-center justify-between pt-4 text-sm">
+          <span class="text-muted">{{ featuredMain.readTime }}</span>
+          <span class="font-medium text-accent">{{ featuredMain.category }} →</span>
+        </p>
+      </div>
+    </a>
+
+    <div class="grid h-full grid-rows-3 gap-5">
+      @for (post of featuredList; track post.title) {
+        <a
+          [href]="post.href"
+          class="group flex h-full gap-4 overflow-hidden rounded-2xl border border-line bg-surface p-4 transition-colors motion-reduce:transition-none hover:border-accent"
+        >
+          <div class="relative aspect-square w-28 shrink-0 overflow-hidden rounded-xl sm:w-36">
+            <img
+              [src]="post.image"
+              [alt]="post.imageAlt"
+              loading="lazy"
+              width="300"
+              height="300"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <div class="flex min-w-0 flex-1 flex-col justify-center">
+            <p class="text-xs uppercase tracking-wide text-muted">
+              {{ post.readTime }} · {{ post.date }}
+            </p>
+            <h3 class="mt-1 line-clamp-2 font-display text-base font-bold leading-snug">
               {{ post.title }}
-            </h4>
-            <div class="mt-1 flex items-center gap-2 text-xs text-muted">
-              <span>{{ post.readTime }} · {{ post.date }}</span>
-              <span class="text-accent">{{ post.category }}</span>
-            </div>
+            </h3>
+            <p class="mt-2 text-sm font-medium text-accent">{{ post.category }} →</p>
           </div>
         </a>
       }
     </div>
-  </div>
-</section>
-
-<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6" aria-label="Artículos por categoría">
-  <div class="mx-auto max-w-2xl text-center">
-    <p class="font-display text-sm font-bold uppercase tracking-[0.18em] text-accent">
-      PERROS
-    </p>
-    <h2 class="mt-3 font-display text-3xl font-extrabold md:text-4xl">
-      <span class="text-muted">Todo para</span> tu perro
-    </h2>
-    <p class="mt-3 text-muted">
-      Artículos, guías y recomendaciones para el cuidado de tu mejor amigo.
-    </p>
-  </div>
-
-  <div class="mt-8 flex flex-wrap justify-center gap-2">
-    @for (cat of categories; track cat) {
-      <button
-        (click)="setCategory(cat)"
-        [class]="cat === activeCategory() ? 'rounded-full bg-accent px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-accent-ink' : 'rounded-full border border-line px-5 py-2.5 text-sm font-medium text-foreground hover:border-accent'"
-      >
-        {{ cat }}
-      </button>
-    }
-  </div>
-
-  <div class="mt-8">
-    <article class="overflow-hidden rounded-3xl border border-line bg-surface">
-      <div class="grid md:grid-cols-2">
-        <div class="relative aspect-video md:aspect-auto">
-          <img
-            [src]="filteredPosts()[0]?.image ?? posts[0].image"
-            [alt]="filteredPosts()[0]?.imageAlt ?? posts[0].imageAlt"
-            loading="lazy"
-            class="h-full w-full object-cover"
-          />
-        </div>
-        <div class="flex flex-col justify-center p-8 md:p-10">
-          <p class="text-xs uppercase tracking-wide text-accent">
-            {{ filteredPosts()[0]?.category ?? posts[0].category }} · {{ filteredPosts()[0]?.date ?? posts[0].date }}
-          </p>
-          <h3 class="mt-2 font-display text-2xl font-extrabold md:text-3xl">
-            {{ filteredPosts()[0]?.title ?? posts[0].title }}
-          </h3>
-          <p class="mt-3 text-sm leading-relaxed text-muted">
-            {{ filteredPosts()[0]?.excerpt ?? posts[0].excerpt }}
-          </p>
-          <a
-            [href]="'/blog/' + (filteredPosts()[0]?.slug ?? posts[0].slug)"
-            class="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-accent-ink"
-          >
-            <span>Leer artículo</span>
-            <ngx-iconify icon="lucide:arrow-right" [size]="16" />
-          </a>
-        </div>
-      </div>
-    </article>
   </div>
 </section>
