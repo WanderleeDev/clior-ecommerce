@@ -1,3 +1,5 @@
+import * as path from 'node:path';
+import * as dotenv from 'dotenv';
 import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { faker } from '@faker-js/faker';
@@ -6,8 +8,19 @@ import { faker } from '@faker-js/faker';
 // orders/payments/reviews so the front-end has realistic data to work with.
 // Idempotent: deletes all rows (children first) before re-inserting.
 
+// Load the backend's .env (apps/backend/.env holds DATABASE_URL) so the
+// driver adapter below receives a real connection string at runtime.
+void dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+const dbUrl = process.env.DATABASE_URL;
+if (!dbUrl) {
+  throw new Error(
+    'DATABASE_URL is missing. Set it in apps/backend/.env and re-run the seed.',
+  );
+}
+
 const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
+  adapter: new PrismaPg({ connectionString: dbUrl }),
 });
 
 // ---------------------------------------------------------------------------
