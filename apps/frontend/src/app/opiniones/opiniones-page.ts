@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgxIconify } from 'ngx-iconify-stack';
-import { REVIEWS } from '../../products/infrastructure/adapters/mock-product.adapter';
+import { REVIEWS } from '../products/infrastructure/adapters/mock-product.adapter';
 
 @Component({
   selector: 'app-opinions-page',
