@@ -49,7 +49,7 @@ import type { Product } from '../../../domain/models/product.model';
         </p>
         <a
           [href]="'/producto/' + product().id"
-          class="mt-4 inline-flex w-full items-center justify-center rounded-full bg-accent px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-accent-ink"
+          class="mt-4 inline-flex w-full items-center justify-center rounded-full bg-accent px-4 py-2.5 text-sm font-bold capitalize tracking-widest text-accent-ink"
         >
           Comprar
         </a>

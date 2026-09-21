@@ -1,0 +1,25 @@
+const params = (w: number) => `?q=80&w=${w}&auto=format&fit=crop`;
+
+export const IMAGES = {
+  heroDog: `https://images.unsplash.com/photo-1543466835-00a7907e9de1${params(2000)}`,
+  heroDogSmall: `https://images.unsplash.com/photo-1543466835-00a7907e9de1${params(800)}`,
+  catPortrait: `https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba${params(1200)}`,
+  dogsRunning: `https://images.unsplash.com/photo-1548199973-03cce0bbc87b${params(1200)}`,
+  pugBlanket: `https://images.unsplash.com/photo-1583511655857-d19b40a7a54e${params(1200)}`,
+  kittenFlower: `https://images.unsplash.com/photo-1592194996308-7b43878e84a6${params(1200)}`,
+  dogFamily: `https://images.unsplash.com/photo-1601758228041-f3b2795255f1${params(1200)}`,
+  puppiesEating: `https://images.unsplash.com/photo-1587300003388-59208cc962cb${params(1200)}`,
+  greyCat: `https://images.unsplash.com/photo-1573865526739-10659fec78a5${params(1200)}`,
+  pugTongue: `https://images.unsplash.com/photo-1517849845537-4d257902454a${params(1200)}`,
+  dogBeach: `https://images.unsplash.com/photo-1530281700549-e82e7bf110d6${params(1200)}`,
+  goldenPuppy: `https://images.unsplash.com/photo-1552053831-71594a27632d${params(1200)}`,
+  dogOwner: `https://images.unsplash.com/photo-1450778869180-41d0601e046e${params(1200)}`,
+  goldenField: `https://images.unsplash.com/photo-1548767797-d8c844163c4c${params(1200)}`,
+  pugCostume: `https://images.unsplash.com/photo-1591946614720-90a587da4a36${params(1200)}`,
+  tabbyCat: `https://images.unsplash.com/photo-1574144611937-0df059b5ef3e${params(1200)}`,
+  hamster: `https://images.unsplash.com/photo-1425082661705-1834bfd09dca${params(1200)}`,
+  puppyToys: `https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993${params(1200)}`,
+  puppyBowl: `https://images.unsplash.com/photo-1568640347023-a616a30bc3bd${params(1200)}`,
+  kittenHands: `https://images.unsplash.com/photo-1589924691995-400dc9ecc119${params(1200)}`,
+  puppyGrass: `https://images.unsplash.com/photo-1551717743-49959800b1f6${params(1200)}`,
+} as const;

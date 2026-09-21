@@ -1,0 +1,21 @@
+.info-item {
+  interpolate-size: allow-keywords;
+}
+
+.info-item::details-content {
+  overflow: hidden;
+  height: 0;
+  transition:
+    height 0.35s ease,
+    content-visibility 0.35s allow-discrete;
+}
+
+.info-item:open::details-content {
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-item::details-content {
+    transition: none;
+  }
+}

@@ -1,0 +1,12 @@
+<div class="rail">
+  <h2 class="rail-title font-display text-2xl font-extrabold md:text-3xl">
+    {{ title() }}
+  </h2>
+  <div class="rail-track">
+    @for (product of products(); track product.id) {
+      <div class="rail-item">
+        <app-product-card [product]="product" />
+      </div>
+    }
+  </div>
+</div>

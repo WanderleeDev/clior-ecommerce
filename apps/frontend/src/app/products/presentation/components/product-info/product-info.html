@@ -1,0 +1,17 @@
+<div class="divide-y divide-line border-y border-line">
+  @for (item of sections(); track item.title) {
+    <details class="info-item group" name="product-info" [open]="$first">
+      <summary
+        class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-bold [&::-webkit-details-marker]:hidden"
+      >
+        {{ item.title }}
+        <ngx-iconify
+          icon="lucide:plus"
+          [size]="18"
+          class="shrink-0 text-accent transition-transform duration-300 motion-reduce:transition-none group-open:rotate-45"
+        />
+      </summary>
+      <p class="pb-4 text-sm leading-relaxed text-muted">{{ item.text }}</p>
+    </details>
+  }
+</div>
