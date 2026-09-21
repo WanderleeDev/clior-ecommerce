@@ -1,13 +1,19 @@
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  createdAt    DateTime @default(now())
+  id                   String            @id @default(uuid())
+  email                String            @unique
+  passwordHash         String
+  name                 String
+  role                 String            @default("customer")
+  emailVerifiedAt      DateTime?
+  failedLoginAttempts  Int               @default(0)
+  lockedUntil          DateTime?
+  createdAt            DateTime          @default(now())
 
-  addresses Address[]
-  orders  Order[]
-  reviews Review[]
+  addresses       Address[]
+  orders          Order[]
+  reviews         Review[]
+  refreshSessions RefreshSession[]
+  authTokens      AuthToken[]
 
   @@map("users")
 }
