@@ -43,13 +43,16 @@ apps/backend/
 │   ├── migrations/            # committed database history
 │   └── seed.ts                # development data
 └── src/
-    ├── <feature>/             # vertical slices (products, orders, users, ...)
-    │   ├── domain/             # entities, value objects, errors, outbound ports
-    │   ├── application/        # use cases and application services
-    │   ├── infrastructure/     # Prisma and other outbound adapters
-    │   ├── interface/          # controllers, DTOs, transport mapping
-    │   └── <feature>.module.ts # adapter bindings
-    ├── infrastructure/        # shared technical adapters (Prisma lifecycle)
+    ├── modules/               # business vertical slices
+    │   └── <feature>/          # products, orders, users, ...
+    │       ├── domain/         # entities, value objects, errors, ports
+    │       ├── application/    # use cases and application services
+    │       ├── infrastructure/ # feature adapters grouped by direction
+    │       │   └── adapters/
+    │       │       ├── in/     # HTTP and other driving adapters
+    │       │       └── out/    # persistence and external-system adapters
+    │       └── <feature>.module.ts
+    ├── prisma/                # shared Prisma module and client lifecycle
     ├── health/                # operational endpoint
     └── app.module.ts           # composition root
 ```
@@ -66,14 +69,55 @@ The composition root registers cross-cutting infrastructure once:
 When a feature needs events, keep the event flow inside its vertical slice:
 
 ```text
-src/<feature>/
+src/modules/<feature>/
 ├── domain/events/              # business event contracts and payloads
 ├── application/                # use cases publish events through a port
-├── infrastructure/events/      # Nest EventEmitter adapter/subscribers
+├── infrastructure/adapters/out/events/ # Nest EventEmitter adapter/subscribers
 └── <feature>.module.ts         # event handlers and adapter bindings
 ```
 
 Event handlers must be idempotent and should not hide required transactional work. If an operation must succeed or fail atomically with the aggregate update, keep it in the use case and transaction. Use events for decoupled reactions such as notifications, search indexing, or analytics.
+
+## Authentication module
+
+Authentication is implemented as a vertical slice under `src/modules/auth/`:
+
+```text
+src/modules/auth/
+├── domain/
+│   ├── models/                        # domain data shapes
+│   ├── errors/                        # domain errors, not HTTP exceptions
+│   └── events/user-registered.event.ts
+├── application/
+│   ├── ports/in/                      # use-case contracts for driving adapters
+│   ├── ports/out/                     # abstract outbound ports
+│   ├── types/                         # application commands/results
+│   └── use-cases/                     # register, login, current user
+├── infrastructure/
+│   └── adapters/
+│       ├── in/http/                    # HTTP driving adapters
+│       │   ├── auth.controller.ts
+│       │   ├── auth.dto.ts             # class-validator DTOs
+│       │   ├── jwt-auth.guard.ts
+│       │   └── jwt.strategy.ts
+│       └── out/
+│           ├── events/nest-event-bus.adapter.ts
+│           ├── persistence/prisma-user.repository.ts
+│           └── security/                # Argon2 and JWT adapters
+└── auth.module.ts                    # composition and port bindings
+```
+
+Inbound and outbound ports are abstract classes so Nest can use them as runtime DI tokens without Symbol constants. Interface adapters depend on inbound ports; use cases implement them. Concrete infrastructure adapters extend outbound ports, and application code depends only on those contracts.
+
+The current public endpoints are:
+
+| Method | Path | Purpose |
+|---|---|---|
+| POST | `/api/auth/register` | Create a user and return an access token |
+| POST | `/api/auth/login` | Verify credentials and return an access token |
+| GET | `/api/auth/me` | Return the authenticated user from a Bearer token |
+
+Passwords are hashed with Argon2id. JWTs contain only the user id (`sub`) and email. The API never returns `passwordHash`. Refresh tokens, password recovery, roles, and permissions remain future capabilities rather than implicit parts of this first slice.
 
 ## Database model
 
@@ -107,14 +151,14 @@ The Products slice is the reference implementation:
 
 | Concern | Current implementation |
 |---|---|
-| Domain model and outbound port | `src/products/domain/product.ts` |
-| Application use cases | `src/products/application/products.use-cases.ts` |
-| HTTP adapter and DTO | `src/products/interface/` |
-| PostgreSQL adapter | `src/products/infrastructure/prisma-product.repository.ts` |
-| Test adapter | `src/products/infrastructure/in-memory-product.repository.ts` |
-| Port binding | `src/products/products.module.ts` |
+| Domain model and outbound port | `src/modules/products/domain/product.ts` |
+| Application use cases | `src/modules/products/application/products.use-cases.ts` |
+| HTTP adapter and DTO | `src/modules/products/infrastructure/adapters/in/http/` |
+| PostgreSQL adapter | `src/modules/products/infrastructure/adapters/out/persistence/prisma-product.repository.ts` |
+| Test adapter | `src/modules/products/infrastructure/adapters/out/persistence/in-memory-product.repository.ts` |
+| Port binding | `src/modules/products/products.module.ts` |
 
-NestJS dependency injection is used only at the composition boundary. A port is represented by a TypeScript interface and a stable token (for example, `PRODUCT_REPOSITORY_PORT`). A use case injects the token; it must not import `PrismaService` directly.
+NestJS dependency injection is used only at the composition boundary. Ports are abstract classes so they remain runtime DI tokens without Symbol constants. A use case depends on ports; it must not import `PrismaService` or a concrete adapter directly.
 
 ## Rules for new modules
 
@@ -156,7 +200,7 @@ Choose libraries by boundary. A library belongs in the outer layer unless it rep
 | `class-validator` | HTTP DTO validation | Installed | Use with NestJS `ValidationPipe` for request boundaries. It is the preferred DTO validation strategy for this backend because it integrates directly with NestJS. |
 | `class-transformer` | HTTP DTO transformation | Installed | Use alongside `class-validator` for typed DTO transformation and controlled coercion. Avoid implicit conversion unless it is explicitly safe. |
 | `@nestjs/jwt` | JWT signing and verification | Installed | Use only inside an authentication adapter/service. Expose authentication behavior to application code through a port, not through JWT types. |
-| `@nestjs/passport` + `passport-jwt` | HTTP authentication strategy | Installed | Keep guards and strategies in the interface/infrastructure boundary; map the authenticated principal into an application input. |
+| `@nestjs/passport` + `passport-jwt` | HTTP authentication strategy | Installed | Keep guards and strategies in `infrastructure/adapters/in/http`; map the authenticated principal into an application input. |
 | `argon2` | Password hashing | Installed | Prefer Argon2id through a password-hasher port. Never hash passwords in controllers or persist plaintext passwords. |
 | `@nestjs/swagger` | OpenAPI documentation | Installed | Keep decorators and response DTOs in the interface layer; do not place Swagger decorators on domain entities. |
 | `@nestjs/throttler` | Rate limiting | Installed | Add at the HTTP boundary for login, password reset, and other abuse-sensitive endpoints. |

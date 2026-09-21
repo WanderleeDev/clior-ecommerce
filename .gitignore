@@ -77,6 +77,7 @@ pids
 **/target/
 **/build/
 **/out/
+!apps/**/src/**/out/
 **/*.class
 **/*.jar
 **/*.war

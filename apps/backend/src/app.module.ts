@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { HealthModule } from './health/health.module';
-import { ProductModule } from './products/products.module';
-import { PrismaModule } from './infrastructure/prisma/prisma.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { validateEnvironment } from './config/env.validation';
+import { HealthModule } from './modules/health/health.module';
+import { ProductModule } from './modules/products/products.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [EventEmitterModule.forRoot(), PrismaModule, HealthModule, ProductModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, validate: validateEnvironment }),
+    EventEmitterModule.forRoot(),
+    PrismaModule,
+    AuthModule,
+    HealthModule,
+    ProductModule,
+  ],
 })
 export class AppModule {}
