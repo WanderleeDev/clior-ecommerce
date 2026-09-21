@@ -11,3 +11,10 @@ export class AccountLockedError extends Error {
     this.name = 'AccountLockedError';
   }
 }
+
+export class EmailNotVerifiedError extends Error {
+  constructor() {
+    super('Email address must be verified before login');
+    this.name = 'EmailNotVerifiedError';
+  }
+}

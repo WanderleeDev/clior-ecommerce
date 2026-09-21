@@ -5,7 +5,7 @@ import { UserRepositoryPort } from '../ports/out/user-repository.port';
 import { LoginUserPort } from '../ports/in/login-user.port';
 import type { AuthResult, LoginUserInput } from '../types/auth.types';
 import { RefreshSessionPort } from '../ports/out/refresh-session.port';
-import { AccountLockedError } from '../../domain/errors/auth-flow.errors';
+import { AccountLockedError, EmailNotVerifiedError } from '../../domain/errors/auth-flow.errors';
 
 @Injectable()
 export class LoginUserUseCase extends LoginUserPort {
@@ -30,6 +30,7 @@ export class LoginUserUseCase extends LoginUserPort {
     }
 
     await this.users.resetFailedLogins(user.id);
+    if (!user.emailVerifiedAt) throw new EmailNotVerifiedError();
     return this.sessions.create(user.id);
   }
 }
