@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ecommerce Schema — ER Diagram</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    
+    const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: darkMode ? 'dark' : 'default',
+      securityLevel: 'loose'
+    });
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1c1e21;
+      --muted: #57606a;
+      --line: #d1d9e0;
+      --accent: #1a63c8;
+      --card: #f6f8fa;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #f0f6fc;
+        --muted: #8b949e;
+        --line: #30363d;
+        --accent: #58a6ff;
+        --card: #161b22;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.5;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid var(--line); padding-bottom: 0.5rem; }
+    .invariant {
+      background: #fff8c5;
+      border: 1px solid #9a6700;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .invariant {
+        background: #2d2a1b;
+        border-color: #e3b341;
+      }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 0.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+    th {
+      font-weight: 600;
+      background: var(--card);
+    }
+    code {
+      background: var(--card);
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    .group {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+    .core { background: rgba(26,102,200,0.15); color: var(--accent); }
+    .extend { background: rgba(140,120,220,0.15); color: #8c78dc; }
+  </style>
+</head>
+<body>
+  <h1>Ecommerce Schema <span class="group core">CORE</span> <span class="group extend">EXTEND</span></h1>
+  
+  <div class="invariant">
+    <strong>Invariante:</strong> ORDER.total = Σ(ORDERITEM.qty × ORDERITEM.unitPriceCents). 
+    ORDERITEM.unitPriceCents es inmutable: foto del precio al momento de la compra, no el precio actual de PRODUCT.
+  </div>
+
+  <div class="mermaid">
+erDiagram
+  USER ||--o{ ADDRESS : "has"
+  USER ||--o{ ORDER : "places"
+  ADDRESS ||--o{ ORDER : "ships to"
+  ORDER ||--o{ ORDERITEM : "contains"
+  PRODUCT ||--o{ ORDERITEM : "referenced by"
+  ORDER ||--|| PAYMENT : "settles via"
+  PRODUCT ||--o{ REVIEW : "rated by"
+  CATEGORY ||--o{ PRODUCT : "groups"
+
+  USER {
+    uuid id PK "auto"
+    string email UK
+    string passwordHash "hasheado"
+    string name
+    datetime createdAt "auto"
+  }
+  ADDRESS {
+    uuid id PK
+    uuid userId FK
+    string label "nulo ok"
+    string line1
+    string line2 "nulo ok"
+    string city
+    string province
+    string postalCode
+    boolean isDefault "default false"
+  }
+  PRODUCT {
+    uuid id PK
+    string name
+    string description
+    int priceCents "centavos"
+    string imageUrl "nulo ok"
+    uuid categoryId FK "opcional"
+    int stock "default 0"
+    datetime createdAt "auto"
+    datetime updatedAt "auto-updated"
+  }
+  CATEGORY {
+    uuid id PK
+    string name
+    string slug UK "para URLs"
+  }
+  ORDER {
+    uuid id PK
+    uuid userId FK
+    uuid addressId FK
+    string status "enum"
+    int total "DERIVADO"
+    datetime createdAt "auto"
+  }
+  ORDERITEM {
+    uuid id PK
+    uuid orderId FK
+    uuid productId FK
+    int qty
+    int unitPriceCents "CONGELADO"
+  }
+  PAYMENT {
+    uuid id PK
+    uuid orderId FK
+    string provider
+    string status "enum"
+    string reference "nulo ok"
+    datetime createdAt "auto"
+  }
+  REVIEW {
+    uuid id PK
+    uuid productId FK
+    uuid userId FK
+    int rating "1..5"
+    string comment "nulo ok"
+    datetime createdAt "auto"
+  }
+  </div>
+
+  <h2>Tablas CORE</h2>
+  
+  <h3>USER</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Nulo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td>no</td><td>PK, auto</td></tr>
+      <tr><td><code>email</code></td><td>string</td><td>no</td><td>UK</td></tr>
+      <tr><td><code>passwordHash</code></td><td>string</td><td>no</td><td>hasheado</td></tr>
+      <tr><td><code>name</code></td><td>string</td><td>no</td><td></td></tr>
+      <tr><td><code>createdAt</code></td><td>datetime</td><td>no</td><td>auto</td></tr>
+    </tbody>
+  </table>
+
+  <h3>ADDRESS</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Nulo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td>no</td><td>PK</td></tr>
+      <tr><td><code>userId</code></td><td>uuid</td><td>no</td><td>FK → USER (1:N)</td></tr>
+      <tr><td><code>label</code></td><td>string</td><td>sí</td><td>"casa", "trabajo"</td></tr>
+      <tr><td><code>line1</code></td><td>string</td><td>no</td><td></td></tr>
+      <tr><td><code>line2</code></td><td>string</td><td>sí</td><td></td></tr>
+      <tr><td><code>city</code></td><td>string</td><td>no</td><td></td></tr>
+      <tr><td><code>province</code></td><td>string</td><td>no</td><td></td></tr>
+      <tr><td><code>postalCode</code></td><td>string</td><td>no</td><td></td></tr>
+      <tr><td><code>isDefault</code></td><td>boolean</td><td>no</td><td>default false</td></tr>
+    </tbody>
+  </table>
+
+  <h3>PRODUCT</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Nulo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td>no</td><td>PK</td></tr>
+      <tr><td><code>name</code></td><td>string</td><td>no</td><td></td></tr>
+      <tr><td><code>description</code></td><td>string</td><td>no</td><td></td></tr>
+      <tr><td><code>priceCents</code></td><td>int</td><td>no</td><td>precio de hoy, en centavos</td></tr>
+      <tr><td><code>imageUrl</code></td><td>string</td><td>sí</td><td></td></tr>
+      <tr><td><code>categoryId</code></td><td>uuid</td><td>sí</td><td>FK → CATEGORY (opcional)</td></tr>
+      <tr><td><code>stock</code></td><td>int</td><td>no</td><td>default 0</td></tr>
+      <tr><td><code>createdAt</code></td><td>datetime</td><td>no</td><td>auto</td></tr>
+      <tr><td><code>updatedAt</code></td><td>datetime</td><td>no</td><td>auto-updated</td></tr>
+    </tbody>
+  </table>
+
+  <h3>ORDER</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Nulo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td>no</td><td>PK</td></tr>
+      <tr><td><code>userId</code></td><td>uuid</td><td>no</td><td>FK → USER (1:N)</td></tr>
+      <tr><td><code>addressId</code></td><td>uuid</td><td>no</td><td>FK → ADDRESS (N:1)</td></tr>
+      <tr><td><code>status</code></td><td>enum</td><td>no</td><td>pending | paid | shipped | completed | cancelled</td></tr>
+      <tr><td><code>total</code></td><td>int</td><td>no</td><td>centavos, DERIVADO de los items (ver invariante)</td></tr>
+      <tr><td><code>createdAt</code></td><td>datetime</td><td>no</td><td>auto</td></tr>
+    </tbody>
+  </table>
+
+  <h3>ORDERITEM</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Nulo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td>no</td><td>PK</td></tr>
+      <tr><td><code>orderId</code></td><td>uuid</td><td>no</td><td>FK → ORDER (1:N)</td></tr>
+      <tr><td><code>productId</code></td><td>uuid</td><td>no</td><td>FK → PRODUCT (N:1)</td></tr>
+      <tr><td><code>qty</code></td><td>int</td><td>no</td><td>cantidad</td></tr>
+      <tr><td><code>unitPriceCents</code></td><td>int</td><td>no</td><td>precio CONGELADO al momento de la compra (inmutable)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Tablas EXTEND</h2>
+
+  <h3>CATEGORY</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Nulo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td>no</td><td>PK</td></tr>
+      <tr><td><code>name</code></td><td>string</td><td>no</td><td></td></tr>
+      <tr><td><code>slug</code></td><td>string</td><td>no</td><td>UK, para URLs</td></tr>
+    </tbody>
+  </table>
+
+  <h3>PAYMENT</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Nulo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td>no</td><td>PK</td></tr>
+      <tr><td><code>orderId</code></td><td>uuid</td><td>no</td><td>FK → ORDER (1:1)</td></tr>
+      <tr><td><code>provider</code></td><td>string</td><td>no</td><td>"mp", "stripe", etc.</td></tr>
+      <tr><td><code>status</code></td><td>enum</td><td>no</td><td>pending | captured | refunded | failed</td></tr>
+      <tr><td><code>reference</code></td><td>string</td><td>sí</td><td>id del gateway</td></tr>
+      <tr><td><code>createdAt</code></td><td>datetime</td><td>no</td><td>auto</td></tr>
+    </tbody>
+  </table>
+
+  <h3>REVIEW</h3>
+  <table>
+    <thead><tr><th>Campo</th><th>Tipo</th><th>Nulo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td>no</td><td>PK</td></tr>
+      <tr><td><code>productId</code></td><td>uuid</td><td>no</td><td>FK → PRODUCT (1:N)</td></tr>
+      <tr><td><code>userId</code></td><td>uuid</td><td>no</td><td>FK → USER (1:N)</td></tr>
+      <tr><td><code>rating</code></td><td>int</td><td>no</td><td>1..5</td></tr>
+      <tr><td><code>comment</code></td><td>string</td><td>sí</td><td></td></tr>
+      <tr><td><code>createdAt</code></td><td>datetime</td><td>no</td><td>auto</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>
