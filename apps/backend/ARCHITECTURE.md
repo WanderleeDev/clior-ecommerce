@@ -53,6 +53,7 @@ apps/backend/
     │       │       └── out/    # persistence and external-system adapters
     │       └── <feature>.module.ts
     ├── prisma/                # shared Prisma module and client lifecycle
+    ├── config/                # validated environment configuration
     ├── health/                # operational endpoint
     └── app.module.ts           # composition root
 ```
@@ -92,7 +93,8 @@ src/modules/auth/
 │   ├── ports/in/                      # use-case contracts for driving adapters
 │   ├── ports/out/                     # abstract outbound ports
 │   ├── types/                         # application commands/results
-│   └── use-cases/                     # register, login, current user
+│   └── use-cases/                     # lifecycle and authorization use cases
+│   ├── listeners/                     # decoupled email/event reactions
 ├── infrastructure/
 │   └── adapters/
 │       ├── in/http/                    # HTTP driving adapters
@@ -102,8 +104,9 @@ src/modules/auth/
 │       │   └── jwt.strategy.ts
 │       └── out/
 │           ├── events/nest-event-bus.adapter.ts
-│           ├── persistence/prisma-user.repository.ts
-│           └── security/                # Argon2 and JWT adapters
+│           ├── persistence/            # users, sessions, and one-time tokens
+│           ├── email/resend-email.adapter.ts
+│           └── security/                # Argon2, JWT, and opaque-token adapters
 └── auth.module.ts                    # composition and port bindings
 ```
 
@@ -115,9 +118,15 @@ The current public endpoints are:
 |---|---|---|
 | POST | `/api/auth/register` | Create a user and return an access token |
 | POST | `/api/auth/login` | Verify credentials and return an access token |
+| POST | `/api/auth/refresh` | Rotate a refresh token and issue a new token pair |
+| POST | `/api/auth/logout` | Revoke a refresh token |
 | GET | `/api/auth/me` | Return the authenticated user from a Bearer token |
+| POST | `/api/auth/verify-email` | Consume a one-time email verification token |
+| POST | `/api/auth/resend-verification` | Request a verification email without email enumeration |
+| POST | `/api/auth/forgot-password` | Request a password reset email without email enumeration |
+| POST | `/api/auth/reset-password` | Consume a reset token and replace the password |
 
-Passwords are hashed with Argon2id. JWTs contain only the user id (`sub`) and email. The API never returns `passwordHash`. Refresh tokens, password recovery, roles, and permissions remain future capabilities rather than implicit parts of this first slice.
+Passwords are hashed with Argon2id. Access JWTs contain `sub`, email, and role; refresh tokens are opaque, rotated, revocable, and stored only as SHA-256 hashes. One-time email and reset tokens are also hashed at rest. The API never returns `passwordHash`.
 
 ## Database model
 
@@ -126,6 +135,8 @@ PostgreSQL is the persistence adapter. Prisma 7.10 is used with `@prisma/adapter
 | Table | Responsibility | Main relationships |
 |---|---|---|
 | `users` | Customer identity and account data | Has `addresses`, `orders`, `reviews` |
+| `refresh_sessions` | Rotating refresh-token sessions and revocation state | Belongs to `users`; grouped by token family |
+| `auth_tokens` | One-time email-verification and password-reset tokens | Belongs to `users`; expires and is consumed once |
 | `addresses` | Customer delivery addresses | Belongs to `users`; referenced by `orders` |
 | `categories` | Product classification | Has `products` |
 | `products` | Catalog item, price, image, and stock | Optional `category`; has `order_items`, `reviews` |

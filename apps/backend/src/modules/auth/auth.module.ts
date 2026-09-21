@@ -18,6 +18,32 @@ import { Argon2PasswordHasher } from './infrastructure/adapters/out/security/arg
 import { JwtTokenService } from './infrastructure/adapters/out/security/jwt-token.service';
 import { PrismaUserRepository } from './infrastructure/adapters/out/persistence/prisma-user.repository';
 import { NestEventBusAdapter } from './infrastructure/adapters/out/events/nest-event-bus.adapter';
+import { OpaqueTokenPort } from './application/ports/out/opaque-token.port';
+import { OpaqueTokenAdapter } from './infrastructure/adapters/out/security/opaque-token.adapter';
+import { AuthTokenRepositoryPort } from './application/ports/out/auth-token-repository.port';
+import { PrismaAuthTokenRepository } from './infrastructure/adapters/out/persistence/prisma-auth-token.repository';
+import { RefreshSessionPort } from './application/ports/out/refresh-session.port';
+import { PrismaRefreshSessionRepository } from './infrastructure/adapters/out/persistence/prisma-refresh-session.repository';
+import { EmailSenderPort } from './application/ports/out/email-sender.port';
+import { ResendEmailAdapter } from './infrastructure/adapters/out/email/resend-email.adapter';
+import { AuthEmailListeners } from './infrastructure/adapters/out/events/auth-email.listeners';
+import {
+  LogoutPort,
+  RefreshAuthPort,
+  RequestPasswordResetPort,
+  RequestVerificationPort,
+  ResetPasswordPort,
+  VerifyEmailPort,
+} from './application/ports/in/auth-flow.ports';
+import { LogoutUseCase } from './application/use-cases/logout.use-case';
+import { RefreshAuthUseCase } from './application/use-cases/refresh-auth.use-case';
+import {
+  RequestPasswordResetUseCase,
+  RequestVerificationUseCase,
+  ResetPasswordUseCase,
+  VerifyEmailUseCase,
+} from './application/use-cases/email-auth.use-cases';
+import { RolesGuard } from './infrastructure/adapters/in/http/roles.guard';
 
 @Module({
   imports: [
@@ -42,7 +68,19 @@ import { NestEventBusAdapter } from './infrastructure/adapters/out/events/nest-e
     { provide: PasswordHasherPort, useClass: Argon2PasswordHasher },
     { provide: TokenServicePort, useClass: JwtTokenService },
     { provide: EventBusPort, useClass: NestEventBusAdapter },
+    { provide: OpaqueTokenPort, useClass: OpaqueTokenAdapter },
+    { provide: AuthTokenRepositoryPort, useClass: PrismaAuthTokenRepository },
+    { provide: RefreshSessionPort, useClass: PrismaRefreshSessionRepository },
+    { provide: EmailSenderPort, useClass: ResendEmailAdapter },
+    { provide: RefreshAuthPort, useClass: RefreshAuthUseCase },
+    { provide: LogoutPort, useClass: LogoutUseCase },
+    { provide: VerifyEmailPort, useClass: VerifyEmailUseCase },
+    { provide: RequestVerificationPort, useClass: RequestVerificationUseCase },
+    { provide: RequestPasswordResetPort, useClass: RequestPasswordResetUseCase },
+    { provide: ResetPasswordPort, useClass: ResetPasswordUseCase },
+    AuthEmailListeners,
+    RolesGuard,
   ],
-  exports: [GetCurrentUserPort],
+  exports: [GetCurrentUserPort, RolesGuard],
 })
 export class AuthModule {}
