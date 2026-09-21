@@ -1,0 +1,20 @@
+<section class="mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-label="Comprar por categoría">
+  <h2 class="font-display text-xl font-extrabold md:text-2xl">
+    Compra por antojo <span class="text-muted">de tu peludo.</span>
+  </h2>
+  <div class="mt-6 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 lg:grid lg:grid-cols-8 lg:overflow-visible lg:pb-0">
+    @for (cat of categories; track cat.slug) {
+      <a
+        [href]="'/catalogo?categoria=' + cat.slug"
+        class="group flex w-28 shrink-0 snap-center flex-col items-center gap-3 lg:w-auto"
+      >
+        <span class="flex h-20 w-20 items-center justify-center rounded-full border border-line bg-surface text-accent transition motion-reduce:transition-none group-hover:border-accent group-hover:shadow-lg lg:h-24 lg:w-24">
+          <ngx-iconify [icon]="cat.icon" [size]="40" />
+        </span>
+        <span class="text-center text-sm font-medium text-foreground group-hover:text-accent">
+          {{ cat.title }}
+        </span>
+      </a>
+    }
+  </div>
+</section>

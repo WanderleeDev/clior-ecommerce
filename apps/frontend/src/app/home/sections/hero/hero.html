@@ -1,0 +1,64 @@
+<section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 md:pt-10">
+  <div class="grid overflow-hidden rounded-3xl border border-line md:grid-cols-2">
+    <div class="relative flex flex-col justify-center bg-surface p-8 text-foreground md:p-12 lg:p-14">
+      <p class="inline-flex w-fit items-center gap-2 rounded-full border border-line bg-background px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-accent">
+        <ngx-iconify icon="noto:paw-prints" [size]="16" />
+        Petshop online · Envío gratis desde S/ 99
+      </p>
+      <h1 class="mt-5 font-display text-4xl font-extrabold leading-[1.05] md:text-5xl lg:text-6xl">
+        Todo lo que tu mascota necesita,
+        <span class="text-accent">sin salir de casa.</span>
+      </h1>
+      <p class="mt-5 max-w-lg text-base leading-relaxed text-muted md:text-lg">
+        Más de 500 productos originales —alimento, snacks, juguetes,
+        higiene y accesorios— con envío en 24/48h a todo el país,
+        devolución fácil y asesoría veterinaria gratis en cada compra.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href="/catalogo"
+          class="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-semibold text-accent-ink"
+        >
+          <span>Comprar ahora</span>
+          <ngx-iconify icon="lucide:arrow-right" [size]="20" />
+        </a>
+        <a
+          href="#historia"
+          class="inline-flex items-center gap-2 rounded-full border border-line px-7 py-3.5 font-semibold text-foreground hover:border-accent"
+        >
+          <span>Conócenos</span>
+        </a>
+      </div>
+      <div class="mt-10 grid grid-cols-3 gap-4">
+        <div class="flex items-center gap-2">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+            <ngx-iconify icon="lucide:truck" [size]="18" />
+          </span>
+          <p class="text-xs leading-tight text-foreground">
+            Envío 24/48h<br />
+            <span class="text-muted">Todo el país</span>
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+            <ngx-iconify icon="lucide:star" [size]="18" />
+          </span>
+          <p class="text-xs leading-tight text-foreground">
+            4.9 ★<br />
+            <span class="text-muted">+2.000 reseñas</span>
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+            <ngx-iconify icon="lucide:shield-check" [size]="18" />
+          </span>
+          <p class="text-xs leading-tight text-foreground">
+            100% original<br />
+            <span class="text-muted">Marcas verificadas</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <app-ui-carousel [items]="slides" name="hero" label="Productos destacados" />
+  </div>
+</section>

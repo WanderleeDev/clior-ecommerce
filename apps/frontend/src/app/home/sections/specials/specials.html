@@ -1,0 +1,32 @@
+<section class="mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-label="Especiales">
+  <div class="grid gap-6 md:grid-cols-3">
+    @for (special of specials; track special.title) {
+      <article>
+        <a
+          [href]="special.href"
+          [class]="special.bg"
+          class="relative block h-52 overflow-hidden rounded-2xl p-6 text-white"
+        >
+          <div class="relative z-10 max-w-[55%]">
+            <p class="font-display text-3xl font-extrabold leading-tight">
+              {{ special.eyebrow }}<br />{{ special.title }}
+            </p>
+            <span class="mt-4 inline-block rounded-full bg-red-400 px-6 py-1.5 text-sm font-bold uppercase tracking-wide">
+              Comprar
+            </span>
+          </div>
+          <img
+            [src]="special.image"
+            [alt]="special.imageAlt"
+            loading="lazy"
+            width="300"
+            height="400"
+            class="absolute bottom-0 right-0 h-full w-[55%] object-cover object-top"
+          />
+        </a>
+        <h3 class="mt-4 font-bold text-foreground">{{ special.heading }}</h3>
+        <p class="mt-1 text-sm text-muted">{{ special.text }}</p>
+      </article>
+    }
+  </div>
+</section>

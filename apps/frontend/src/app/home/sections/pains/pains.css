@@ -1,0 +1,21 @@
+.pain-card {
+  interpolate-size: allow-keywords;
+}
+
+.pain-card::details-content {
+  overflow: hidden;
+  height: 0;
+  transition:
+    height 0.35s ease,
+    content-visibility 0.35s allow-discrete;
+}
+
+.pain-card:open::details-content {
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pain-card::details-content {
+    transition: none;
+  }
+}

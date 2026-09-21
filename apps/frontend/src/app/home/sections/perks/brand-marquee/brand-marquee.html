@@ -1,0 +1,68 @@
+<div
+  class="relative mt-12 overflow-x-clip py-14 select-none"
+  aria-label="Marcas aliadas en movimiento"
+>
+  <div
+    class="absolute inset-x-[-5%] top-1.5 overflow-hidden bg-accent py-2.5 whitespace-nowrap text-accent-ink -rotate-2"
+  >
+    <div class="inline-flex w-max animate-marquee motion-reduce:animate-none">
+      @for (claim of claims; track claim) {
+        <span class="pr-6 font-display text-base font-extrabold tracking-wide md:text-xl"
+          >{{ claim }} <span class="ml-6 opacity-70">✦</span></span
+        >
+      }
+      @for (claim of claims; track claim) {
+        <span
+          class="pr-6 font-display text-base font-extrabold tracking-wide md:text-xl"
+          aria-hidden="true"
+          >{{ claim }} <span class="ml-6 opacity-70">✦</span></span
+        >
+      }
+    </div>
+  </div>
+
+  <div
+    class="overflow-hidden py-14 whitespace-nowrap [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+  >
+    <div
+      class="inline-flex w-max animate-marquee-slow-reverse motion-reduce:animate-none"
+    >
+      @for (brand of brands; track brand.name) {
+        <span
+          class="inline-flex cursor-default items-center gap-2.5 pr-14 font-display text-lg font-bold text-foreground opacity-75 hover:opacity-100 md:text-2xl"
+        >
+          <ngx-iconify [icon]="brand.icon" [size]="30" />
+          {{ brand.name }}
+        </span>
+      }
+      @for (brand of brands; track brand.name) {
+        <span
+          class="inline-flex cursor-default items-center gap-2.5 pr-14 font-display text-lg font-bold text-foreground opacity-75 hover:opacity-100 md:text-2xl"
+          aria-hidden="true"
+        >
+          <ngx-iconify [icon]="brand.icon" [size]="30" />
+          {{ brand.name }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <div
+    class="absolute inset-x-[-5%] bottom-1.5 overflow-hidden bg-accent py-2.5 whitespace-nowrap text-accent-ink rotate-[1.5deg]"
+  >
+    <div class="inline-flex w-max animate-marquee motion-reduce:animate-none">
+      @for (claim of claims; track claim) {
+        <span class="pr-6 font-display text-base font-extrabold tracking-wide md:text-xl"
+          >{{ claim }} <span class="ml-6 opacity-70">✦</span></span
+        >
+      }
+      @for (claim of claims; track claim) {
+        <span
+          class="pr-6 font-display text-base font-extrabold tracking-wide md:text-xl"
+          aria-hidden="true"
+          >{{ claim }} <span class="ml-6 opacity-70">✦</span></span
+        >
+      }
+    </div>
+  </div>
+</div>
