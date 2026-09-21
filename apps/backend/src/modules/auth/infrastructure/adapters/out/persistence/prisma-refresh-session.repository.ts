@@ -61,6 +61,10 @@ export class PrismaRefreshSessionRepository extends RefreshSessionPort {
     await this.prisma.refreshSession.updateMany({ where: { tokenHash: this.tokens.hash(raw), revokedAt: null }, data: { revokedAt: new Date() } });
   }
 
+  async revokeAllForUser(userId: string): Promise<void> {
+    await this.prisma.refreshSession.updateMany({ where: { userId, revokedAt: null }, data: { revokedAt: new Date() } });
+  }
+
   private async result(user: AuthUser, refreshToken: string): Promise<RefreshSessionResult> {
     return {
       accessToken: await this.accessTokens.sign({ sub: user.id, email: user.email, role: user.role }),
