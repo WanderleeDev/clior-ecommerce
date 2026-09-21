@@ -31,6 +31,22 @@ export class PrismaUserRepository extends UserRepositoryPort {
     return user ? this.toUser(user) : undefined;
   }
 
+  async markEmailVerified(id: string): Promise<void> {
+    await this.prisma.user.update({ where: { id }, data: { emailVerifiedAt: new Date() } });
+  }
+
+  async updatePassword(id: string, passwordHash: string): Promise<void> {
+    await this.prisma.user.update({ where: { id }, data: { passwordHash } });
+  }
+
+  async recordFailedLogin(id: string, attempts: number, lockedUntil: Date | null): Promise<void> {
+    await this.prisma.user.update({ where: { id }, data: { failedLoginAttempts: attempts, lockedUntil } });
+  }
+
+  async resetFailedLogins(id: string): Promise<void> {
+    await this.prisma.user.update({ where: { id }, data: { failedLoginAttempts: 0, lockedUntil: null } });
+  }
+
   private toUser(user: AuthUserWithPassword): AuthUser {
     const { passwordHash: _passwordHash, ...safeUser } = user;
     return safeUser;
@@ -41,7 +57,11 @@ export class PrismaUserRepository extends UserRepositoryPort {
       id: user.id,
       email: user.email,
       name: user.name,
+      role: user.role,
+      emailVerifiedAt: user.emailVerifiedAt,
       passwordHash: user.passwordHash,
+      failedLoginAttempts: user.failedLoginAttempts,
+      lockedUntil: user.lockedUntil,
       createdAt: user.createdAt,
     };
   }
