@@ -1,6 +1,5 @@
 # Node modules
 node_modules/
-pnpm-lock.yaml
 package-lock.json
 yarn.lock
 npm-debug.log*
@@ -128,3 +127,28 @@ temp/
 .env.*
 
 # npm package-lock and pnpm store files should be tracked if used, but ignore local variants above
+# pnpm-lock.yaml is intentionally TRACKED (do not ignore it)
+# Local Pi runtime state
+.atl/
+.pi/
+odd/
+.odd/
+
+# Local agent/tooling state (machine-specific, regenerable)
+.agents/
+.angular/
+.codegraph/
+.commandcode/
+.nx/
+.codeium/
+.opencode/
+.claude/
+.cursor/
+.aider/
+.copilot/
+
+# Session scratch and local task notes
+.odd/
+
+# Agent skills are managed by the skills-lock manifest, not vendored
+.agents/skills/
