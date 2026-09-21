@@ -16,6 +16,7 @@ import {
   VerifyEmailPort,
 } from '../ports/in/auth-flow.ports';
 import { PasswordHasherPort } from '../ports/out/password-hasher.port';
+import { RefreshSessionPort } from '../ports/out/refresh-session.port';
 import type { AuthOneTimeTokenType } from '../types/auth.types';
 
 const ONE_HOUR = 60 * 60 * 1000;
@@ -74,6 +75,7 @@ export class ResetPasswordUseCase extends ResetPasswordPort {
     private readonly tokenGenerator: OpaqueTokenPort,
     private readonly users: UserRepositoryPort,
     private readonly passwordHasher: PasswordHasherPort,
+    private readonly sessions: RefreshSessionPort,
   ) {
     super();
   }
@@ -83,6 +85,7 @@ export class ResetPasswordUseCase extends ResetPasswordPort {
     if (!result) throw new InvalidOneTimeTokenError();
     await this.users.updatePassword(result.userId, await this.passwordHasher.hash(password));
     await this.users.resetFailedLogins(result.userId);
+    await this.sessions.revokeAllForUser(result.userId);
   }
 }
 
