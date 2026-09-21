@@ -13,10 +13,20 @@ export interface LoginUserInput {
 
 export interface AuthResult {
   accessToken: string;
+  refreshToken: string;
   user: AuthUser;
 }
 
 export interface AuthTokenPayload {
   sub: string;
   email: string;
+  role: string;
+}
+
+export type AuthOneTimeTokenType = 'email_verification' | 'password_reset';
+
+export interface RefreshSessionResult {
+  accessToken: string;
+  refreshToken: string;
+  user: AuthUser;
 }

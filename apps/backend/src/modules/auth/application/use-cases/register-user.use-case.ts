@@ -3,10 +3,10 @@ import { EmailAlreadyRegisteredError } from '../../domain/errors/email-already-r
 import { UserRegisteredEvent, USER_REGISTERED_EVENT } from '../../domain/events/user-registered.event';
 import { EventBusPort } from '../ports/out/event-bus.port';
 import { PasswordHasherPort } from '../ports/out/password-hasher.port';
-import { TokenServicePort } from '../ports/out/token-service.port';
 import { UserRepositoryPort } from '../ports/out/user-repository.port';
 import { RegisterUserPort } from '../ports/in/register-user.port';
 import type { AuthResult, RegisterUserInput } from '../types/auth.types';
+import { RefreshSessionPort } from '../ports/out/refresh-session.port';
 
 @Injectable()
 export class RegisterUserUseCase extends RegisterUserPort {
@@ -14,7 +14,7 @@ export class RegisterUserUseCase extends RegisterUserPort {
     private readonly users: UserRepositoryPort,
     private readonly passwordHasher: PasswordHasherPort,
     private readonly eventBus: EventBusPort,
-    private readonly tokenService: TokenServicePort,
+    private readonly sessions: RefreshSessionPort,
   ) {
     super();
   }
@@ -27,9 +27,6 @@ export class RegisterUserUseCase extends RegisterUserPort {
     const user = await this.users.create({ ...input, passwordHash });
     this.eventBus.publish(USER_REGISTERED_EVENT, new UserRegisteredEvent(user));
 
-    return {
-      accessToken: await this.tokenService.sign({ sub: user.id, email: user.email }),
-      user,
-    };
+    return this.sessions.create(user.id);
   }
 }

@@ -4,8 +4,8 @@ import {
 import type { AuthUser, AuthUserWithPassword } from '../../domain/models/auth-user';
 import type { EventBusPort } from '../ports/out/event-bus.port';
 import type { PasswordHasherPort } from '../ports/out/password-hasher.port';
-import type { TokenServicePort } from '../ports/out/token-service.port';
 import type { UserRepositoryPort } from '../ports/out/user-repository.port';
+import type { RefreshSessionPort } from '../ports/out/refresh-session.port';
 import { LoginUserUseCase } from './login-user.use-case';
 import { RegisterUserUseCase } from './register-user.use-case';
 
@@ -13,6 +13,8 @@ const user: AuthUser = {
   id: 'user-1',
   email: 'maria@example.com',
   name: 'Maria',
+  role: 'customer',
+  emailVerifiedAt: null,
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
 };
 
@@ -24,7 +26,14 @@ class FakeUserRepository implements UserRepositoryPort {
   }
 
   async create(input: { email: string; name: string; password: string; passwordHash: string }): Promise<AuthUser> {
-    this.stored = { ...user, email: input.email, name: input.name, passwordHash: input.passwordHash };
+    this.stored = {
+      ...user,
+      email: input.email,
+      name: input.name,
+      passwordHash: input.passwordHash,
+      failedLoginAttempts: 0,
+      lockedUntil: null,
+    };
     return this.stored;
   }
 
@@ -33,8 +42,13 @@ class FakeUserRepository implements UserRepositoryPort {
   }
 
   async findById(id: string): Promise<AuthUser | undefined> {
-    return this.stored?.id === id ? this.stored : undefined;
+    return this.stored && this.stored.id === id ? this.stored : undefined;
   }
+
+  async markEmailVerified(): Promise<void> {}
+  async updatePassword(): Promise<void> {}
+  async recordFailedLogin(): Promise<void> {}
+  async resetFailedLogins(): Promise<void> {}
 }
 
 class FakePasswordHasher implements PasswordHasherPort {
@@ -47,10 +61,16 @@ class FakePasswordHasher implements PasswordHasherPort {
   }
 }
 
-class FakeTokenService implements TokenServicePort {
-  async sign(payload: { sub: string; email: string }): Promise<string> {
-    return `token:${payload.sub}`;
+class FakeRefreshSession implements RefreshSessionPort {
+  async create(userId: string) {
+    return { accessToken: `token:${userId}`, refreshToken: `refresh:${userId}`, user };
   }
+
+  async rotate() {
+    return this.create(user.id);
+  }
+
+  async revoke(): Promise<void> {}
 }
 
 class FakeEventBus implements EventBusPort {
@@ -69,7 +89,7 @@ describe('Auth use cases', () => {
       users,
       new FakePasswordHasher(),
       events,
-      new FakeTokenService(),
+      new FakeRefreshSession(),
     );
 
     const result = await useCase.execute({
@@ -87,12 +107,12 @@ describe('Auth use cases', () => {
   });
 
   it('rejects duplicate emails before hashing or persistence', async () => {
-    const users = new FakeUserRepository({ ...user, passwordHash: 'hashed:old' });
+    const users = new FakeUserRepository({ ...user, passwordHash: 'hashed:old', failedLoginAttempts: 0, lockedUntil: null });
     const useCase = new RegisterUserUseCase(
       users,
       new FakePasswordHasher(),
       new FakeEventBus(),
-      new FakeTokenService(),
+      new FakeRefreshSession(),
     );
 
     await expect(
@@ -102,9 +122,9 @@ describe('Auth use cases', () => {
 
   it('returns a token only for valid credentials', async () => {
     const useCase = new LoginUserUseCase(
-      new FakeUserRepository({ ...user, passwordHash: 'hashed:secret-password' }),
+      new FakeUserRepository({ ...user, passwordHash: 'hashed:secret-password', failedLoginAttempts: 0, lockedUntil: null }),
       new FakePasswordHasher(),
-      new FakeTokenService(),
+      new FakeRefreshSession(),
     );
 
     await expect(
