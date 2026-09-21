@@ -1,0 +1,81 @@
+<div class="ui-carousel relative flex min-h-[420px] items-center justify-center overflow-hidden bg-background p-8 md:min-h-[540px] md:p-12 select-none" role="region" aria-roledescription="carrusel" [attr.aria-label]="label()">
+  <div aria-hidden="true" class="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full border-[10px] border-accent/30 shadow-[0_0_80px_10px_var(--accent)] md:h-96 md:w-96"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-2xl md:h-72 md:w-72"></div>
+
+  @for (item of items(); track item.src; let i = $index) {
+    <input
+      type="radio"
+      [name]="name()"
+      [id]="name() + '-' + i"
+      [checked]="i === 0"
+      class="ui-state"
+    />
+  }
+
+  <div class="ui-track relative z-10 mx-auto flex w-full max-w-[420px] snap-x snap-mandatory scroll-smooth overflow-x-auto">
+    @for (item of items(); track item.src; let i = $index) {
+      <div class="ui-slide flex w-full shrink-0 snap-center snap-always items-center justify-center">
+        <img
+          [src]="item.src"
+          [alt]="item.alt"
+          width="600"
+          height="600"
+          [loading]="i === 0 ? 'eager' : 'lazy'"
+          class="ui-img max-h-[380px] w-auto object-contain drop-shadow-sm md:max-h-[440px]"
+        />
+      </div>
+    }
+  </div>
+
+  <div class="absolute inset-y-0 left-2 z-10 flex items-center">
+    @for (item of items(); track item.src; let i = $index) {
+      <label
+        [for]="name() + '-' + ((i - 1 + items().length) % items().length)"
+        aria-label="Imagen anterior"
+        class="ui-nav ui-prev h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/90 text-foreground backdrop-blur hover:border-accent"
+      >
+        <ngx-iconify icon="lucide:chevron-left" [size]="18" />
+      </label>
+    }
+  </div>
+  <div class="absolute inset-y-0 right-2 z-10 flex items-center">
+    @for (item of items(); track item.src; let i = $index) {
+      <label
+        [for]="name() + '-' + ((i + 1) % items().length)"
+        aria-label="Imagen siguiente"
+        class="ui-nav ui-next h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/90 text-foreground backdrop-blur hover:border-accent"
+      >
+        <ngx-iconify icon="lucide:chevron-right" [size]="18" />
+      </label>
+    }
+  </div>
+
+  <div class="absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+    @for (item of items(); track item.src; let i = $index) {
+      <label
+        [for]="name() + '-' + i"
+        [attr.aria-label]="'Ver imagen ' + (i + 1)"
+        class="ui-dot block cursor-pointer"
+      ></label>
+    }
+  </div>
+
+  @for (item of items(); track item.src; let i = $index) {
+    @if (item.title) {
+      <a
+        [href]="item.href ?? '/catalogo'"
+        class="ui-caption absolute bottom-6 left-6 z-10 animate-hero-float items-center gap-3 rounded-2xl border border-line bg-surface/90 px-4 py-3 text-foreground shadow-lg backdrop-blur motion-reduce:animate-none"
+      >
+        <span class="text-left text-sm leading-tight">
+          <span class="block font-bold">{{ item.title }}</span>
+          @if (item.detail) {
+            <span class="text-muted">{{ item.detail }}</span>
+          }
+        </span>
+        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-accent-ink">
+          <ngx-iconify icon="lucide:arrow-right" [size]="18" />
+        </span>
+      </a>
+    }
+  }
+</div>

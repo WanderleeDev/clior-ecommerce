@@ -1,0 +1,127 @@
+:host {
+  display: contents;
+}
+
+.ui-state {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ui-nav {
+  display: none;
+}
+
+.ui-slide {
+  display: none;
+}
+
+.ui-state:nth-of-type(1):checked ~ .ui-track .ui-slide:nth-of-type(1),
+.ui-state:nth-of-type(2):checked ~ .ui-track .ui-slide:nth-of-type(2),
+.ui-state:nth-of-type(3):checked ~ .ui-track .ui-slide:nth-of-type(3),
+.ui-state:nth-of-type(4):checked ~ .ui-track .ui-slide:nth-of-type(4),
+.ui-state:nth-of-type(5):checked ~ .ui-track .ui-slide:nth-of-type(5),
+.ui-state:nth-of-type(6):checked ~ .ui-track .ui-slide:nth-of-type(6) {
+  display: flex;
+}
+
+.ui-track {
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.ui-track::-webkit-scrollbar {
+  display: none;
+}
+
+.ui-slide {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+@keyframes ui-enter {
+  from {
+    opacity: 0;
+    transform: translateX(2.5rem) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.ui-state:nth-of-type(1):checked ~ .ui-track .ui-slide:nth-of-type(1) .ui-img,
+.ui-state:nth-of-type(2):checked ~ .ui-track .ui-slide:nth-of-type(2) .ui-img,
+.ui-state:nth-of-type(3):checked ~ .ui-track .ui-slide:nth-of-type(3) .ui-img,
+.ui-state:nth-of-type(4):checked ~ .ui-track .ui-slide:nth-of-type(4) .ui-img,
+.ui-state:nth-of-type(5):checked ~ .ui-track .ui-slide:nth-of-type(5) .ui-img,
+.ui-state:nth-of-type(6):checked ~ .ui-track .ui-slide:nth-of-type(6) .ui-img {
+  animation: ui-enter 0.45s ease both;
+}
+
+.ui-carousel:has(.ui-state:nth-of-type(1):checked) .ui-prev[for$='-2'],
+.ui-carousel:has(.ui-state:nth-of-type(2):checked) .ui-prev[for$='-0'],
+.ui-carousel:has(.ui-state:nth-of-type(3):checked) .ui-prev[for$='-1'],
+.ui-carousel:has(.ui-state:nth-of-type(4):checked) .ui-prev[for$='-2'],
+.ui-carousel:has(.ui-state:nth-of-type(5):checked) .ui-prev[for$='-3'],
+.ui-carousel:has(.ui-state:nth-of-type(6):checked) .ui-prev[for$='-4'],
+.ui-carousel:has(.ui-state:nth-of-type(1):checked) .ui-next[for$='-1'],
+.ui-carousel:has(.ui-state:nth-of-type(2):checked) .ui-next[for$='-2'],
+.ui-carousel:has(.ui-state:nth-of-type(3):checked) .ui-next[for$='-0'],
+.ui-carousel:has(.ui-state:nth-of-type(4):checked) .ui-next[for$='-0'],
+.ui-carousel:has(.ui-state:nth-of-type(5):checked) .ui-next[for$='-0'],
+.ui-carousel:has(.ui-state:nth-of-type(6):checked) .ui-next[for$='-0'] {
+  display: flex;
+}
+
+.ui-dot {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 9999px;
+  background: var(--line);
+  transition: all 0.3s;
+}
+
+.ui-carousel:has(.ui-state:nth-of-type(1):checked) .ui-dot:nth-of-type(1),
+.ui-carousel:has(.ui-state:nth-of-type(2):checked) .ui-dot:nth-of-type(2),
+.ui-carousel:has(.ui-state:nth-of-type(3):checked) .ui-dot:nth-of-type(3),
+.ui-carousel:has(.ui-state:nth-of-type(4):checked) .ui-dot:nth-of-type(4),
+.ui-carousel:has(.ui-state:nth-of-type(5):checked) .ui-dot:nth-of-type(5),
+.ui-carousel:has(.ui-state:nth-of-type(6):checked) .ui-dot:nth-of-type(6) {
+  width: 1.5rem;
+  background: var(--accent);
+}
+
+.ui-caption {
+  display: none;
+}
+
+.ui-carousel:has(.ui-state:nth-of-type(1):checked) .ui-caption:nth-of-type(1),
+.ui-carousel:has(.ui-state:nth-of-type(2):checked) .ui-caption:nth-of-type(2),
+.ui-carousel:has(.ui-state:nth-of-type(3):checked) .ui-caption:nth-of-type(3),
+.ui-carousel:has(.ui-state:nth-of-type(4):checked) .ui-caption:nth-of-type(4),
+.ui-carousel:has(.ui-state:nth-of-type(5):checked) .ui-caption:nth-of-type(5),
+.ui-carousel:has(.ui-state:nth-of-type(6):checked) .ui-caption:nth-of-type(6) {
+  display: flex;
+  animation: ui-caption-enter 0.45s ease both;
+}
+
+@keyframes ui-caption-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-img,
+  .ui-caption,
+  .ui-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+}

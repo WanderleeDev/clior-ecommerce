@@ -1,0 +1,43 @@
+<section
+  id="faq"
+  class="mx-auto max-w-7xl scroll-mt-20 px-4 py-16 sm:px-6"
+  aria-label="Preguntas frecuentes"
+>
+  <div class="grid gap-10 lg:grid-cols-[1fr_2fr]">
+    <div>
+      <app-section-tag label="Preguntas frecuentes" />
+      <h2 class="mt-3 font-display text-3xl font-extrabold md:text-4xl">
+        Dudas <span class="text-muted">de dueños como tú.</span>
+      </h2>
+      <p class="mt-3 text-sm text-muted">
+        Respuestas directas, sin letra pequeña.
+      </p>
+      <div class="mt-5">
+        <app-cta-button
+          label="Contactar ayuda"
+          href="/ayuda"
+          variant="secondary"
+        />
+      </div>
+    </div>
+    <div class="divide-y divide-line border-y border-line">
+      @for (faq of faqs; track faq.question) {
+        <details class="faq-item group" name="faq" [open]="$first">
+          <summary
+            class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left font-medium [&::-webkit-details-marker]:hidden"
+          >
+            {{ faq.question }}
+            <ngx-iconify
+              icon="lucide:plus"
+              [size]="20"
+              class="shrink-0 text-accent transition-transform duration-300 motion-reduce:transition-none group-open:rotate-45"
+            />
+          </summary>
+          <p class="pb-5 text-sm leading-relaxed text-muted">
+            {{ faq.answer }}
+          </p>
+        </details>
+      }
+    </div>
+  </div>
+</section>
