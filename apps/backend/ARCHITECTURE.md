@@ -128,6 +128,14 @@ The current public endpoints are:
 
 Passwords are hashed with Argon2id. Access JWTs contain `sub`, email, and role; refresh tokens are opaque, rotated, revocable, and stored only as SHA-256 hashes. One-time email and reset tokens are also hashed at rest. The API never returns `passwordHash`.
 
+Authentication policies:
+
+- A password is not enough to log in: the account email must be verified first. The login endpoint returns `403` for a valid password on an unverified account.
+- A successful password reset revokes every active refresh session for that user. Existing access JWTs remain short-lived and are not server-side session state.
+- `GET /api/auth/me` is the only current authenticated business endpoint. Public lifecycle endpoints use their own one-time tokens rather than a bearer token.
+- Future administrative endpoints must combine `JwtAuthGuard`, `RolesGuard`, and `@Roles('admin')`; customer-owned endpoints must combine `JwtAuthGuard` with resource ownership checks. No artificial admin endpoint is added just to demonstrate the guard.
+- Swagger UI is available at `/api/docs`. Auth request bodies, bearer authentication, and success/error responses are documented in the HTTP adapter without coupling Swagger decorators to domain models.
+
 ## Database model
 
 PostgreSQL is the persistence adapter. Prisma 7.10 is used with `@prisma/adapter-pg`; the generated client is emitted under `src/generated/prisma` and is accessed through `PrismaService`.
