@@ -1,0 +1,38 @@
+/* ngx-theme-stack tokens — Clior Pets (class mode) */
+
+:root,
+.light {
+  --background: #ffffff;
+  --surface: #f4f5f3;
+  --foreground: #101812;
+  --muted: #5b6660;
+  --line: rgba(16, 24, 18, 0.12);
+  --accent: #0e9f8a;
+  --accent-ink: #ffffff;
+  --brand-deep: #072320;
+  --star: #e8a33d;
+}
+
+.dark {
+  --background: #041210;
+  --surface: #072320;
+  --foreground: #f2f7f5;
+  --muted: #9db3ac;
+  --line: rgba(242, 247, 245, 0.12);
+  --accent: #3bbfad;
+  --accent-ink: #041210;
+  --brand-deep: #020807;
+  --star: #e8a33d;
+}
+
+.mascotas {
+  --background: #fff8ef;
+  --surface: #f7ecd9;
+  --foreground: #2b1d10;
+  --muted: #8a6f52;
+  --line: rgba(43, 29, 16, 0.14);
+  --accent: #0e9f8a;
+  --accent-ink: #ffffff;
+  --brand-deep: #3d2c17;
+  --star: #e8a33d;
+}

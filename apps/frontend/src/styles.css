@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+
+@theme {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-brand-deep: var(--brand-deep);
+  --color-star: var(--star);
+
+  --font-display: 'Raleway', system-ui, sans-serif;
+  --font-body: 'Roboto', system-ui, sans-serif;
+
+  --animate-marquee: marquee 22s linear infinite;
+  --animate-marquee-slow-reverse: marquee 38s linear infinite reverse;
+  --animate-hero-float: hero-float 4s ease-in-out infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes hero-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 2px dashed var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

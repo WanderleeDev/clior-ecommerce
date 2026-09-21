@@ -1,13 +1,60 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
+    <!-- ngx-theme-stack anti-flash -->
+  <script>(function(){try{var k="ngx-theme-stack",d="system",m="class",v=["system","light","dark","mascotas"],t=localStorage.getItem(k)||d,e=document.documentElement;if(!/^[a-zA-Z][a-zA-Z0-9_-]*$/.test(t)||v.indexOf(t)===-1)t=d;if(t==='system')t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';if(m==='class'||m==='both')e.classList.add(t);if(m==='attribute'||m==='both')e.setAttribute('data-theme',t);if(t==='dark'||t==='light')e.style.setProperty('color-scheme',t);}catch(x){}})();</script>
     <meta charset="utf-8" />
-    <title>frontend</title>
+    <title>Clior Pets | Todo para tu mascota</title>
+    <meta
+      name="description"
+      content="Clior Pets: alimento, juguetes y accesorios para perros y gatos. Envío rápido y asesoría experta."
+    />
     <base href="/" />
+    <link rel="canonical" href="https://example.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Clior Pets" />
+    <meta property="og:locale" content="es_PE" />
+    <meta
+      property="og:title"
+      content="Clior Pets | Todo para tu mascota"
+    />
+    <meta
+      property="og:description"
+      content="Clior Pets: alimento, juguetes y accesorios para perros y gatos. Envío rápido y asesoría experta."
+    />
+    <meta property="og:url" content="https://example.com/" />
+    <meta property="og:image" content="https://example.com/og-cover.jpg" />
+    <meta
+      property="og:image:alt"
+      content="Mascotas felices con productos Clior Pets"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Clior Pets | Todo para tu mascota"
+    />
+    <meta
+      name="twitter:description"
+      content="Clior Pets: alimento, juguetes y accesorios para perros y gatos. Envío rápido y asesoría experta."
+    />
+    <meta name="twitter:image" content="https://example.com/og-cover.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700;800&family=Roboto:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <app-root></app-root>
+    <!-- ngx-theme-stack critters-trick -->
+    <div id="ngx-theme-stack-critters-trick" hidden aria-hidden="true" style="display: none; overflow: hidden; clip-path: inset(50%); position: absolute;">
+      <div class="light"></div>
+      <div class="dark"></div>
+      <div class="mascotas"></div>
+    </div>
+    <!-- /ngx-theme-stack critters-trick -->
   </body>
 </html>
