@@ -1,10 +1,10 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Product, ProductRepositoryPort } from '../../../../domain/product';
-import { PRISMA_CLIENT, PrismaService } from '../../../../../../prisma/prisma.service';
+import { PrismaService } from '../../../../../../prisma/prisma.service';
 
 @Injectable()
 export class PrismaProductRepository implements ProductRepositoryPort {
-  constructor(@Inject(PRISMA_CLIENT) private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findAll(): Promise<Product[]> {
     const products = await this.prisma.product.findMany();
@@ -17,9 +17,9 @@ export class PrismaProductRepository implements ProductRepositoryPort {
     }));
   }
 
-  async findOne(id: string): Promise<Product | undefined> {
+  async findOne(id: string): Promise<Product | null> {
     const product = await this.prisma.product.findUnique({ where: { id } });
-    if (!product) return undefined;
+    if (!product) return null;
     return {
       id: product.id,
       name: product.name,

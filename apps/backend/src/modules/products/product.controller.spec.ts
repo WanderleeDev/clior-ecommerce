@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpException } from '@nestjs/common';
 import { ProductController } from './infrastructure/adapters/in/http/product.controller';
 import {
   GetProductUseCase,
   ListProductsUseCase,
 } from './application/products.use-cases';
-import { PRODUCT_REPOSITORY_PORT } from './domain/product';
+import { ProductNotFoundError, ProductRepositoryPort } from './domain/product';
 import { InMemoryProductRepository } from './infrastructure/adapters/out/persistence/in-memory-product.repository';
 
 describe('ProductController', () => {
@@ -15,10 +14,7 @@ describe('ProductController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProductController],
       providers: [
-        {
-          provide: PRODUCT_REPOSITORY_PORT,
-          useClass: InMemoryProductRepository,
-        },
+        { provide: ProductRepositoryPort, useClass: InMemoryProductRepository },
         ListProductsUseCase,
         GetProductUseCase,
       ],
@@ -38,7 +34,7 @@ describe('ProductController', () => {
     expect(result.name).toBe('Sample product');
   });
 
-  it('throws HttpException 404 for unknown id', async () => {
-    await expect(controller.get('missing')).rejects.toThrow(HttpException);
+  it('throws ProductNotFoundError for unknown id', async () => {
+    await expect(controller.get('missing')).rejects.toThrow(ProductNotFoundError);
   });
 });

@@ -6,9 +6,9 @@ export interface Product {
   imageUrl?: string;
 }
 
-export interface ProductRepositoryPort {
-  findAll(): Promise<Product[]>;
-  findOne(id: string): Promise<Product | undefined>;
+export abstract class ProductRepositoryPort {
+  abstract findAll(): Promise<Product[]>;
+  abstract findOne(id: string): Promise<Product | null>;
 }
 
 export class ProductNotFoundError extends Error {
@@ -17,5 +17,3 @@ export class ProductNotFoundError extends Error {
     this.name = 'ProductNotFoundError';
   }
 }
-
-export const PRODUCT_REPOSITORY_PORT = Symbol('ProductRepositoryPort');
