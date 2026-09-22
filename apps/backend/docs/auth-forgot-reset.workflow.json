@@ -1,0 +1,34 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "POST /api/auth/forgot-password, reset-password",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "client", "label": "Client" },
+    { "id": "controller", "label": "AuthController" },
+    { "id": "usecase", "label": "UseCases" },
+    { "id": "domain", "label": "Domain" },
+    { "id": "infra", "label": "Infrastructure" }
+  ],
+  "nodes": [
+    { "id": "forgotReq", "lane": "client", "col": 0, "type": "frontend", "label": "POST /forgot-password", "sublabel": "email · throttle 3/60s", "width": 200 },
+    { "id": "forgotCtrl", "lane": "controller", "col": 1, "type": "frontend", "label": "forgotPassword", "sublabel": "200", "width": 160 },
+    { "id": "forgotUC", "lane": "usecase", "col": 2, "type": "backend", "label": "RequestPasswordResetUseCase", "sublabel": "publish event", "width": 230 },
+    { "id": "resetMail", "lane": "infra", "col": 3, "type": "cloud", "label": "Send reset", "sublabel": "Resend template", "width": 160 },
+    { "id": "resetReq", "lane": "client", "col": 1, "type": "frontend", "label": "POST /reset-password", "sublabel": "token + password", "width": 190 },
+    { "id": "resetCtrl", "lane": "controller", "col": 2, "type": "frontend", "label": "reset(token, password)", "sublabel": "200", "width": 180 },
+    { "id": "resetUC", "lane": "usecase", "col": 3, "type": "backend", "label": "ResetPasswordUseCase", "sublabel": "consume updatePassword revokeAll", "width": 240 },
+    { "id": "resetInvalid", "lane": "client", "col": 4, "type": "security", "label": "400 Error", "sublabel": "InvalidOneTimeToken", "width": 160 }
+  ],
+  "edges": [
+    { "id": "forgotIn", "from": "forgotReq", "to": "forgotCtrl" },
+    { "id": "forgotDo", "from": "forgotCtrl", "to": "forgotUC" },
+    { "id": "forgotMail", "from": "forgotUC", "to": "resetMail" },
+    { "id": "resetIn", "from": "resetReq", "to": "resetCtrl" },
+    { "id": "resetDo", "from": "resetCtrl", "to": "resetUC" },
+    { "id": "resetBad", "from": "resetUC", "to": "resetInvalid", "label": "invalid token", "variant": "security" }
+  ],
+  "mainPath": ["resetReq", "resetCtrl", "resetUC", "resetInvalid"]
+}

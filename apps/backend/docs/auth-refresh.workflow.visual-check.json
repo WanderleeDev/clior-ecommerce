@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "visual-check",
+  "evidenceKind": "automated-browser",
+  "status": "skipped",
+  "visualReview": "pending",
+  "artifact": {
+    "path": "/home/wanderlee/Projects/clior-ecommerce/apps/backend/docs/auth-refresh.workflow.html",
+    "sha256": "4040074878cab6d77270b64e2364d4b339c423d4103ece515963d2c412163e2c",
+    "bytes": 802098
+  },
+  "state": {
+    "detail": "read",
+    "motion": "still"
+  },
+  "chrome": {
+    "status": "unavailable",
+    "executable": null
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/chrome-unavailable",
+      "severity": "warning",
+      "message": "Chrome or Chromium is unavailable. Set ARCHIFY_CHROME to its executable path.",
+      "subject": {
+        "artifact": "/home/wanderlee/Projects/clior-ecommerce/apps/backend/docs/auth-refresh.workflow.html"
+      },
+      "evidence": {
+        "executable": null
+      },
+      "supportedFixes": [
+        "set ARCHIFY_CHROME to a Chrome or Chromium executable and rerun visual-check"
+      ]
+    }
+  ],
+  "containment": {
+    "status": "skipped",
+    "viewports": []
+  },
+  "readability": {
+    "status": "skipped",
+    "minimumProjectedNodeTextPx": 6,
+    "viewports": []
+  },
+  "viewerChrome": {
+    "status": "skipped",
+    "viewports": []
+  },
+  "captures": {
+    "status": "skipped",
+    "screenshots": [],
+    "contactSheet": null
+  },
+  "sidecars": {
+    "receipt": "auth-refresh.workflow.visual-check.json",
+    "contactSheet": "auth-refresh.workflow.visual-check.html"
+  },
+  "error": "Chrome or Chromium is unavailable. Set ARCHIFY_CHROME to its executable path."
+}
