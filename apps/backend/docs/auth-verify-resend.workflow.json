@@ -1,0 +1,27 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "POST /api/auth/verify-email",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "client", "label": "Client" },
+    { "id": "controller", "label": "AuthController" },
+    { "id": "usecase", "label": "UseCases" }
+  ],
+  "nodes": [
+    { "id": "verifyReq", "lane": "client", "col": 0, "type": "frontend", "label": "POST /verify-email", "sublabel": "token", "width": 180 },
+    { "id": "verifyCtrl", "lane": "controller", "col": 1, "type": "frontend", "label": "verify(token)", "sublabel": "200", "width": 150 },
+    { "id": "verifyUC", "lane": "usecase", "col": 2, "type": "backend", "label": "VerifyEmailUseCase", "sublabel": "consume token", "width": 220 },
+    { "id": "verifyUC2", "lane": "usecase", "col": 3, "type": "backend", "label": "markEmailVerified", "sublabel": "user row", "width": 180 },
+    { "id": "badToken", "lane": "client", "col": 3, "type": "security", "label": "400 Error", "sublabel": "InvalidOneTimeToken", "width": 160 }
+  ],
+  "edges": [
+    { "id": "verifyIn", "from": "verifyReq", "to": "verifyCtrl" },
+    { "id": "verifyDo", "from": "verifyCtrl", "to": "verifyUC" },
+    { "id": "verifyMark", "from": "verifyUC", "to": "verifyUC2" },
+    { "id": "verifyBad", "from": "verifyUC", "to": "badToken", "label": "invalid token", "variant": "security" }
+  ],
+  "mainPath": ["verifyReq", "verifyCtrl", "verifyUC", "verifyUC2"]
+}

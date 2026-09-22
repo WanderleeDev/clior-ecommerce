@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "POST /api/auth/login",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "client", "label": "Client" },
+    { "id": "controller", "label": "AuthController", "variant": "normal" },
+    { "id": "usecase", "label": "LoginUserUseCase" },
+    { "id": "domain", "label": "Domain" },
+    { "id": "infra", "label": "Infrastructure", "variant": "normal" }
+  ],
+  "nodes": [
+    { "id": "request", "lane": "client", "col": 0, "type": "frontend", "label": "POST /login", "sublabel": "email, password", "width": 150 },
+    { "id": "validate", "lane": "controller", "col": 1, "type": "frontend", "label": "Validate DTO", "sublabel": "class-validator", "width": 130 },
+    { "id": "find", "lane": "usecase", "col": 2, "type": "backend", "label": "findByEmail", "sublabel": "exists?", "width": 130 },
+    { "id": "locked", "lane": "client", "col": 2, "type": "security", "label": "401", "sublabel": "locked", "width": 100 },
+    { "id": "verify", "lane": "usecase", "col": 3, "type": "backend", "label": "Verify password", "sublabel": "argon2id", "width": 140 },
+    { "id": "bad", "lane": "client", "col": 3, "type": "security", "label": "401", "sublabel": "invalid", "width": 100 },
+    { "id": "verified", "lane": "usecase", "col": 4, "type": "backend", "label": "emailVerifiedAt?", "sublabel": "null → 403", "width": 150 },
+    { "id": "unverified", "lane": "client", "col": 4, "type": "security", "label": "403", "sublabel": "not verified", "width": 120 },
+    { "id": "session", "lane": "infra", "col": 5, "type": "cloud", "label": "Create session", "sublabel": "accessToken + refresh cookie", "width": 170 }
+  ],
+  "edges": [
+    { "id": "req-validate", "from": "request", "to": "validate" },
+    { "id": "val-find", "from": "validate", "to": "find" },
+    { "id": "locked-err", "from": "find", "to": "locked", "label": "locked", "variant": "security" },
+    { "id": "find-verify", "from": "find", "to": "verify" },
+    { "id": "verify-bad", "from": "verify", "to": "bad", "label": "mismatch", "variant": "security" },
+    { "id": "verify-check", "from": "verify", "to": "verified" },
+    { "id": "unverified-err", "from": "verified", "to": "unverified", "label": "null", "variant": "security" },
+    { "id": "session-ok", "from": "verified", "to": "session", "label": "ok" }
+  ],
+  "mainPath": ["request", "validate", "find", "verify", "verified", "session"]
+}

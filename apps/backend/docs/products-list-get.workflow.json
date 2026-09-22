@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "GET /api/products and GET /api/products/:id",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "client", "label": "Client" },
+    { "id": "controller", "label": "ProductController", "variant": "normal" },
+    { "id": "usecase", "label": "ProductsUseCases" },
+    { "id": "domain", "label": "Domain" },
+    { "id": "infra", "label": "Infrastructure", "variant": "normal" }
+  ],
+  "nodes": [
+    { "id": "listReq", "lane": "client", "col": 0, "type": "frontend", "label": "GET /products", "sublabel": "public", "width": 150 },
+    { "id": "listCtrl", "lane": "controller", "col": 1, "type": "frontend", "label": "list()", "sublabel": "Product[]", "width": 130 },
+    { "id": "listUC", "lane": "usecase", "col": 2, "type": "backend", "label": "ListProductsUseCase", "sublabel": "execute", "width": 170 },
+    { "id": "listRepo", "lane": "infra", "col": 3, "type": "database", "label": "findAll", "sublabel": "Prisma / InMemory", "width": 140 },
+    { "id": "listOk", "lane": "client", "col": 4, "type": "backend", "label": "200", "sublabel": "Product[]", "width": 100 },
+    { "id": "getReq", "lane": "client", "col": 1, "type": "frontend", "label": "GET /products/:id", "sublabel": "public", "width": 150 },
+    { "id": "getCtrl", "lane": "controller", "col": 2, "type": "frontend", "label": "get(id)", "sublabel": "Product", "width": 130 },
+    { "id": "getUC", "lane": "usecase", "col": 3, "type": "backend", "label": "GetProductUseCase", "sublabel": "execute(id)", "width": 160 },
+    { "id": "getRepo", "lane": "infra", "col": 4, "type": "database", "label": "findOne", "sublabel": "Prisma / InMemory", "width": 140 },
+    { "id": "getOk", "lane": "client", "col": 5, "type": "backend", "label": "200", "sublabel": "Product", "width": 100 },
+    { "id": "notFound", "lane": "client", "col": 3, "type": "security", "label": "404", "sublabel": "ProductNotFoundError", "width": 140 }
+  ],
+  "edges": [
+    { "id": "list-rq-cl", "from": "listReq", "to": "listCtrl" },
+    { "id": "list-cl-uc", "from": "listCtrl", "to": "listUC" },
+    { "id": "list-uc-repo", "from": "listUC", "to": "listRepo" },
+    { "id": "list-repo-ok", "from": "listRepo", "to": "listOk" },
+    { "id": "get-rq-cl", "from": "getReq", "to": "getCtrl" },
+    { "id": "get-cl-uc", "from": "getCtrl", "to": "getUC" },
+    { "id": "get-uc-repo", "from": "getUC", "to": "getRepo" },
+    { "id": "get-repo-found", "from": "getRepo", "to": "getOk", "label": "found" },
+    { "id": "get-repo-nf", "from": "getRepo", "to": "notFound", "label": "null", "variant": "security" }
+  ],
+  "mainPath": ["getReq", "getCtrl", "getUC", "getRepo", "getOk"]
+}

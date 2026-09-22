@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "POST /api/auth/register",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "client", "label": "Client" },
+    { "id": "controller", "label": "AuthController", "variant": "normal" },
+    { "id": "usecase", "label": "RegisterUserUseCase" },
+    { "id": "domain", "label": "Domain" },
+    { "id": "infra", "label": "Infrastructure", "variant": "normal" },
+    { "id": "external", "label": "External", "variant": "normal" }
+  ],
+  "nodes": [
+    { "id": "request", "lane": "client", "col": 0, "type": "frontend", "label": "POST /register", "sublabel": "name, email, password, pet", "width": 150 },
+    { "id": "validate", "lane": "controller", "col": 1, "type": "frontend", "label": "Validate DTO", "sublabel": "class-validator", "width": 130 },
+    { "id": "check", "lane": "usecase", "col": 2, "type": "backend", "label": "findByEmail", "sublabel": "existing → 409", "width": 140 },
+    { "id": "hash", "lane": "usecase", "col": 3, "type": "backend", "label": "Hash password", "sublabel": "argon2id", "width": 130 },
+    { "id": "create", "lane": "usecase", "col": 4, "type": "backend", "label": "Create user", "sublabel": "emailVerifiedAt = null", "width": 140 },
+    { "id": "event", "lane": "domain", "col": 5, "type": "messagebus", "label": "UserRegisteredEvent", "sublabel": "publish", "width": 160 },
+    { "id": "send", "lane": "infra", "col": 5, "type": "cloud", "label": "Send verification", "sublabel": "Resend template", "width": 150 },
+    { "id": "ok", "lane": "client", "col": 5, "type": "backend", "label": "201", "sublabel": "message only", "width": 100 },
+    { "id": "err409", "lane": "client", "col": 2, "type": "security", "label": "409 Conflict", "sublabel": "email taken", "width": 130 }
+  ],
+  "edges": [
+    { "id": "req-validate", "from": "request", "to": "validate" },
+    { "id": "val-check", "from": "validate", "to": "check" },
+    { "id": "dup-409", "from": "check", "to": "err409", "label": "exists", "variant": "security" },
+    { "id": "check-hash", "from": "check", "to": "hash" },
+    { "id": "hash-create", "from": "hash", "to": "create" },
+    { "id": "create-event", "from": "create", "to": "event" },
+    { "id": "event-send", "from": "event", "to": "send" },
+    { "id": "send-ok", "from": "send", "to": "ok", "label": "best effort" }
+  ],
+  "mainPath": ["request", "validate", "check", "hash", "create", "event", "send", "ok"]
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "POST /api/auth/refresh",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "client", "label": "Client" },
+    { "id": "controller", "label": "AuthController", "variant": "normal" },
+    { "id": "usecase", "label": "RefreshAuthUseCase" },
+    { "id": "domain", "label": "Domain" },
+    { "id": "infra", "label": "Infrastructure", "variant": "normal" }
+  ],
+  "nodes": [
+    { "id": "request", "lane": "client", "col": 0, "type": "frontend", "label": "POST /refresh", "sublabel": "cookie: refresh_token", "width": 150 },
+    { "id": "read", "lane": "controller", "col": 1, "type": "frontend", "label": "readRefreshToken", "sublabel": "cookie → token", "width": 150 },
+    { "id": "missing", "lane": "client", "col": 1, "type": "security", "label": "401", "sublabel": "InvalidRefreshToken", "width": 140 },
+    { "id": "rotate", "lane": "infra", "col": 2, "type": "cloud", "label": "Rotate session", "sublabel": "PrismaRefreshSession", "width": 150 },
+    { "id": "notfound", "lane": "client", "col": 2, "type": "security", "label": "401", "sublabel": "user not found", "width": 120 },
+    { "id": "issue", "lane": "infra", "col": 3, "type": "cloud", "label": "Issue tokens", "sublabel": "accessToken + refresh cookie", "width": 170 }
+  ],
+  "edges": [
+    { "id": "req-read", "from": "request", "to": "read" },
+    { "id": "read-miss", "from": "read", "to": "missing", "label": "absent", "variant": "security" },
+    { "id": "read-rotate", "from": "read", "to": "rotate" },
+    { "id": "rotate-nf", "from": "rotate", "to": "notfound", "label": "missing", "variant": "security" },
+    { "id": "rotate-issue", "from": "rotate", "to": "issue" }
+  ],
+  "mainPath": ["request", "read", "rotate", "issue"]
+}
