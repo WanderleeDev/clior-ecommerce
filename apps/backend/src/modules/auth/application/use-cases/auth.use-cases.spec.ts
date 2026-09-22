@@ -22,10 +22,10 @@ const user: AuthUser = {
 };
 
 class FakeUserRepository implements UserRepositoryPort {
-  private stored: AuthUserWithPassword | undefined;
+  private stored: AuthUserWithPassword | null;
 
   constructor(stored?: AuthUserWithPassword) {
-    this.stored = stored;
+    this.stored = stored ?? null;
   }
 
   async create(input: { email: string; name: string; password: string; passwordHash: string }): Promise<AuthUser> {
@@ -40,12 +40,12 @@ class FakeUserRepository implements UserRepositoryPort {
     return this.stored;
   }
 
-  async findByEmail(email: string): Promise<AuthUserWithPassword | undefined> {
-    return this.stored?.email === email ? this.stored : undefined;
+  async findByEmail(email: string): Promise<AuthUserWithPassword | null> {
+    return this.stored?.email === email ? this.stored : null;
   }
 
-  async findById(id: string): Promise<AuthUser | undefined> {
-    return this.stored && this.stored.id === id ? this.stored : undefined;
+  async findById(id: string): Promise<AuthUser | null> {
+    return this.stored && this.stored.id === id ? this.stored : null;
   }
 
   async markEmailVerified(): Promise<void> {}
@@ -115,7 +115,6 @@ describe('Auth use cases', () => {
       users,
       new FakePasswordHasher(),
       events,
-      new FakeRefreshSession(),
     );
 
     const result = await useCase.execute({
@@ -124,8 +123,7 @@ describe('Auth use cases', () => {
       password: 'secret-password',
     });
 
-    expect(result.accessToken).toBe('token:user-1');
-    expect(result.user.email).toBe('maria@example.com');
+    expect(result).toBeUndefined();
     expect(events.events).toHaveLength(1);
     expect(await users.findByEmail('maria@example.com')).toMatchObject({
       passwordHash: 'hashed:secret-password',
@@ -138,7 +136,6 @@ describe('Auth use cases', () => {
       users,
       new FakePasswordHasher(),
       new FakeEventBus(),
-      new FakeRefreshSession(),
     );
 
     await expect(
