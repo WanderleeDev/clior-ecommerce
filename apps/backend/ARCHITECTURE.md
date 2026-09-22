@@ -128,6 +128,8 @@ The current public endpoints are:
 
 Passwords are hashed with Argon2id. Access JWTs contain `sub`, email, and role; refresh tokens are opaque, rotated, revocable, and stored only as SHA-256 hashes. One-time email and reset tokens are also hashed at rest. The API never returns `passwordHash`.
 
+Resend uses two published templates: `RESEND_VERIFICATION_TEMPLATE_ID` and `RESEND_PASSWORD_RESET_TEMPLATE_ID`. Both receive the variables `USER_NAME` and `ACTION_URL`; template content remains editable in Resend without changing the application code.
+
 Authentication policies:
 
 - A password is not enough to log in: the account email must be verified first. The login endpoint returns `403` for a valid password on an unverified account.
