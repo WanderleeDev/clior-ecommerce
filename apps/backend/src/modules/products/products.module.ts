@@ -4,16 +4,13 @@ import {
   GetProductUseCase,
   ListProductsUseCase,
 } from './application/products.use-cases';
-import { PRODUCT_REPOSITORY_PORT } from './domain/product';
+import { ProductRepositoryPort } from './domain/product';
 import { PrismaProductRepository } from './infrastructure/adapters/out/persistence/prisma-product.repository';
 
 @Module({
   controllers: [ProductController],
   providers: [
-    {
-      provide: PRODUCT_REPOSITORY_PORT,
-      useClass: PrismaProductRepository,
-    },
+    { provide: ProductRepositoryPort, useClass: PrismaProductRepository },
     ListProductsUseCase,
     GetProductUseCase,
   ],

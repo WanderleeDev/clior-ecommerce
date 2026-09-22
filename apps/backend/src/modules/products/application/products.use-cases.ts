@@ -1,15 +1,13 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   Product,
   ProductNotFoundError,
   ProductRepositoryPort,
-  PRODUCT_REPOSITORY_PORT,
 } from '../domain/product';
 
 @Injectable()
 export class ListProductsUseCase {
   constructor(
-    @Inject(PRODUCT_REPOSITORY_PORT)
     private readonly repository: ProductRepositoryPort,
   ) {}
 
@@ -21,7 +19,6 @@ export class ListProductsUseCase {
 @Injectable()
 export class GetProductUseCase {
   constructor(
-    @Inject(PRODUCT_REPOSITORY_PORT)
     private readonly repository: ProductRepositoryPort,
   ) {}
 

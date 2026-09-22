@@ -16,7 +16,7 @@ export class InMemoryProductRepository implements ProductRepositoryPort {
     return this.products;
   }
 
-  async findOne(id: string): Promise<Product | undefined> {
-    return this.products.find((p) => p.id === id);
+  async findOne(id: string): Promise<Product | null> {
+    return this.products.find((p) => p.id === id) ?? null;
   }
 }
