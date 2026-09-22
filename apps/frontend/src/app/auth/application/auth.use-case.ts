@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { AuthUsecase } from '../domain/ports/in/auth.usecase';
 import { AuthRepositoryPort } from '../domain/ports/out/auth-repository.port';
-import type { LoginCredentials, RecoverData, RegisterData, User } from '../domain/models/auth.model';
+import type { LoginCredentials, RecoverData, RegisterData, RegisterResult, User } from '../domain/models/auth.model';
 
 @Injectable()
 export class AuthUseCase extends AuthUsecase {
@@ -14,7 +14,7 @@ export class AuthUseCase extends AuthUsecase {
     return this.repo.login(credentials);
   }
 
-  override register(data: RegisterData): Observable<User> {
+  override register(data: RegisterData): Observable<RegisterResult> {
     return this.repo.register(data);
   }
 

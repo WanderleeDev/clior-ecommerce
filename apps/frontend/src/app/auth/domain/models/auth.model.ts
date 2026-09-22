@@ -20,6 +20,10 @@ export interface RegisterData {
   pet: string;
 }
 
+export interface RegisterResult {
+  message: string;
+}
+
 export interface RecoverData {
   email: string;
 }

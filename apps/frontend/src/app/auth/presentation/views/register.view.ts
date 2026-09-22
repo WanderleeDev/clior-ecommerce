@@ -4,7 +4,6 @@ import { Router, RouterLink } from '@angular/router';
 import { SectionTag } from '../../../shared/components/section-tag';
 import { AuthShell } from '../components/auth-shell';
 import { AuthUsecase } from '../../domain/ports/in/auth.usecase';
-import { AuthStore } from '../state/auth.store';
 
 @Component({
   selector: 'app-register-view',
@@ -114,6 +113,11 @@ import { AuthStore } from '../state/auth.store';
             {{ error() }}
           </p>
         }
+        @if (success()) {
+          <p class="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-700">
+            {{ success() }}
+          </p>
+        }
         <button
           type="submit"
           [disabled]="submitting()"
@@ -134,7 +138,6 @@ import { AuthStore } from '../state/auth.store';
 })
 export class RegisterView {
   private readonly auth = inject(AuthUsecase);
-  private readonly store = inject(AuthStore);
   private readonly router = inject(Router);
 
   protected readonly model = signal({
@@ -163,22 +166,25 @@ export class RegisterView {
   });
 
   protected readonly error = signal<string | null>(null);
+  protected readonly success = signal<string | null>(null);
   protected readonly submitting = signal(false);
 
   protected async onSubmit(event: Event): Promise<void> {
     event.preventDefault();
     this.error.set(null);
+    this.success.set(null);
     this.submitting.set(true);
     try {
       const ok = await submit(this.registerForm, async () => {
-        await new Promise<Parameters<typeof this.store.set>[0]>(
-          (resolve, reject) => {
-            this.auth.register(this.model()).subscribe({ next: resolve, error: reject });
-          },
-        ).then((user) => this.store.set(user));
+        await new Promise<string>((resolve, reject) => {
+          this.auth.register(this.model()).subscribe({
+            next: (result) => resolve(result.message),
+            error: reject,
+          });
+        }).then((message) => this.success.set(message));
       });
       if (ok) {
-        await this.router.navigate(['/cuenta']);
+        await this.router.navigate(['/ingresar']);
       } else {
         this.error.set('Revisa los campos marcados.');
       }
