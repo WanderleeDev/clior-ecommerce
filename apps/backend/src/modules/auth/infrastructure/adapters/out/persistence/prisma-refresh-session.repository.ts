@@ -1,18 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PRISMA_CLIENT, PrismaService } from '../../../../../../prisma/prisma.service';
+import { PrismaService } from '../../../../../../prisma/prisma.service';
 import { RefreshSessionPort } from '../../../../application/ports/out/refresh-session.port';
 import { OpaqueTokenPort } from '../../../../application/ports/out/opaque-token.port';
 import { TokenServicePort } from '../../../../application/ports/out/token-service.port';
 import { UserRepositoryPort } from '../../../../application/ports/out/user-repository.port';
 import type { RefreshSessionResult } from '../../../../application/types/auth.types';
 import type { AuthUser } from '../../../../domain/models/auth-user';
+import { InvalidRefreshTokenError } from '../../../../domain/errors/auth-flow.errors';
 
 const REFRESH_TTL = 30 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class PrismaRefreshSessionRepository extends RefreshSessionPort {
   constructor(
-    @Inject(PRISMA_CLIENT) private readonly prisma: PrismaService,
+    private readonly prisma: PrismaService,
     private readonly tokens: OpaqueTokenPort,
     private readonly accessTokens: TokenServicePort,
     private readonly users: UserRepositoryPort,
@@ -22,7 +23,7 @@ export class PrismaRefreshSessionRepository extends RefreshSessionPort {
 
   async create(userId: string): Promise<RefreshSessionResult> {
     const user = await this.users.findById(userId);
-    if (!user) throw new Error('User not found');
+    if (!user) throw new InvalidRefreshTokenError('User not found');
     const raw = this.tokens.generate();
     await this.prisma.refreshSession.create({
       data: {
@@ -37,14 +38,14 @@ export class PrismaRefreshSessionRepository extends RefreshSessionPort {
 
   async rotate(raw: string): Promise<RefreshSessionResult> {
     const session = await this.prisma.refreshSession.findUnique({ where: { tokenHash: this.tokens.hash(raw) } });
-    if (!session || session.expiresAt <= new Date()) throw new Error('Invalid refresh token');
+    if (!session || session.expiresAt <= new Date()) throw new InvalidRefreshTokenError();
     if (session.revokedAt) {
       await this.prisma.refreshSession.updateMany({ where: { familyId: session.familyId, revokedAt: null }, data: { revokedAt: new Date() } });
-      throw new Error('Refresh token reuse detected');
+      throw new InvalidRefreshTokenError('Refresh token reuse detected');
     }
     await this.prisma.refreshSession.update({ where: { id: session.id }, data: { revokedAt: new Date() } });
     const user = await this.users.findById(session.userId);
-    if (!user) throw new Error('User not found');
+    if (!user) throw new InvalidRefreshTokenError('User not found');
     const next = this.tokens.generate();
     await this.prisma.refreshSession.create({
       data: {

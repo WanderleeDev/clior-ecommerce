@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { AuthUser, AuthUserWithPassword } from '../../../../domain/models/auth-user';
 import { UserRepositoryPort } from '../../../../application/ports/out/user-repository.port';
 import type { RegisterUserInput } from '../../../../application/types/auth.types';
-import { PRISMA_CLIENT, PrismaService } from '../../../../../../prisma/prisma.service';
+import { PrismaService } from '../../../../../../prisma/prisma.service';
 
 @Injectable()
 export class PrismaUserRepository extends UserRepositoryPort {
-  constructor(@Inject(PRISMA_CLIENT) private readonly prisma: PrismaService) {
+  constructor(private readonly prisma: PrismaService) {
     super();
   }
 
@@ -21,14 +21,14 @@ export class PrismaUserRepository extends UserRepositoryPort {
     return this.toUser(user);
   }
 
-  async findByEmail(email: string): Promise<AuthUserWithPassword | undefined> {
+  async findByEmail(email: string): Promise<AuthUserWithPassword | null> {
     const user = await this.prisma.user.findUnique({ where: { email } });
-    return user ? this.toUserWithPassword(user) : undefined;
+    return user ? this.toUserWithPassword(user) : null;
   }
 
-  async findById(id: string): Promise<AuthUser | undefined> {
+  async findById(id: string): Promise<AuthUser | null> {
     const user = await this.prisma.user.findUnique({ where: { id } });
-    return user ? this.toUser(user) : undefined;
+    return user ? this.toUser(user) : null;
   }
 
   async markEmailVerified(id: string): Promise<void> {
