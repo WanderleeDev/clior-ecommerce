@@ -1,7 +1,8 @@
 import type { AuthUser } from '../../../domain/models/auth-user';
+import type { RefreshSessionResult } from '../../types/auth.types';
 
 export abstract class RefreshAuthPort {
-  abstract execute(token: string): Promise<unknown>;
+  abstract execute(token: string): Promise<RefreshSessionResult>;
 }
 
 export abstract class LogoutPort {

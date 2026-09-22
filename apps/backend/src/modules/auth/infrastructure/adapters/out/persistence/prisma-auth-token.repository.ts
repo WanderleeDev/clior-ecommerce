@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PRISMA_CLIENT, PrismaService } from '../../../../../../prisma/prisma.service';
+import { PrismaService } from '../../../../../../prisma/prisma.service';
 import { AuthTokenRepositoryPort } from '../../../../application/ports/out/auth-token-repository.port';
 import type { AuthOneTimeTokenType } from '../../../../application/types/auth.types';
 
 @Injectable()
 export class PrismaAuthTokenRepository extends AuthTokenRepositoryPort {
-  constructor(@Inject(PRISMA_CLIENT) private readonly prisma: PrismaService) {
+  constructor(private readonly prisma: PrismaService) {
     super();
   }
 
