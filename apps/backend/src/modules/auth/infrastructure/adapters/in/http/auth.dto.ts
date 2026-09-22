@@ -8,7 +8,7 @@ export class RegisterDto {
   name!: string;
 
   @IsEmail()
-  @ApiProperty({ example: 'maria@example.com' })
+  @ApiProperty({ example: 'maria@gmail.com' })
   email!: string;
 
   @IsString()
@@ -25,7 +25,7 @@ export class RegisterDto {
 
 export class LoginDto {
   @IsEmail()
-  @ApiProperty({ example: 'maria@example.com' })
+  @ApiProperty({ example: 'maria@gmail.com' })
   email!: string;
 
   @IsString()
@@ -43,7 +43,7 @@ export class TokenDto {
 
 export class EmailDto {
   @IsEmail()
-  @ApiProperty({ example: 'maria@example.com' })
+  @ApiProperty({ example: 'maria@gmail.com' })
   email!: string;
 }
 

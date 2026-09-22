@@ -1,5 +1,5 @@
-import type { AuthResult, RegisterUserInput } from '../../types/auth.types';
+import type { RegisterUserInput } from '../../types/auth.types';
 
 export abstract class RegisterUserPort {
-  abstract execute(input: RegisterUserInput): Promise<AuthResult>;
+  abstract execute(input: RegisterUserInput): Promise<void>;
 }

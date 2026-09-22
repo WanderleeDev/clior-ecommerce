@@ -1,26 +1,10 @@
-import {
-  ConflictException,
-  BadRequestException,
-  ForbiddenException,
-  Controller,
-  Get,
-  Post,
-  Req,
-  UnauthorizedException,
-  Body,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { EmailAlreadyRegisteredError } from '../../../../domain/errors/email-already-registered.error';
-import { InvalidCredentialsError } from '../../../../domain/errors/invalid-credentials.error';
-import { UserNotFoundError } from '../../../../domain/errors/user-not-found.error';
-import { AccountLockedError, EmailNotVerifiedError, InvalidOneTimeTokenError } from '../../../../domain/errors/auth-flow.errors';
+import { Body, Controller, Get, HttpCode, Post, Req, Res } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiCookieAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserPort } from '../../../../application/ports/in/get-current-user.port';
 import { LoginUserPort } from '../../../../application/ports/in/login-user.port';
 import { RegisterUserPort } from '../../../../application/ports/in/register-user.port';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { LoginDto, RegisterDto } from './auth.dto';
-import { EmailDto, RefreshTokenDto, ResetPasswordDto, TokenDto } from './auth.dto';
+import { Public } from '../../../../../../shared/infrastructure/http/public.decorator';
+import { EmailDto, LoginDto, RegisterDto, ResetPasswordDto, TokenDto } from './auth.dto';
 import {
   LogoutPort,
   RefreshAuthPort,
@@ -30,7 +14,39 @@ import {
   VerifyEmailPort,
 } from '../../../../application/ports/in/auth-flow.ports';
 import { Throttle } from '@nestjs/throttler';
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
+import type { AuthResult } from '../../../../application/types/auth.types';
+import type { AuthUser } from '../../../../domain/models/auth-user';
+import { InvalidRefreshTokenError } from '../../../../domain/errors/auth-flow.errors';
+
+type PublicUser = Pick<AuthUser, 'id' | 'email' | 'name' | 'role'>;
+
+const REFRESH_COOKIE_NAME = 'refresh_token';
+const REFRESH_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+  path: '/api/auth',
+};
+
+type IssuedAuthResult = Pick<AuthResult, 'accessToken' | 'refreshToken' | 'user'>;
+type PublicAuthResult = Pick<IssuedAuthResult, 'accessToken'> & { user: PublicUser };
+
+function readRefreshToken(request: Request): string {
+  const token = request.cookies?.[REFRESH_COOKIE_NAME];
+  if (!token) throw new InvalidRefreshTokenError();
+  return token;
+}
+
+function toPublicUser(user: AuthUser): PublicUser {
+  return { id: user.id, email: user.email, name: user.name, role: user.role };
+}
+
+function setRefreshCookie(response: Response, result: IssuedAuthResult): PublicAuthResult {
+  response.cookie(REFRESH_COOKIE_NAME, result.refreshToken, REFRESH_COOKIE_OPTIONS);
+  return { accessToken: result.accessToken, user: toPublicUser(result.user) };
+}
 
 type AuthenticatedRequest = Request & {
   user: { id: string; email: string; name: string; createdAt: Date };
@@ -52,97 +68,91 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @Public()
+  @HttpCode(201)
   @ApiOperation({ summary: 'Register a user' })
   @ApiBody({ type: RegisterDto })
-  @ApiResponse({ status: 201, description: 'User registered and tokens issued' })
+  @ApiResponse({ status: 201, description: 'User registered, verification email sent' })
   @ApiResponse({ status: 409, description: 'Email is already registered' })
   async register(@Body() dto: RegisterDto) {
-    try {
-      return await this.registerUser.execute(dto);
-    } catch (error) {
-      if (error instanceof EmailAlreadyRegisteredError) {
-        throw new ConflictException(error.message);
-      }
-      throw error;
-    }
+    await this.registerUser.execute(dto);
+    return { message: 'Cuenta creada. Te enviamos un correo de verificación, revisa tu bandeja.' };
   }
 
   @Post('login')
+  @Public()
+  @HttpCode(200)
   @ApiOperation({ summary: 'Authenticate a user' })
   @ApiBody({ type: LoginDto })
-  @ApiResponse({ status: 201, description: 'Authenticated user and tokens' })
+  @ApiResponse({ status: 200, description: 'Authenticated user and tokens' })
   @ApiResponse({ status: 401, description: 'Invalid credentials or locked account' })
   @ApiResponse({ status: 403, description: 'Email address is not verified' })
-  async login(@Body() dto: LoginDto) {
-    try {
-      return await this.loginUser.execute(dto);
-    } catch (error) {
-      if (error instanceof InvalidCredentialsError) {
-        throw new UnauthorizedException(error.message);
-      }
-      if (error instanceof AccountLockedError) throw new UnauthorizedException(error.message);
-      if (error instanceof EmailNotVerifiedError) throw new ForbiddenException(error.message);
-      throw error;
-    }
+  async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
+    return setRefreshCookie(response, await this.loginUser.execute(dto));
   }
 
   @Post('refresh')
+  @Public()
+  @HttpCode(200)
+  @ApiCookieAuth(REFRESH_COOKIE_NAME)
   @ApiOperation({ summary: 'Rotate a refresh token' })
-  @ApiBody({ type: RefreshTokenDto })
+  @ApiResponse({ status: 200, description: 'Rotated tokens' })
   @ApiResponse({ status: 401, description: 'Invalid, expired, or reused refresh token' })
-  async refresh(@Body() dto: RefreshTokenDto) {
-    try {
-      return await this.refreshAuth.execute(dto.token);
-    } catch {
-      throw new UnauthorizedException('Invalid refresh token');
-    }
+  async refresh(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+    return setRefreshCookie(response, await this.refreshAuth.execute(readRefreshToken(request)));
   }
 
   @Post('logout')
+  @Public()
+  @HttpCode(200)
+  @ApiCookieAuth(REFRESH_COOKIE_NAME)
   @ApiOperation({ summary: 'Revoke a refresh token' })
-  @ApiBody({ type: RefreshTokenDto })
-  async logout(@Body() dto: RefreshTokenDto): Promise<void> {
-    await this.logoutUser.execute(dto.token);
+  @ApiResponse({ status: 200, description: 'Session revoked' })
+  async logout(@Req() request: Request, @Res({ passthrough: true }) response: Response): Promise<void> {
+    await this.logoutUser.execute(readRefreshToken(request));
+    response.clearCookie(REFRESH_COOKIE_NAME, { path: '/api/auth' });
   }
 
   @Post('verify-email')
+  @Public()
+  @HttpCode(200)
   @ApiOperation({ summary: 'Verify an email address' })
   @ApiBody({ type: TokenDto })
+  @ApiResponse({ status: 200, description: 'Email verified' })
   async verify(@Body() dto: TokenDto): Promise<void> {
-    try {
-      await this.verifyEmail.execute(dto.token);
-    } catch (error) {
-      if (error instanceof InvalidOneTimeTokenError) throw new BadRequestException(error.message);
-      throw error;
-    }
+    await this.verifyEmail.execute(dto.token);
   }
 
   @Post('resend-verification')
+  @Public()
+  @HttpCode(200)
   @ApiOperation({ summary: 'Request another verification email' })
   @ApiBody({ type: EmailDto })
+  @ApiResponse({ status: 200, description: 'Verification email requested' })
   @Throttle({ default: { limit: 3, ttl: 60_000 } })
   async resendVerification(@Body() dto: EmailDto): Promise<void> {
     await this.requestVerification.execute(dto.email);
   }
 
   @Post('forgot-password')
+  @Public()
+  @HttpCode(200)
   @ApiOperation({ summary: 'Request a password reset email' })
   @ApiBody({ type: EmailDto })
+  @ApiResponse({ status: 200, description: 'Password reset email requested' })
   @Throttle({ default: { limit: 3, ttl: 60_000 } })
   async forgotPassword(@Body() dto: EmailDto): Promise<void> {
     await this.requestPasswordReset.execute(dto.email);
   }
 
   @Post('reset-password')
+  @Public()
+  @HttpCode(200)
   @ApiOperation({ summary: 'Reset a password with a one-time token' })
   @ApiBody({ type: ResetPasswordDto })
+  @ApiResponse({ status: 200, description: 'Password reset' })
   async reset(@Body() dto: ResetPasswordDto): Promise<void> {
-    try {
-      await this.resetPassword.execute(dto.token, dto.password);
-    } catch (error) {
-      if (error instanceof InvalidOneTimeTokenError) throw new BadRequestException(error.message);
-      throw error;
-    }
+    await this.resetPassword.execute(dto.token, dto.password);
   }
 
   @Get('me')
@@ -150,15 +160,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Get the authenticated user' })
   @ApiResponse({ status: 200, description: 'Authenticated user profile' })
   @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
-  @UseGuards(JwtAuthGuard)
   async me(@Req() request: AuthenticatedRequest) {
-    try {
-      return await this.getCurrentUser.execute(request.user.id);
-    } catch (error) {
-      if (error instanceof UserNotFoundError) {
-        throw new UnauthorizedException();
-      }
-      throw error;
-    }
+    return this.getCurrentUser.execute(request.user.id);
   }
 }
