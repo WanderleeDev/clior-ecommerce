@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -44,6 +45,7 @@ import {
   VerifyEmailUseCase,
 } from './application/use-cases/email-auth.use-cases';
 import { RolesGuard } from './infrastructure/adapters/in/http/roles.guard';
+import { JwtAuthGuard } from './infrastructure/adapters/in/http/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -80,6 +82,7 @@ import { RolesGuard } from './infrastructure/adapters/in/http/roles.guard';
     { provide: ResetPasswordPort, useClass: ResetPasswordUseCase },
     AuthEmailListeners,
     RolesGuard,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
   exports: [GetCurrentUserPort, RolesGuard],
 })
