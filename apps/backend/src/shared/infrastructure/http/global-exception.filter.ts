@@ -11,7 +11,7 @@ import { AccountLockedError, EmailNotVerifiedError, InvalidOneTimeTokenError, In
 import { EmailAlreadyRegisteredError } from '../../../modules/auth/domain/errors/email-already-registered.error';
 import { InvalidCredentialsError } from '../../../modules/auth/domain/errors/invalid-credentials.error';
 import { UserNotFoundError } from '../../../modules/auth/domain/errors/user-not-found.error';
-import { ProductNotFoundError } from '../../../modules/products/domain/product';
+import { ProductNotFoundError } from '../../../modules/products/domain/errors/product.errors';
 
 type DomainError = Error & { constructor: typeof Error };
 

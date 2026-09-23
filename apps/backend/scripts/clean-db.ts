@@ -25,6 +25,7 @@ async function main(): Promise<void> {
   await prisma.review.deleteMany();
   await prisma.order.deleteMany();
   await prisma.product.deleteMany();
+  await prisma.brand.deleteMany();
   await prisma.address.deleteMany();
   await prisma.authToken.deleteMany();
   await prisma.refreshSession.deleteMany();
