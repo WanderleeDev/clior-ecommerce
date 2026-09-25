@@ -26,7 +26,6 @@ import { RolesGuard } from '../../../../../../shared/infrastructure/http/roles.g
 
 @ApiTags('Products')
 @Controller('api/products')
-@Public()
 export class ProductController {
   constructor(
     private readonly listProducts: ListProductsPort,
@@ -51,6 +50,7 @@ export class ProductController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'List products with cursor pagination' })
   @ApiResponse({ status: 200, description: 'Paginated products', type: PaginatedProductDto })
   @ApiResponse({ status: 400, description: 'Invalid limit or cursor' })
@@ -69,6 +69,7 @@ export class ProductController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Get a product by id' })
   @ApiResponse({ status: 200, description: 'Product detail', type: ProductDto })
   @ApiResponse({ status: 404, description: 'Product not found' })
