@@ -5,7 +5,15 @@ import { LoginUserPort } from '../../../../application/ports/in/login-user.port'
 import { RegisterUserPort } from '../../../../application/ports/in/register-user.port';
 import { Public } from '../../../../../../shared/infrastructure/http/public.decorator';
 import { ApiResponses } from '../../../../../../shared/infrastructure/http/api-responses.decorator';
-import { EmailDto, LoginDto, RegisterDto, ResetPasswordDto, TokenDto } from './auth.dto';
+import {
+  EmailDto,
+  LoginDto,
+  LoginResponseDto,
+  PublicUserDto,
+  RegisterDto,
+  ResetPasswordDto,
+  TokenDto,
+} from './auth.dto';
 import {
   LogoutPort,
   RefreshAuthPort,
@@ -20,8 +28,6 @@ import type { AuthResult } from '../../../../application/types/auth.types';
 import type { AuthUser } from '../../../../domain/models/auth-user';
 import { InvalidRefreshTokenError } from '../../../../domain/errors/auth-flow.errors';
 
-type PublicUser = Pick<AuthUser, 'id' | 'email' | 'name' | 'role'>;
-
 const REFRESH_COOKIE_NAME = 'refresh_token';
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
@@ -32,7 +38,7 @@ const REFRESH_COOKIE_OPTIONS = {
 };
 
 type IssuedAuthResult = Pick<AuthResult, 'accessToken' | 'refreshToken' | 'user'>;
-type PublicAuthResult = Pick<IssuedAuthResult, 'accessToken'> & { user: PublicUser };
+type PublicAuthResult = Pick<IssuedAuthResult, 'accessToken'> & { user: PublicUserDto };
 
 function readRefreshToken(request: Request): string {
   const token = request.cookies?.[REFRESH_COOKIE_NAME];
@@ -40,7 +46,7 @@ function readRefreshToken(request: Request): string {
   return token;
 }
 
-function toPublicUser(user: AuthUser): PublicUser {
+function toPublicUser(user: AuthUser): PublicUserDto {
   return { id: user.id, email: user.email, name: user.name, role: user.role };
 }
 
@@ -86,7 +92,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Authenticate a user' })
   @ApiBody({ type: LoginDto })
   @ApiResponses(
-    { status: 200, description: 'Authenticated user and tokens' },
+    { status: 200, description: 'Authenticated user and tokens', type: LoginResponseDto },
     { status: 401, description: 'Invalid credentials or locked account' },
     { status: 403, description: 'Email address is not verified' },
   )
@@ -100,7 +106,7 @@ export class AuthController {
   @ApiCookieAuth(REFRESH_COOKIE_NAME)
   @ApiOperation({ summary: 'Rotate a refresh token' })
   @ApiResponses(
-    { status: 200, description: 'Rotated tokens' },
+    { status: 200, description: 'Rotated tokens', type: LoginResponseDto },
     { status: 401, description: 'Invalid, expired, or reused refresh token' },
   )
   async refresh(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
