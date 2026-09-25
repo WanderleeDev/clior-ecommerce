@@ -21,8 +21,8 @@ import { CreateProductDto } from './create-product.dto';
 import { UpdateProductDto, UpdateStockDto } from './update-product.dto';
 import { PaginatedProductDto, ProductDto } from './product.dto';
 import { Public } from '../../../../../../shared/infrastructure/http/public.decorator';
-import { Roles } from '../../../../../auth/infrastructure/adapters/in/http/roles.decorator';
-import { RolesGuard } from '../../../../../auth/infrastructure/adapters/in/http/roles.guard';
+import { Roles } from '../../../../../../shared/infrastructure/http/roles.decorator';
+import { RolesGuard } from '../../../../../../shared/infrastructure/http/roles.guard';
 
 @ApiTags('Products')
 @Controller('api/products')
