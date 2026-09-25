@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { faker } from '@faker-js/faker';
+import * as argon2 from 'argon2';
 
 // Seed with Faker.js — creates a coherent catalog + a few users/addresses/
 // orders/payments/reviews so the front-end has realistic data to work with.
@@ -116,6 +117,10 @@ function randElement<T>(arr: readonly T[]): T {
 // Delete (children first so FK constraints don't blow up)
 // ---------------------------------------------------------------------------
 async function wipeAll(): Promise<void> {
+  await prisma.cartItem.deleteMany();
+  await prisma.cart.deleteMany();
+  await prisma.wishlistItem.deleteMany();
+  await prisma.wishlist.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.payment.deleteMany();
   await prisma.review.deleteMany();
@@ -189,6 +194,21 @@ async function main(): Promise<void> {
   );
   console.log(`Seeded ${users.length} users`);
 
+  // --- Admin: role-based endpoints reject every faker user, so the admin
+  // --- flow cannot be exercised locally without one. Uses a real argon2id
+  // --- hash so the documented credentials actually log in.
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'Admin-test1!';
+  const admin = await prisma.user.create({
+    data: {
+      email: process.env.SEED_ADMIN_EMAIL ?? 'admin@clior.test',
+      name: 'Clior Admin',
+      passwordHash: await argon2.hash(adminPassword, { type: argon2.argon2id }),
+      role: 'admin',
+      emailVerifiedAt: new Date(),
+    },
+  });
+  console.log(`Seeded admin ${admin.email} (password: ${adminPassword})`);
+
   // --- Categories (with slugs for URLs) ---
   const categories = await Promise.all(
     Array.from({ length: COUNTS.categories }, async (_, i) => {
@@ -231,7 +251,6 @@ async function main(): Promise<void> {
           imageUrl: `https://picsum.photos/seed/${i}/640/640`,
           categoryId: category.id,
           brandId: brand.id,
-          brand: brandName,
           stock: randInt(0, 50),
         },
       });
@@ -285,6 +304,7 @@ async function main(): Promise<void> {
         payment: {
           create: {
             provider: randElement(['mp', 'stripe', 'paypal', 'mercadoPago']),
+            amountCents: total, // congelado: iguala Order.total
             status: { connect: { id: paymentStatusMap.get(paymentStatusCode)! } },
             reference: faker.string.alphanumeric(24),
           },
