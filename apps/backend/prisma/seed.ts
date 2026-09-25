@@ -317,12 +317,14 @@ async function main(): Promise<void> {
     );
   }
 
-  // --- Reviews: 1..5 per product from a random user ---
+  // --- Reviews: 1..5 per product from distinct users ---
+  // Shuffling first guarantees no (productId, userId) pair repeats, which the
+  // reviews_productId_userId_key unique constraint rejects.
   let reviewCount = 0;
   for (const product of products) {
     const nReviews = randInt(COUNTS.reviewsPerProduct[0], COUNTS.reviewsPerProduct[1]);
-    for (let r = 0; r < nReviews; r++) {
-      const user = randElement(users);
+    const reviewers = faker.helpers.arrayElements(users, Math.min(nReviews, users.length));
+    for (const user of reviewers) {
       const rating = randInt(1, 5);
       const review = await prisma.review.create({
         data: {
