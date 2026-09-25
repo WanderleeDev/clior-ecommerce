@@ -13,9 +13,9 @@ import { InvalidCredentialsError } from '../../../modules/auth/domain/errors/inv
 import { UserNotFoundError } from '../../../modules/auth/domain/errors/user-not-found.error';
 import { ProductNotFoundError } from '../../../modules/products/domain/errors/product.errors';
 
-type DomainError = Error & { constructor: typeof Error };
+type DomainErrorConstructor = abstract new (...args: never[]) => Error;
 
-const domainErrorStatuses = new Map<Function, HttpStatus>([
+const domainErrorStatuses = new Map<DomainErrorConstructor, HttpStatus>([
   [EmailAlreadyRegisteredError, HttpStatus.CONFLICT],
   [InvalidCredentialsError, HttpStatus.UNAUTHORIZED],
   [AccountLockedError, HttpStatus.UNAUTHORIZED],
@@ -39,7 +39,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     }
 
     if (exception instanceof Error) {
-      const status = domainErrorStatuses.get(exception.constructor);
+      const constructor = exception.constructor as DomainErrorConstructor;
+      const status = domainErrorStatuses.get(constructor);
 
       if (status !== undefined) {
         response.status(status).json({ statusCode: status, message: exception.message });
