@@ -61,3 +61,25 @@ export class ResetPasswordDto extends TokenDto {
   @ApiProperty({ minLength: 12, example: 'New-secure-password1!' })
   password!: string;
 }
+
+export class PublicUserDto {
+  @ApiProperty({ example: '0f8b1c2e-4a5b-4c9d-8e7f-1a2b3c4d5e6f' })
+  id!: string;
+
+  @ApiProperty({ example: 'maria@gmail.com' })
+  email!: string;
+
+  @ApiProperty({ example: 'Maria Lopez' })
+  name!: string;
+
+  @ApiProperty({ example: 'customer' })
+  role!: string;
+}
+
+export class LoginResponseDto {
+  @ApiProperty({ description: 'JWT access token' })
+  accessToken!: string;
+
+  @ApiProperty({ type: PublicUserDto })
+  user!: PublicUserDto;
+}
