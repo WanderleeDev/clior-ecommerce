@@ -10,6 +10,17 @@ export class PrismaUserRepository extends UserRepositoryPort {
     super();
   }
 
+  // Explicit allowlist: a new sensitive column fails closed instead of riding
+  // along to the application layer. toUser's column list mirrors this.
+  private static readonly publicSelect = {
+    id: true,
+    email: true,
+    name: true,
+    role: true,
+    emailVerifiedAt: true,
+    createdAt: true,
+  } as const;
+
   async create(input: RegisterUserInput & { passwordHash: string }): Promise<AuthUser> {
     const user = await this.prisma.user.create({
       data: {
@@ -17,6 +28,7 @@ export class PrismaUserRepository extends UserRepositoryPort {
         name: input.name,
         passwordHash: input.passwordHash,
       },
+      select: PrismaUserRepository.publicSelect,
     });
     return this.toUser(user);
   }
@@ -27,7 +39,10 @@ export class PrismaUserRepository extends UserRepositoryPort {
   }
 
   async findById(id: string): Promise<AuthUser | null> {
-    const user = await this.prisma.user.findUnique({ where: { id } });
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: PrismaUserRepository.publicSelect,
+    });
     return user ? this.toUser(user) : null;
   }
 
@@ -47,9 +62,15 @@ export class PrismaUserRepository extends UserRepositoryPort {
     await this.prisma.user.update({ where: { id }, data: { failedLoginAttempts: 0, lockedUntil: null } });
   }
 
-  private toUser(user: AuthUserWithPassword): AuthUser {
-    const { passwordHash: _passwordHash, ...safeUser } = user;
-    return safeUser;
+  private toUser(user: Pick<AuthUser, 'id' | 'email' | 'name' | 'role' | 'emailVerifiedAt' | 'createdAt'>): AuthUser {
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      emailVerifiedAt: user.emailVerifiedAt,
+      createdAt: user.createdAt,
+    };
   }
 
   private toUserWithPassword(user: AuthUserWithPassword): AuthUserWithPassword {
