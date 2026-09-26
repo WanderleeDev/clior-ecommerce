@@ -88,6 +88,7 @@ export class PrismaProductRepository implements ProductRepositoryPort {
     const product = await this.prisma.product.findUnique({
       where: { id },
       select: PrismaProductRepository.detailSelect,
+      relationLoadStrategy: 'join',
     });
     if (!product) return null;
     return this.toDomain(product);
