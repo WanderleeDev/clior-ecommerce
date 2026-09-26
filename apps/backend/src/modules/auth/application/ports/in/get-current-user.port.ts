@@ -1,5 +1,6 @@
 import type { AuthUser } from '../../../domain/models/auth-user';
+import type { CurrentUser } from '../../types/auth.types';
 
 export abstract class GetCurrentUserPort {
-  abstract execute(userId: string): Promise<AuthUser>;
+  abstract execute(user: AuthUser): Promise<CurrentUser>;
 }
