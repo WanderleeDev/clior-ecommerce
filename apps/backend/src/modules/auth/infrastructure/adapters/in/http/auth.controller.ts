@@ -46,17 +46,23 @@ function readRefreshToken(request: Request): string {
   return token;
 }
 
-function toPublicUser(user: AuthUser): PublicUserDto {
-  return { id: user.id, email: user.email, name: user.name, role: user.role };
-}
+export class AuthUserMapper {
+  private constructor() {
+    throw new Error('AuthUserMapper is a static utility class');
+  }
 
-function toCurrentUser(user: AuthUser): CurrentUserDto {
-  return { ...toPublicUser(user), createdAt: user.createdAt };
+  static toPublicUser(user: AuthUser): PublicUserDto {
+    return { id: user.id, email: user.email, name: user.name, role: user.role };
+  }
+
+  static toCurrentUser(user: AuthUser): CurrentUserDto {
+    return { ...AuthUserMapper.toPublicUser(user), createdAt: user.createdAt };
+  }
 }
 
 function setRefreshCookie(response: Response, result: IssuedAuthResult): PublicAuthResult {
   response.cookie(REFRESH_COOKIE_NAME, result.refreshToken, REFRESH_COOKIE_OPTIONS);
-  return { accessToken: result.accessToken, user: toPublicUser(result.user) };
+  return { accessToken: result.accessToken, user: AuthUserMapper.toPublicUser(result.user) };
 }
 
 type AuthenticatedRequest = Request & { user: AuthUser };
@@ -177,6 +183,6 @@ export class AuthController {
     { status: 401, description: 'Missing or invalid access token' },
   )
   async me(@Req() request: AuthenticatedRequest): Promise<CurrentUserDto> {
-    return toCurrentUser(request.user);
+    return AuthUserMapper.toCurrentUser(request.user);
   }
 }
