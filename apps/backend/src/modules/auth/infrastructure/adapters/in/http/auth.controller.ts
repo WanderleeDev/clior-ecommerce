@@ -6,6 +6,7 @@ import { RegisterUserPort } from '../../../../application/ports/in/register-user
 import { Public } from '../../../../../../shared/infrastructure/http/decorators/public.decorator';
 import { ApiResponses } from '../../../../../../shared/infrastructure/http/decorators/api-responses.decorator';
 import {
+  CurrentUserDto,
   EmailDto,
   LoginDto,
   LoginResponseDto,
@@ -48,6 +49,10 @@ function readRefreshToken(request: Request): string {
 
 function toPublicUser(user: AuthUser): PublicUserDto {
   return { id: user.id, email: user.email, name: user.name, role: user.role };
+}
+
+function toCurrentUser(user: AuthUser): CurrentUserDto {
+  return { ...toPublicUser(user), createdAt: user.createdAt };
 }
 
 function setRefreshCookie(response: Response, result: IssuedAuthResult): PublicAuthResult {
@@ -170,10 +175,10 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get the authenticated user' })
   @ApiResponses(
-    { status: 200, description: 'Authenticated user profile' },
+    { status: 200, description: 'Authenticated user profile', type: CurrentUserDto },
     { status: 401, description: 'Missing or invalid access token' },
   )
-  async me(@Req() request: AuthenticatedRequest) {
-    return this.getCurrentUser.execute(request.user.id);
+  async me(@Req() request: AuthenticatedRequest): Promise<CurrentUserDto> {
+    return toCurrentUser(await this.getCurrentUser.execute(request.user.id));
   }
 }

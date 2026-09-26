@@ -83,3 +83,8 @@ export class LoginResponseDto {
   @ApiProperty({ type: PublicUserDto })
   user!: PublicUserDto;
 }
+
+export class CurrentUserDto extends PublicUserDto {
+  @ApiProperty({ example: '2026-09-01T00:00:00.000Z' })
+  createdAt!: Date;
+}
