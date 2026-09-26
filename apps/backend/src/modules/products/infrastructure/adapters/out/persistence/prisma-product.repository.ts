@@ -27,6 +27,9 @@ export class PrismaProductRepository implements ProductRepositoryPort {
     description: true,
     categoryId: true,
     brandId: true,
+    // The relation name is brandRef because brandId occupies brand; see product.prisma.
+    category: { select: { id: true, name: true, slug: true } },
+    brandRef: { select: { id: true, name: true, slug: true } },
   } as const;
 
   async findPage(query: ListProductsQuery): Promise<Page<Product>> {
@@ -124,6 +127,8 @@ export class PrismaProductRepository implements ProductRepositoryPort {
       brandId: string | null;
       stock: number;
       createdAt: Date;
+      category?: { id: string; name: string; slug: string } | null;
+      brandRef?: { id: string; name: string; slug: string } | null;
     },
   ): Product {
     return {
@@ -136,6 +141,8 @@ export class PrismaProductRepository implements ProductRepositoryPort {
       brandId: p.brandId ?? undefined,
       stock: p.stock,
       createdAt: p.createdAt,
+      category: p.category ?? undefined,
+      brand: p.brandRef ?? undefined,
     };
   }
 

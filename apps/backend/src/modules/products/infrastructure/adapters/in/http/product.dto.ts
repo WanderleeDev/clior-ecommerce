@@ -143,6 +143,17 @@ export class ProductListItemDto {
   stock!: number;
 }
 
+export class ProductTaxonomyDto {
+  @ApiProperty({ example: 'cat-1' })
+  id!: string;
+
+  @ApiProperty({ example: 'Alimento balanceado' })
+  name!: string;
+
+  @ApiProperty({ example: 'alimento-balanceado' })
+  slug!: string;
+}
+
 export class ProductDetailDto extends ProductListItemDto {
   @ApiProperty({ example: 'A sample product with the full description' })
   description!: string;
@@ -152,6 +163,12 @@ export class ProductDetailDto extends ProductListItemDto {
 
   @ApiProperty({ example: 'b1', required: false })
   brandId?: string;
+
+  @ApiProperty({ type: ProductTaxonomyDto, required: false })
+  category?: ProductTaxonomyDto;
+
+  @ApiProperty({ type: ProductTaxonomyDto, required: false })
+  brand?: ProductTaxonomyDto;
 
   @ApiProperty({ example: '2026-09-23T00:00:00.000Z' })
   createdAt!: Date;

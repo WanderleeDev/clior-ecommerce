@@ -81,6 +81,8 @@ export class ProductMapper {
       description: product.description,
       categoryId: product.categoryId,
       brandId: product.brandId,
+      category: product.category,
+      brand: product.brand,
       createdAt: product.createdAt,
     };
   }
