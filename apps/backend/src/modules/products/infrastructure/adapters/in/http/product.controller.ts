@@ -9,9 +9,9 @@ import { ListProductsQueryDto } from './list-products-query.dto';
 import { CreateProductDto } from './create-product.dto';
 import { UpdateProductDto, UpdateStockDto } from './update-product.dto';
 import { PaginatedProductDto, ProductDto } from './product.dto';
-import { Public } from '../../../../../../shared/infrastructure/http/public.decorator';
-import { ApiResponses } from '../../../../../../shared/infrastructure/http/api-responses.decorator';
-import { AdminOnly } from '../../../../../../shared/infrastructure/http/admin-only.decorator';
+import { Public } from '../../../../../../shared/infrastructure/http/decorators/public.decorator';
+import { ApiResponses } from '../../../../../../shared/infrastructure/http/decorators/api-responses.decorator';
+import { AdminOnly } from '../../../../../../shared/infrastructure/http/decorators/admin-only.decorator';
 
 @ApiTags('Products')
 @Controller('api/products')

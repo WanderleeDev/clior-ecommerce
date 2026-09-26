@@ -7,11 +7,11 @@ import {
   Logger,
 } from '@nestjs/common';
 import type { Response } from 'express';
-import { AccountLockedError, EmailNotVerifiedError, InvalidOneTimeTokenError, InvalidRefreshTokenError } from '../../../modules/auth/domain/errors/auth-flow.errors';
-import { EmailAlreadyRegisteredError } from '../../../modules/auth/domain/errors/email-already-registered.error';
-import { InvalidCredentialsError } from '../../../modules/auth/domain/errors/invalid-credentials.error';
-import { UserNotFoundError } from '../../../modules/auth/domain/errors/user-not-found.error';
-import { ProductNotFoundError } from '../../../modules/products/domain/errors/product.errors';
+import { AccountLockedError, EmailNotVerifiedError, InvalidOneTimeTokenError, InvalidRefreshTokenError } from '../../../../modules/auth/domain/errors/auth-flow.errors';
+import { EmailAlreadyRegisteredError } from '../../../../modules/auth/domain/errors/email-already-registered.error';
+import { InvalidCredentialsError } from '../../../../modules/auth/domain/errors/invalid-credentials.error';
+import { UserNotFoundError } from '../../../../modules/auth/domain/errors/user-not-found.error';
+import { ProductNotFoundError } from '../../../../modules/products/domain/errors/product.errors';
 
 type DomainErrorConstructor = abstract new (...args: never[]) => Error;
 

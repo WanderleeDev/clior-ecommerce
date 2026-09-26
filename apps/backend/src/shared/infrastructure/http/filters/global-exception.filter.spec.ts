@@ -1,5 +1,5 @@
 import { ArgumentsHost, ConflictException, HttpStatus } from '@nestjs/common';
-import { EmailAlreadyRegisteredError } from '../../../modules/auth/domain/errors/email-already-registered.error';
+import { EmailAlreadyRegisteredError } from '../../../../modules/auth/domain/errors/email-already-registered.error';
 import { GlobalExceptionFilter } from './global-exception.filter';
 
 function createHost() {

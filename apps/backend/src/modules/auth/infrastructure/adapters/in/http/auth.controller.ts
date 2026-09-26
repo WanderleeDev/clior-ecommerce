@@ -3,8 +3,8 @@ import { ApiBearerAuth, ApiBody, ApiCookieAuth, ApiOperation, ApiTags } from '@n
 import { GetCurrentUserPort } from '../../../../application/ports/in/get-current-user.port';
 import { LoginUserPort } from '../../../../application/ports/in/login-user.port';
 import { RegisterUserPort } from '../../../../application/ports/in/register-user.port';
-import { Public } from '../../../../../../shared/infrastructure/http/public.decorator';
-import { ApiResponses } from '../../../../../../shared/infrastructure/http/api-responses.decorator';
+import { Public } from '../../../../../../shared/infrastructure/http/decorators/public.decorator';
+import { ApiResponses } from '../../../../../../shared/infrastructure/http/decorators/api-responses.decorator';
 import {
   EmailDto,
   LoginDto,
