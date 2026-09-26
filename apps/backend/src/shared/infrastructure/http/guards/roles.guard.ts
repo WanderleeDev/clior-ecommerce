@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { AUTH_ROLES_KEY } from './roles.decorator';
+import { AUTH_ROLES_KEY } from '../decorators/roles.decorator';
 import type { Request } from 'express';
 
 type AuthenticatedRequest = Request & { user: { role: string } };
