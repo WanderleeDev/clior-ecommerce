@@ -4,11 +4,11 @@ import { ListProductsPort } from '../../../../application/ports/in/list-products
 import { GetProductPort } from '../../../../application/ports/in/get-product.port';
 import { CreateProductPort } from '../../../../application/ports/in/create-product.port';
 import { DeleteProductPort, UpdateProductPort, UpdateStockPort } from '../../../../application/ports/in/manage-products.port';
-import type { Product } from '../../../../domain/models/product';
 import { ListProductsQueryDto } from './list-products-query.dto';
 import { CreateProductDto } from './create-product.dto';
 import { UpdateProductDto, UpdateStockDto } from './update-product.dto';
-import { PaginatedProductDto, ProductDto } from './product.dto';
+import { PaginatedProductListItemDto, ProductDetailDto } from './product.dto';
+import { ProductMapper } from './product.mapper';
 import { Public } from '../../../../../../shared/infrastructure/http/decorators/public.decorator';
 import { ApiResponses } from '../../../../../../shared/infrastructure/http/decorators/api-responses.decorator';
 import { AdminOnly } from '../../../../../../shared/infrastructure/http/decorators/admin-only.decorator';
@@ -30,23 +30,23 @@ export class ProductController {
   @AdminOnly()
   @ApiOperation({ summary: 'Create a product (admin only)' })
   @ApiResponses(
-    { status: 201, description: 'Product created', type: ProductDto },
+    { status: 201, description: 'Product created', type: ProductDetailDto },
     { status: 401, description: 'Missing or invalid access token' },
     { status: 403, description: 'Requires admin role' },
   )
-  async create(@Body() dto: CreateProductDto): Promise<Product> {
-    return this.createProduct.execute(dto);
+  async create(@Body() dto: CreateProductDto): Promise<ProductDetailDto> {
+    return ProductMapper.toDetail(await this.createProduct.execute(dto));
   }
 
   @Get()
   @Public()
   @ApiOperation({ summary: 'List products with cursor pagination' })
   @ApiResponses(
-    { status: 200, description: 'Paginated products', type: PaginatedProductDto },
+    { status: 200, description: 'Paginated product cards', type: PaginatedProductListItemDto },
     { status: 400, description: 'Invalid limit or cursor' },
   )
-  async list(@Query() query: ListProductsQueryDto): Promise<PaginatedProductDto> {
-    return this.listProducts.execute({
+  async list(@Query() query: ListProductsQueryDto): Promise<PaginatedProductListItemDto> {
+    const page = await this.listProducts.execute({
       limit: query.limit ?? 20,
       cursor: query.cursor,
       categoryId: query.categoryId,
@@ -57,17 +57,24 @@ export class ProductController {
       inStock: query.inStock,
       sort: query.sort ?? 'newest',
     });
+
+    return ProductMapper.toPaginatedList(page.items, {
+      nextCursor: page.nextCursor,
+      prevCursor: page.prevCursor,
+      hasMore: page.hasMore,
+    });
   }
 
   @Get(':id')
   @Public()
   @ApiOperation({ summary: 'Get a product by id' })
   @ApiResponses(
-    { status: 200, description: 'Product detail', type: ProductDto },
+    { status: 200, description: 'Product detail', type: ProductDetailDto },
     { status: 404, description: 'Product not found' },
   )
-  async get(@Param('id') id: string): Promise<Product> {
-    return this.getProduct.execute(id);
+  async get(@Param('id') id: string): Promise<ProductDetailDto> {
+    const product = await this.getProduct.execute(id);
+    return ProductMapper.toDetail(product);
   }
 
   @Patch(':id')
@@ -75,13 +82,13 @@ export class ProductController {
   @AdminOnly()
   @ApiOperation({ summary: 'Update a product (admin only)' })
   @ApiResponses(
-    { status: 200, description: 'Product updated', type: ProductDto },
+    { status: 200, description: 'Product updated', type: ProductDetailDto },
     { status: 401, description: 'Missing or invalid access token' },
     { status: 403, description: 'Requires admin role' },
     { status: 404, description: 'Product not found' },
   )
-  async update(@Param('id') id: string, @Body() dto: UpdateProductDto): Promise<Product> {
-    return this.updateProduct.execute(id, dto);
+  async update(@Param('id') id: string, @Body() dto: UpdateProductDto): Promise<ProductDetailDto> {
+    return ProductMapper.toDetail(await this.updateProduct.execute(id, dto));
   }
 
   @Patch(':id/stock')
@@ -89,14 +96,14 @@ export class ProductController {
   @AdminOnly()
   @ApiOperation({ summary: 'Adjust product stock (admin only)' })
   @ApiResponses(
-    { status: 200, description: 'Stock updated', type: ProductDto },
+    { status: 200, description: 'Stock updated', type: ProductDetailDto },
     { status: 400, description: 'Insufficient stock' },
     { status: 401, description: 'Missing or invalid access token' },
     { status: 403, description: 'Requires admin role' },
     { status: 404, description: 'Product not found' },
   )
-  async updateStock(@Param('id') id: string, @Body() dto: UpdateStockDto): Promise<Product> {
-    return this.adjustStock.execute(id, dto.delta);
+  async updateStock(@Param('id') id: string, @Body() dto: UpdateStockDto): Promise<ProductDetailDto> {
+    return ProductMapper.toDetail(await this.adjustStock.execute(id, dto.delta));
   }
 
   @Delete(':id')

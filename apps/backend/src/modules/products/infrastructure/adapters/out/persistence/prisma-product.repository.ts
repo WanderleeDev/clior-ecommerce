@@ -10,6 +10,25 @@ import { decodeCursor, encodeCursor, filtersHash } from '../../../../application
 export class PrismaProductRepository implements ProductRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
 
+  // The catalog listing renders a card, not a detail view: it never needs the
+  // long description. detailSelect adds exactly what only the detail view uses,
+  // so a new column stays out of both responses until it is listed on purpose.
+  private static readonly listSelect = {
+    id: true,
+    name: true,
+    priceCents: true,
+    imageUrl: true,
+    stock: true,
+    createdAt: true,
+  } as const;
+
+  private static readonly detailSelect = {
+    ...PrismaProductRepository.listSelect,
+    description: true,
+    categoryId: true,
+    brandId: true,
+  } as const;
+
   async findPage(query: ListProductsQuery): Promise<Page<Product>> {
     const hash = filtersHash(query);
     const where: Prisma.ProductWhereInput = {};
@@ -45,12 +64,13 @@ export class PrismaProductRepository implements ProductRepositoryPort {
     const rows = await this.prisma.product.findMany({
       where,
       orderBy,
+      select: PrismaProductRepository.listSelect,
       ...(cursor ? { cursor, skip: 1 } : {}),
       take: query.limit + 1,
     });
 
     const hasMore = rows.length > query.limit;
-    const items = (hasMore ? rows.slice(0, query.limit) : rows).map((p) => this.toDomain(p));
+    const items = (hasMore ? rows.slice(0, query.limit) : rows).map((p) => this.toListDomain(p));
     const last = items[items.length - 1];
 
     return {
@@ -62,7 +82,10 @@ export class PrismaProductRepository implements ProductRepositoryPort {
   }
 
   async findOne(id: string): Promise<Product | null> {
-    const product = await this.prisma.product.findUnique({ where: { id } });
+    const product = await this.prisma.product.findUnique({
+      where: { id },
+      select: PrismaProductRepository.detailSelect,
+    });
     if (!product) return null;
     return this.toDomain(product);
   }
@@ -90,7 +113,19 @@ export class PrismaProductRepository implements ProductRepositoryPort {
     }
   }
 
-  private toDomain(p: { id: string; name: string; description: string; priceCents: number; imageUrl: string | null; categoryId: string | null; brandId: string | null; stock: number; createdAt: Date }): Product {
+  private toDomain(
+    p: {
+      id: string;
+      name: string;
+      description: string;
+      priceCents: number;
+      imageUrl: string | null;
+      categoryId: string | null;
+      brandId: string | null;
+      stock: number;
+      createdAt: Date;
+    },
+  ): Product {
     return {
       id: p.id,
       name: p.name,
@@ -99,6 +134,29 @@ export class PrismaProductRepository implements ProductRepositoryPort {
       imageUrl: p.imageUrl ?? undefined,
       categoryId: p.categoryId ?? undefined,
       brandId: p.brandId ?? undefined,
+      stock: p.stock,
+      createdAt: p.createdAt,
+    };
+  }
+
+  // The listing does not load description/categoryId/brandId, so it cannot use
+  // toDomain. The domain model still requires them; the listing view never reads
+  // them and ProductMapper drops them from the response, so they are empty here
+  // rather than fetched once per row.
+  private toListDomain(p: {
+    id: string;
+    name: string;
+    priceCents: number;
+    imageUrl: string | null;
+    stock: number;
+    createdAt: Date;
+  }): Product {
+    return {
+      id: p.id,
+      name: p.name,
+      description: '',
+      priceCents: p.priceCents,
+      imageUrl: p.imageUrl ?? undefined,
       stock: p.stock,
       createdAt: p.createdAt,
     };
