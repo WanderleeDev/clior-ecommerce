@@ -44,7 +44,7 @@ import {
   ResetPasswordUseCase,
   VerifyEmailUseCase,
 } from './application/use-cases/email-auth.use-cases';
-import { RolesGuard } from '../../shared/infrastructure/http/roles.guard';
+import { RolesGuard } from '../../shared/infrastructure/http/decorators/roles.guard';
 import { JwtAuthGuard } from './infrastructure/adapters/in/http/jwt-auth.guard';
 
 @Module({
