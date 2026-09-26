@@ -25,7 +25,7 @@ import {
 } from '../../../../application/ports/in/auth-flow.ports';
 import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
-import type { AuthResult } from '../../../../application/types/auth.types';
+import type { AuthResult, CurrentUser } from '../../../../application/types/auth.types';
 import type { AuthUser } from '../../../../domain/models/auth-user';
 import { InvalidRefreshTokenError } from '../../../../domain/errors/auth-flow.errors';
 
@@ -49,10 +49,6 @@ function readRefreshToken(request: Request): string {
 
 function toPublicUser(user: AuthUser): PublicUserDto {
   return { id: user.id, email: user.email, name: user.name, role: user.role };
-}
-
-function toCurrentUser(user: AuthUser): CurrentUserDto {
-  return { ...toPublicUser(user), createdAt: user.createdAt };
 }
 
 function setRefreshCookie(response: Response, result: IssuedAuthResult): PublicAuthResult {
@@ -178,7 +174,7 @@ export class AuthController {
     { status: 200, description: 'Authenticated user profile', type: CurrentUserDto },
     { status: 401, description: 'Missing or invalid access token' },
   )
-  async me(@Req() request: AuthenticatedRequest): Promise<CurrentUserDto> {
-    return toCurrentUser(await this.getCurrentUser.execute(request.user.id));
+  async me(@Req() request: AuthenticatedRequest): Promise<CurrentUser> {
+    return this.getCurrentUser.execute(request.user);
   }
 }
