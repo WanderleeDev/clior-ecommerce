@@ -46,9 +46,9 @@ function readRefreshToken(request: Request): string {
   return token;
 }
 
-export class AuthUserMapper {
+export class AuthMapper {
   private constructor() {
-    throw new Error('AuthUserMapper is a static utility class');
+    throw new Error('AuthMapper is a static utility class');
   }
 
   static toPublicUser(user: AuthUser): PublicUserDto {
@@ -56,13 +56,13 @@ export class AuthUserMapper {
   }
 
   static toCurrentUser(user: AuthUser): CurrentUserDto {
-    return { ...AuthUserMapper.toPublicUser(user), createdAt: user.createdAt };
+    return { ...AuthMapper.toPublicUser(user), createdAt: user.createdAt };
   }
 }
 
 function setRefreshCookie(response: Response, result: IssuedAuthResult): PublicAuthResult {
   response.cookie(REFRESH_COOKIE_NAME, result.refreshToken, REFRESH_COOKIE_OPTIONS);
-  return { accessToken: result.accessToken, user: AuthUserMapper.toPublicUser(result.user) };
+  return { accessToken: result.accessToken, user: AuthMapper.toPublicUser(result.user) };
 }
 
 type AuthenticatedRequest = Request & { user: AuthUser };
@@ -183,6 +183,6 @@ export class AuthController {
     { status: 401, description: 'Missing or invalid access token' },
   )
   async me(@Req() request: AuthenticatedRequest): Promise<CurrentUserDto> {
-    return AuthUserMapper.toCurrentUser(request.user);
+    return AuthMapper.toCurrentUser(request.user);
   }
 }
