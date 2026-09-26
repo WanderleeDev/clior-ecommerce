@@ -158,12 +158,6 @@ export class ProductDetailDto extends ProductListItemDto {
   @ApiProperty({ example: 'A sample product with the full description' })
   description!: string;
 
-  @ApiProperty({ example: 'c1', required: false })
-  categoryId?: string;
-
-  @ApiProperty({ example: 'b1', required: false })
-  brandId?: string;
-
   @ApiProperty({ type: ProductTaxonomyDto, required: false })
   category?: ProductTaxonomyDto;
 

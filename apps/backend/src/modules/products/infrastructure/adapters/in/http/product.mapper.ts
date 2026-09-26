@@ -79,8 +79,6 @@ export class ProductMapper {
     return {
       ...ProductMapper.toListItem(product),
       description: product.description,
-      categoryId: product.categoryId,
-      brandId: product.brandId,
       category: product.category,
       brand: product.brand,
       createdAt: product.createdAt,
