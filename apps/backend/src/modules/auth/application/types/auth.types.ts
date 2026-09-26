@@ -30,11 +30,3 @@ export interface RefreshSessionResult {
   refreshToken: string;
   user: AuthUser;
 }
-
-export interface CurrentUser {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
-  createdAt: Date;
-}

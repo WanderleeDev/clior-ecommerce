@@ -1,6 +1,5 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetCurrentUserPort } from '../../../../application/ports/in/get-current-user.port';
 import { LoginUserPort } from '../../../../application/ports/in/login-user.port';
 import { RegisterUserPort } from '../../../../application/ports/in/register-user.port';
 import { Public } from '../../../../../../shared/infrastructure/http/decorators/public.decorator';
@@ -25,7 +24,7 @@ import {
 } from '../../../../application/ports/in/auth-flow.ports';
 import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
-import type { AuthResult, CurrentUser } from '../../../../application/types/auth.types';
+import type { AuthResult } from '../../../../application/types/auth.types';
 import type { AuthUser } from '../../../../domain/models/auth-user';
 import { InvalidRefreshTokenError } from '../../../../domain/errors/auth-flow.errors';
 
@@ -51,6 +50,10 @@ function toPublicUser(user: AuthUser): PublicUserDto {
   return { id: user.id, email: user.email, name: user.name, role: user.role };
 }
 
+function toCurrentUser(user: AuthUser): CurrentUserDto {
+  return { ...toPublicUser(user), createdAt: user.createdAt };
+}
+
 function setRefreshCookie(response: Response, result: IssuedAuthResult): PublicAuthResult {
   response.cookie(REFRESH_COOKIE_NAME, result.refreshToken, REFRESH_COOKIE_OPTIONS);
   return { accessToken: result.accessToken, user: toPublicUser(result.user) };
@@ -64,7 +67,6 @@ export class AuthController {
   constructor(
     private readonly registerUser: RegisterUserPort,
     private readonly loginUser: LoginUserPort,
-    private readonly getCurrentUser: GetCurrentUserPort,
     private readonly refreshAuth: RefreshAuthPort,
     private readonly logoutUser: LogoutPort,
     private readonly verifyEmail: VerifyEmailPort,
@@ -174,7 +176,7 @@ export class AuthController {
     { status: 200, description: 'Authenticated user profile', type: CurrentUserDto },
     { status: 401, description: 'Missing or invalid access token' },
   )
-  async me(@Req() request: AuthenticatedRequest): Promise<CurrentUser> {
-    return this.getCurrentUser.execute(request.user);
+  async me(@Req() request: AuthenticatedRequest): Promise<CurrentUserDto> {
+    return toCurrentUser(request.user);
   }
 }
