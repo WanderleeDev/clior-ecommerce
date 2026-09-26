@@ -1,7 +1,7 @@
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { RolesGuard } from './roles.guard';
-import { AUTH_ROLES_KEY } from './roles.decorator';
+import { AUTH_ROLES_KEY } from '../decorators/roles.decorator';
 
 const handlerRef = function handler(): void {
   return undefined;
