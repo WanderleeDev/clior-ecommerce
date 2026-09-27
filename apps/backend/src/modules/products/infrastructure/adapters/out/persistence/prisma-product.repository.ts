@@ -13,6 +13,8 @@ export class PrismaProductRepository implements ProductRepositoryPort {
   // The catalog listing renders a card, not a detail view: it never needs the
   // long description. detailSelect adds exactly what only the detail view uses,
   // so a new column stays out of both responses until it is listed on purpose.
+  // The card shows the brand name, so brandId crosses here for the brandRef
+  // relation; the category stays a detail-only concern for now.
   private static readonly listSelect = {
     id: true,
     name: true,
@@ -20,6 +22,9 @@ export class PrismaProductRepository implements ProductRepositoryPort {
     imageUrl: true,
     stock: true,
     createdAt: true,
+    brandId: true,
+    // The relation name is brandRef because brandId occupies brand; see product.prisma.
+    brandRef: { select: { name: true, slug: true } },
   } as const;
 
   private static readonly detailSelect = {
@@ -147,10 +152,10 @@ export class PrismaProductRepository implements ProductRepositoryPort {
     };
   }
 
-  // The listing does not load description/categoryId/brandId, so it cannot use
-  // toDomain. The domain model still requires them; the listing view never reads
-  // them and ProductMapper drops them from the response, so they are empty here
-  // rather than fetched once per row.
+  // The listing does not load description, so it cannot use toDomain. The
+  // domain model still requires it; the card view never reads it and
+  // ProductMapper drops it from the response, so it is empty here rather than
+  // fetched once per row.
   private toListDomain(p: {
     id: string;
     name: string;
@@ -158,6 +163,8 @@ export class PrismaProductRepository implements ProductRepositoryPort {
     imageUrl: string | null;
     stock: number;
     createdAt: Date;
+    brandId: string | null;
+    brandRef?: { name: string; slug: string } | null;
   }): Product {
     return {
       id: p.id,
@@ -165,6 +172,8 @@ export class PrismaProductRepository implements ProductRepositoryPort {
       description: '',
       priceCents: p.priceCents,
       imageUrl: p.imageUrl ?? undefined,
+      brandId: p.brandId ?? undefined,
+      brand: p.brandRef ?? undefined,
       stock: p.stock,
       createdAt: p.createdAt,
     };
