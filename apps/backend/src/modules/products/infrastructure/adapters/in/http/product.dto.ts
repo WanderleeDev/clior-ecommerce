@@ -126,6 +126,17 @@ export class ListProductsQueryDto {
 // Outbound: the two shapes the catalog actually renders.
 // ---------------------------------------------------------------------------
 
+export class ProductTaxonomyDto {
+  @ApiProperty({ example: 'cat-1', required: false })
+  id?: string;
+
+  @ApiProperty({ example: 'Alimento balanceado' })
+  name!: string;
+
+  @ApiProperty({ example: 'alimento-balanceado' })
+  slug!: string;
+}
+
 export class ProductListItemDto {
   @ApiProperty({ example: 'p1' })
   id!: string;
@@ -141,17 +152,9 @@ export class ProductListItemDto {
 
   @ApiProperty({ example: 12, description: 'Units available. Zero means out of stock' })
   stock!: number;
-}
 
-export class ProductTaxonomyDto {
-  @ApiProperty({ example: 'cat-1' })
-  id!: string;
-
-  @ApiProperty({ example: 'Alimento balanceado' })
-  name!: string;
-
-  @ApiProperty({ example: 'alimento-balanceado' })
-  slug!: string;
+  @ApiProperty({ type: ProductTaxonomyDto, required: false })
+  brand?: ProductTaxonomyDto;
 }
 
 export class ProductDetailDto extends ProductListItemDto {
@@ -160,9 +163,6 @@ export class ProductDetailDto extends ProductListItemDto {
 
   @ApiProperty({ type: ProductTaxonomyDto, required: false })
   category?: ProductTaxonomyDto;
-
-  @ApiProperty({ type: ProductTaxonomyDto, required: false })
-  brand?: ProductTaxonomyDto;
 
   @ApiProperty({ example: '2026-09-23T00:00:00.000Z' })
   createdAt!: Date;

@@ -72,15 +72,20 @@ export class ProductMapper {
       priceCents: product.priceCents,
       imageUrl: product.imageUrl,
       stock: product.stock,
+      brand: product.brand,
     };
   }
 
   static toDetail(product: Product): ProductDetailDto {
     return {
-      ...ProductMapper.toListItem(product),
+      id: product.id,
+      name: product.name,
+      priceCents: product.priceCents,
+      imageUrl: product.imageUrl,
+      stock: product.stock,
+      brand: product.brandId && product.brand ? { ...product.brand, id: product.brandId } : undefined,
       description: product.description,
       category: product.category,
-      brand: product.brand,
       createdAt: product.createdAt,
     };
   }
