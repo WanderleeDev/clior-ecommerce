@@ -1,10 +1,19 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiCookieAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetCurrentUserPort } from '../../../../application/ports/in/get-current-user.port';
 import { LoginUserPort } from '../../../../application/ports/in/login-user.port';
 import { RegisterUserPort } from '../../../../application/ports/in/register-user.port';
-import { Public } from '../../../../../../shared/infrastructure/http/public.decorator';
-import { EmailDto, LoginDto, RegisterDto, ResetPasswordDto, TokenDto } from './auth.dto';
+import { Public } from '../../../../../../shared/infrastructure/http/decorators/public.decorator';
+import { ApiResponses } from '../../../../../../shared/infrastructure/http/decorators/api-responses.decorator';
+import {
+  EmailDto,
+  LoginDto,
+  LoginResponseDto,
+  PublicUserDto,
+  RegisterDto,
+  ResetPasswordDto,
+  TokenDto,
+} from './auth.dto';
 import {
   LogoutPort,
   RefreshAuthPort,
@@ -19,8 +28,6 @@ import type { AuthResult } from '../../../../application/types/auth.types';
 import type { AuthUser } from '../../../../domain/models/auth-user';
 import { InvalidRefreshTokenError } from '../../../../domain/errors/auth-flow.errors';
 
-type PublicUser = Pick<AuthUser, 'id' | 'email' | 'name' | 'role'>;
-
 const REFRESH_COOKIE_NAME = 'refresh_token';
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
@@ -31,7 +38,7 @@ const REFRESH_COOKIE_OPTIONS = {
 };
 
 type IssuedAuthResult = Pick<AuthResult, 'accessToken' | 'refreshToken' | 'user'>;
-type PublicAuthResult = Pick<IssuedAuthResult, 'accessToken'> & { user: PublicUser };
+type PublicAuthResult = Pick<IssuedAuthResult, 'accessToken'> & { user: PublicUserDto };
 
 function readRefreshToken(request: Request): string {
   const token = request.cookies?.[REFRESH_COOKIE_NAME];
@@ -39,7 +46,7 @@ function readRefreshToken(request: Request): string {
   return token;
 }
 
-function toPublicUser(user: AuthUser): PublicUser {
+function toPublicUser(user: AuthUser): PublicUserDto {
   return { id: user.id, email: user.email, name: user.name, role: user.role };
 }
 
@@ -48,9 +55,7 @@ function setRefreshCookie(response: Response, result: IssuedAuthResult): PublicA
   return { accessToken: result.accessToken, user: toPublicUser(result.user) };
 }
 
-type AuthenticatedRequest = Request & {
-  user: { id: string; email: string; name: string; createdAt: Date };
-};
+type AuthenticatedRequest = Request & { user: AuthUser };
 
 @ApiTags('Auth')
 @Controller('api/auth')
@@ -72,8 +77,10 @@ export class AuthController {
   @HttpCode(201)
   @ApiOperation({ summary: 'Register a user' })
   @ApiBody({ type: RegisterDto })
-  @ApiResponse({ status: 201, description: 'User registered, verification email sent' })
-  @ApiResponse({ status: 409, description: 'Email is already registered' })
+  @ApiResponses(
+    { status: 201, description: 'User registered, verification email sent' },
+    { status: 409, description: 'Email is already registered' },
+  )
   async register(@Body() dto: RegisterDto) {
     await this.registerUser.execute(dto);
     return { message: 'Cuenta creada. Te enviamos un correo de verificación, revisa tu bandeja.' };
@@ -84,9 +91,11 @@ export class AuthController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Authenticate a user' })
   @ApiBody({ type: LoginDto })
-  @ApiResponse({ status: 200, description: 'Authenticated user and tokens' })
-  @ApiResponse({ status: 401, description: 'Invalid credentials or locked account' })
-  @ApiResponse({ status: 403, description: 'Email address is not verified' })
+  @ApiResponses(
+    { status: 200, description: 'Authenticated user and tokens', type: LoginResponseDto },
+    { status: 401, description: 'Invalid credentials or locked account' },
+    { status: 403, description: 'Email address is not verified' },
+  )
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
     return setRefreshCookie(response, await this.loginUser.execute(dto));
   }
@@ -96,8 +105,10 @@ export class AuthController {
   @HttpCode(200)
   @ApiCookieAuth(REFRESH_COOKIE_NAME)
   @ApiOperation({ summary: 'Rotate a refresh token' })
-  @ApiResponse({ status: 200, description: 'Rotated tokens' })
-  @ApiResponse({ status: 401, description: 'Invalid, expired, or reused refresh token' })
+  @ApiResponses(
+    { status: 200, description: 'Rotated tokens', type: LoginResponseDto },
+    { status: 401, description: 'Invalid, expired, or reused refresh token' },
+  )
   async refresh(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
     return setRefreshCookie(response, await this.refreshAuth.execute(readRefreshToken(request)));
   }
@@ -107,7 +118,7 @@ export class AuthController {
   @HttpCode(200)
   @ApiCookieAuth(REFRESH_COOKIE_NAME)
   @ApiOperation({ summary: 'Revoke a refresh token' })
-  @ApiResponse({ status: 200, description: 'Session revoked' })
+  @ApiResponses({ status: 200, description: 'Session revoked' })
   async logout(@Req() request: Request, @Res({ passthrough: true }) response: Response): Promise<void> {
     await this.logoutUser.execute(readRefreshToken(request));
     response.clearCookie(REFRESH_COOKIE_NAME, { path: '/api/auth' });
@@ -118,7 +129,7 @@ export class AuthController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Verify an email address' })
   @ApiBody({ type: TokenDto })
-  @ApiResponse({ status: 200, description: 'Email verified' })
+  @ApiResponses({ status: 200, description: 'Email verified' })
   async verify(@Body() dto: TokenDto): Promise<void> {
     await this.verifyEmail.execute(dto.token);
   }
@@ -128,7 +139,7 @@ export class AuthController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Request another verification email' })
   @ApiBody({ type: EmailDto })
-  @ApiResponse({ status: 200, description: 'Verification email requested' })
+  @ApiResponses({ status: 200, description: 'Verification email requested' })
   @Throttle({ default: { limit: 3, ttl: 60_000 } })
   async resendVerification(@Body() dto: EmailDto): Promise<void> {
     await this.requestVerification.execute(dto.email);
@@ -139,7 +150,7 @@ export class AuthController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Request a password reset email' })
   @ApiBody({ type: EmailDto })
-  @ApiResponse({ status: 200, description: 'Password reset email requested' })
+  @ApiResponses({ status: 200, description: 'Password reset email requested' })
   @Throttle({ default: { limit: 3, ttl: 60_000 } })
   async forgotPassword(@Body() dto: EmailDto): Promise<void> {
     await this.requestPasswordReset.execute(dto.email);
@@ -150,7 +161,7 @@ export class AuthController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Reset a password with a one-time token' })
   @ApiBody({ type: ResetPasswordDto })
-  @ApiResponse({ status: 200, description: 'Password reset' })
+  @ApiResponses({ status: 200, description: 'Password reset' })
   async reset(@Body() dto: ResetPasswordDto): Promise<void> {
     await this.resetPassword.execute(dto.token, dto.password);
   }
@@ -158,8 +169,10 @@ export class AuthController {
   @Get('me')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get the authenticated user' })
-  @ApiResponse({ status: 200, description: 'Authenticated user profile' })
-  @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
+  @ApiResponses(
+    { status: 200, description: 'Authenticated user profile' },
+    { status: 401, description: 'Missing or invalid access token' },
+  )
   async me(@Req() request: AuthenticatedRequest) {
     return this.getCurrentUser.execute(request.user.id);
   }

@@ -5,9 +5,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { validateEnvironment } from './config/env.validation';
 import { HealthModule } from './modules/health/health.module';
 import { ProductModule } from './modules/products/products.module';
-import { PrismaModule } from './prisma/prisma.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [

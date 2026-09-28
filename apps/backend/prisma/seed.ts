@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { faker } from '@faker-js/faker';
+import * as argon2 from 'argon2';
 
 // Seed with Faker.js — creates a coherent catalog + a few users/addresses/
 // orders/payments/reviews so the front-end has realistic data to work with.
@@ -29,9 +30,57 @@ const prisma = new PrismaClient({
 const COUNTS = {
   users: 10,
   categories: 10,
-  products: 60,
+  products: 1000,
   reviewsPerProduct: [1, 5] as [number, number], // 1..5 reviews each
 };
+
+const HOUSE_BRAND = 'Clior';
+
+const BRANDS = [
+  'Clior',
+  'Bark',
+  'Bravecto',
+  'Brit Care',
+  'CanBo',
+  'Catit',
+  'Churu',
+  'Dentastix',
+  'Dog Chow',
+  'Drontal',
+  'Eukanuba',
+  'Fancy Feast',
+  'Felix',
+  'Ferplast',
+  'Fresh Step',
+  'Friskies',
+  'Frontline',
+  'Furminator',
+  'Greenies',
+  'Hartz',
+  "Hill's",
+  'Kong',
+  'LickiMat',
+  'Meow Mix',
+  'Mimaskot',
+  'Naturalis',
+  'NexGard',
+  'Nutrican',
+  'Pedigree',
+  'PetCare+',
+  'Pro Plan',
+  'Purina One',
+  'Ricocat',
+  'Ricocan',
+  'Royal Canin',
+  'Simparica',
+  'Super Can',
+  'Super Cat',
+  'Thor',
+  'Tidy Cats',
+  'Trixie',
+  'Whiskas',
+  'Zeedog',
+] as const;
 
 const ORDER_STATUSES = [
   { code: 'pending', label: 'Pendiente' },
@@ -51,6 +100,15 @@ function randInt(min: number, max: number): number {
   return faker.number.int({ min, max });
 }
 
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 function randElement<T>(arr: readonly T[]): T {
   return arr[randInt(0, arr.length - 1)];
 }
@@ -59,11 +117,16 @@ function randElement<T>(arr: readonly T[]): T {
 // Delete (children first so FK constraints don't blow up)
 // ---------------------------------------------------------------------------
 async function wipeAll(): Promise<void> {
+  await prisma.cartItem.deleteMany();
+  await prisma.cart.deleteMany();
+  await prisma.wishlistItem.deleteMany();
+  await prisma.wishlist.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.payment.deleteMany();
   await prisma.review.deleteMany();
   await prisma.order.deleteMany();
   await prisma.product.deleteMany();
+  await prisma.brand.deleteMany();
   await prisma.address.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
@@ -131,6 +194,21 @@ async function main(): Promise<void> {
   );
   console.log(`Seeded ${users.length} users`);
 
+  // --- Admin: role-based endpoints reject every faker user, so the admin
+  // --- flow cannot be exercised locally without one. Uses a real argon2id
+  // --- hash so the documented credentials actually log in.
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'Admin-test1!';
+  const admin = await prisma.user.create({
+    data: {
+      email: process.env.SEED_ADMIN_EMAIL ?? 'admin@clior.test',
+      name: 'Clior Admin',
+      passwordHash: await argon2.hash(adminPassword, { type: argon2.argon2id }),
+      role: 'admin',
+      emailVerifiedAt: new Date(),
+    },
+  });
+  console.log(`Seeded admin ${admin.email} (password: ${adminPassword})`);
+
   // --- Categories (with slugs for URLs) ---
   const categories = await Promise.all(
     Array.from({ length: COUNTS.categories }, async (_, i) => {
@@ -150,17 +228,29 @@ async function main(): Promise<void> {
   );
   console.log(`Seeded ${categories.length} categories`);
 
-  // --- Products (each linked to a random category, optional) ---
+  // --- Brands (the 42 frontend brands, with slugs for URLs) ---
+  const brands = await Promise.all(
+    BRANDS.map((name) =>
+      prisma.brand.create({ data: { name, slug: slugify(name) } }),
+    ),
+  );
+  const brandByName = new Map(brands.map((b) => [b.name, b]));
+  console.log(`Seeded ${brands.length} brands`);
+
+  // --- Products (1000: every 4th is Clior house brand, rest round-robin) ---
   const products = await Promise.all(
     Array.from({ length: COUNTS.products }, async (_, i) => {
       const category = randElement(categories);
+      const brandName = i % 4 === 0 ? HOUSE_BRAND : BRANDS[(i % (BRANDS.length - 1)) + 1];
+      const brand = brandByName.get(brandName)!;
       const product = await prisma.product.create({
         data: {
-          name: faker.commerce.productName(),
+          name: `${brandName} ${faker.commerce.productName()}`,
           description: faker.commerce.productDescription(),
           priceCents: randInt(1_000, 200_000), // $10 .. $2000
           imageUrl: `https://picsum.photos/seed/${i}/640/640`,
           categoryId: category.id,
+          brandId: brand.id,
           stock: randInt(0, 50),
         },
       });
@@ -214,6 +304,7 @@ async function main(): Promise<void> {
         payment: {
           create: {
             provider: randElement(['mp', 'stripe', 'paypal', 'mercadoPago']),
+            amountCents: total, // congelado: iguala Order.total
             status: { connect: { id: paymentStatusMap.get(paymentStatusCode)! } },
             reference: faker.string.alphanumeric(24),
           },
@@ -226,12 +317,14 @@ async function main(): Promise<void> {
     );
   }
 
-  // --- Reviews: 1..5 per product from a random user ---
+  // --- Reviews: 1..5 per product from distinct users ---
+  // Shuffling first guarantees no (productId, userId) pair repeats, which the
+  // reviews_productId_userId_key unique constraint rejects.
   let reviewCount = 0;
   for (const product of products) {
     const nReviews = randInt(COUNTS.reviewsPerProduct[0], COUNTS.reviewsPerProduct[1]);
-    for (let r = 0; r < nReviews; r++) {
-      const user = randElement(users);
+    const reviewers = faker.helpers.arrayElements(users, Math.min(nReviews, users.length));
+    for (const user of reviewers) {
       const rating = randInt(1, 5);
       const review = await prisma.review.create({
         data: {
