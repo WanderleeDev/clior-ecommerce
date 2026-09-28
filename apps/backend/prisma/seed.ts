@@ -29,9 +29,57 @@ const prisma = new PrismaClient({
 const COUNTS = {
   users: 10,
   categories: 10,
-  products: 60,
+  products: 1000,
   reviewsPerProduct: [1, 5] as [number, number], // 1..5 reviews each
 };
+
+const HOUSE_BRAND = 'Clior';
+
+const BRANDS = [
+  'Clior',
+  'Bark',
+  'Bravecto',
+  'Brit Care',
+  'CanBo',
+  'Catit',
+  'Churu',
+  'Dentastix',
+  'Dog Chow',
+  'Drontal',
+  'Eukanuba',
+  'Fancy Feast',
+  'Felix',
+  'Ferplast',
+  'Fresh Step',
+  'Friskies',
+  'Frontline',
+  'Furminator',
+  'Greenies',
+  'Hartz',
+  "Hill's",
+  'Kong',
+  'LickiMat',
+  'Meow Mix',
+  'Mimaskot',
+  'Naturalis',
+  'NexGard',
+  'Nutrican',
+  'Pedigree',
+  'PetCare+',
+  'Pro Plan',
+  'Purina One',
+  'Ricocat',
+  'Ricocan',
+  'Royal Canin',
+  'Simparica',
+  'Super Can',
+  'Super Cat',
+  'Thor',
+  'Tidy Cats',
+  'Trixie',
+  'Whiskas',
+  'Zeedog',
+] as const;
 
 const ORDER_STATUSES = [
   { code: 'pending', label: 'Pendiente' },
@@ -51,6 +99,15 @@ function randInt(min: number, max: number): number {
   return faker.number.int({ min, max });
 }
 
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 function randElement<T>(arr: readonly T[]): T {
   return arr[randInt(0, arr.length - 1)];
 }
@@ -64,6 +121,7 @@ async function wipeAll(): Promise<void> {
   await prisma.review.deleteMany();
   await prisma.order.deleteMany();
   await prisma.product.deleteMany();
+  await prisma.brand.deleteMany();
   await prisma.address.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
@@ -150,17 +208,30 @@ async function main(): Promise<void> {
   );
   console.log(`Seeded ${categories.length} categories`);
 
-  // --- Products (each linked to a random category, optional) ---
+  // --- Brands (the 42 frontend brands, with slugs for URLs) ---
+  const brands = await Promise.all(
+    BRANDS.map((name) =>
+      prisma.brand.create({ data: { name, slug: slugify(name) } }),
+    ),
+  );
+  const brandByName = new Map(brands.map((b) => [b.name, b]));
+  console.log(`Seeded ${brands.length} brands`);
+
+  // --- Products (1000: every 4th is Clior house brand, rest round-robin) ---
   const products = await Promise.all(
     Array.from({ length: COUNTS.products }, async (_, i) => {
       const category = randElement(categories);
+      const brandName = i % 4 === 0 ? HOUSE_BRAND : BRANDS[(i % (BRANDS.length - 1)) + 1];
+      const brand = brandByName.get(brandName)!;
       const product = await prisma.product.create({
         data: {
-          name: faker.commerce.productName(),
+          name: `${brandName} ${faker.commerce.productName()}`,
           description: faker.commerce.productDescription(),
           priceCents: randInt(1_000, 200_000), // $10 .. $2000
           imageUrl: `https://picsum.photos/seed/${i}/640/640`,
           categoryId: category.id,
+          brandId: brand.id,
+          brand: brandName,
           stock: randInt(0, 50),
         },
       });
