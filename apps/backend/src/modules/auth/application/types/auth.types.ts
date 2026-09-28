@@ -17,10 +17,12 @@ export interface AuthResult {
   user: AuthUser;
 }
 
+/**
+ * Access-token claims. Deliberately minimal: the subject is the only claim
+ * the API trusts — JwtStrategy loads the user (and role) from the database.
+ */
 export interface AuthTokenPayload {
   sub: string;
-  email: string;
-  role: string;
 }
 
 export type AuthOneTimeTokenType = 'email_verification' | 'password_reset';
