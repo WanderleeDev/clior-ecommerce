@@ -1,35 +1,49 @@
-import { IsEmail, IsString, IsStrongPassword, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+
+const PASSWORD_POLICY = {
+  minLength: 8,
+  minLowercase: 1,
+  minUppercase: 1,
+  minNumbers: 1,
+  minSymbols: 1,
+} as const;
+
+export function normalizeEmail(value: unknown): string {
+  return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
 
 export class RegisterDto {
   @ApiProperty({ example: 'Maria Lopez' })
   @IsString()
-  @MinLength(2)
+  @IsNotEmpty()
+  @MaxLength(100)
   name!: string;
 
   @IsEmail()
+  @MaxLength(254)
+  @Transform(({ value }) => normalizeEmail(value))
   @ApiProperty({ example: 'maria@gmail.com' })
   email!: string;
 
   @IsString()
+  @MaxLength(128)
   @ApiProperty({ minLength: 8, example: 'Secure-password1!' })
-  @IsStrongPassword({
-    minLength: 8,
-    minLowercase: 1,
-    minUppercase: 1,
-    minNumbers: 1,
-    minSymbols: 1,
-  })
+  @IsStrongPassword(PASSWORD_POLICY)
   password!: string;
 }
 
 export class LoginDto {
   @IsEmail()
+  @MaxLength(254)
+  @Transform(({ value }) => normalizeEmail(value))
   @ApiProperty({ example: 'maria@gmail.com' })
   email!: string;
 
   @IsString()
   @MinLength(1)
+  @MaxLength(128)
   @ApiProperty({ minLength: 1, example: 'Secure-password1!' })
   password!: string;
 }
@@ -37,12 +51,15 @@ export class LoginDto {
 export class TokenDto {
   @IsString()
   @MinLength(1)
+  @MaxLength(256)
   @ApiProperty({ description: 'Opaque one-time token' })
   token!: string;
 }
 
 export class EmailDto {
   @IsEmail()
+  @MaxLength(254)
+  @Transform(({ value }) => normalizeEmail(value))
   @ApiProperty({ example: 'maria@gmail.com' })
   email!: string;
 }
@@ -51,14 +68,9 @@ export class RefreshTokenDto extends TokenDto {}
 
 export class ResetPasswordDto extends TokenDto {
   @IsString()
-  @IsStrongPassword({
-    minLength: 12,
-    minLowercase: 1,
-    minUppercase: 1,
-    minNumbers: 1,
-    minSymbols: 1,
-  })
-  @ApiProperty({ minLength: 12, example: 'New-secure-password1!' })
+  @MaxLength(128)
+  @IsStrongPassword(PASSWORD_POLICY)
+  @ApiProperty({ minLength: 8, example: 'New-secure-password1!' })
   password!: string;
 }
 

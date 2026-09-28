@@ -18,11 +18,12 @@ export class RegisterUserUseCase extends RegisterUserPort {
   }
 
   async execute(input: RegisterUserInput): Promise<void> {
-    const existing = await this.users.findByEmail(input.email);
+    const email = input.email.trim().toLowerCase();
+    const existing = await this.users.findByEmail(email);
     if (existing) throw new EmailAlreadyRegisteredError();
 
     const passwordHash = await this.passwordHasher.hash(input.password);
-    const user = await this.users.create({ ...input, passwordHash });
+    const user = await this.users.create({ ...input, email, passwordHash });
     this.eventBus.publish(USER_REGISTERED_EVENT, new UserRegisteredEvent(user));
   }
 }

@@ -1,7 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { AuthUser, AuthUserWithPassword } from '../../../../domain/models/auth-user';
+import { EmailAlreadyRegisteredError } from '../../../../domain/errors/email-already-registered.error';
 import { UserRepositoryPort } from '../../../../application/ports/out/user-repository.port';
 import type { RegisterUserInput } from '../../../../application/types/auth.types';
+import { Prisma } from 'src/generated/prisma/client';
 import { PrismaService } from '../../../../../../prisma/prisma.service';
 
 @Injectable()
@@ -22,15 +24,22 @@ export class PrismaUserRepository extends UserRepositoryPort {
   } as const;
 
   async create(input: RegisterUserInput & { passwordHash: string }): Promise<AuthUser> {
-    const user = await this.prisma.user.create({
-      data: {
-        email: input.email,
-        name: input.name,
-        passwordHash: input.passwordHash,
-      },
-      select: PrismaUserRepository.publicSelect,
-    });
-    return this.toUser(user);
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          email: input.email,
+          name: input.name,
+          passwordHash: input.passwordHash,
+        },
+        select: PrismaUserRepository.publicSelect,
+      });
+      return this.toUser(user);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new EmailAlreadyRegisteredError();
+      }
+      throw error;
+    }
   }
 
   async findByEmail(email: string): Promise<AuthUserWithPassword | null> {
