@@ -28,6 +28,7 @@ import type { AuthResult } from '../../../../application/types/auth.types';
 import type { AuthUser } from '../../../../domain/models/auth-user';
 import { InvalidRefreshTokenError } from '../../../../domain/errors/auth-flow.errors';
 
+const AUTH_WRITE_THROTTLE = { default: { limit: 10, ttl: 60_000 } } as const;
 const REFRESH_COOKIE_NAME = 'refresh_token';
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
@@ -84,6 +85,7 @@ export class AuthController {
   @Post('register')
   @Public()
   @HttpCode(201)
+  @Throttle(AUTH_WRITE_THROTTLE)
   @ApiOperation({ summary: 'Register a user' })
   @ApiBody({ type: RegisterDto })
   @ApiResponses(
@@ -98,6 +100,7 @@ export class AuthController {
   @Post('login')
   @Public()
   @HttpCode(200)
+  @Throttle(AUTH_WRITE_THROTTLE)
   @ApiOperation({ summary: 'Authenticate a user' })
   @ApiBody({ type: LoginDto })
   @ApiResponses(
@@ -112,6 +115,7 @@ export class AuthController {
   @Post('refresh')
   @Public()
   @HttpCode(200)
+  @Throttle(AUTH_WRITE_THROTTLE)
   @ApiCookieAuth(REFRESH_COOKIE_NAME)
   @ApiOperation({ summary: 'Rotate a refresh token' })
   @ApiResponses(
@@ -136,6 +140,7 @@ export class AuthController {
   @Post('verify-email')
   @Public()
   @HttpCode(200)
+  @Throttle(AUTH_WRITE_THROTTLE)
   @ApiOperation({ summary: 'Verify an email address' })
   @ApiBody({ type: TokenDto })
   @ApiResponses({ status: 200, description: 'Email verified' })
@@ -168,6 +173,7 @@ export class AuthController {
   @Post('reset-password')
   @Public()
   @HttpCode(200)
+  @Throttle(AUTH_WRITE_THROTTLE)
   @ApiOperation({ summary: 'Reset a password with a one-time token' })
   @ApiBody({ type: ResetPasswordDto })
   @ApiResponses({ status: 200, description: 'Password reset' })
