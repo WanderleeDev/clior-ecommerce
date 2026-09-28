@@ -5,8 +5,7 @@ import { EventBusPort } from '../ports/out/event-bus.port';
 import { PasswordHasherPort } from '../ports/out/password-hasher.port';
 import { UserRepositoryPort } from '../ports/out/user-repository.port';
 import { RegisterUserPort } from '../ports/in/register-user.port';
-import type { AuthResult, RegisterUserInput } from '../types/auth.types';
-import { RefreshSessionPort } from '../ports/out/refresh-session.port';
+import type { RegisterUserInput } from '../types/auth.types';
 
 @Injectable()
 export class RegisterUserUseCase extends RegisterUserPort {
@@ -14,19 +13,16 @@ export class RegisterUserUseCase extends RegisterUserPort {
     private readonly users: UserRepositoryPort,
     private readonly passwordHasher: PasswordHasherPort,
     private readonly eventBus: EventBusPort,
-    private readonly sessions: RefreshSessionPort,
   ) {
     super();
   }
 
-  async execute(input: RegisterUserInput): Promise<AuthResult> {
+  async execute(input: RegisterUserInput): Promise<void> {
     const existing = await this.users.findByEmail(input.email);
     if (existing) throw new EmailAlreadyRegisteredError();
 
     const passwordHash = await this.passwordHasher.hash(input.password);
     const user = await this.users.create({ ...input, passwordHash });
     this.eventBus.publish(USER_REGISTERED_EVENT, new UserRegisteredEvent(user));
-
-    return this.sessions.create(user.id);
   }
 }
