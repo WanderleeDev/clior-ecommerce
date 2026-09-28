@@ -19,11 +19,13 @@ export class PrismaAuthTokenRepository extends AuthTokenRepositoryPort {
   }
 
   async consume(tokenHash: string, type: AuthOneTimeTokenType): Promise<{ userId: string } | undefined> {
-    const token = await this.prisma.authToken.findFirst({
-      where: { tokenHash, type, consumedAt: null, expiresAt: { gt: new Date() } },
+    const now = new Date();
+    const result = await this.prisma.authToken.updateMany({
+      where: { tokenHash, type, consumedAt: null, expiresAt: { gt: now } },
+      data: { consumedAt: now },
     });
-    if (!token) return undefined;
-    await this.prisma.authToken.update({ where: { id: token.id }, data: { consumedAt: new Date() } });
-    return { userId: token.userId };
+    if (result.count === 0) return undefined;
+    const token = await this.prisma.authToken.findFirst({ where: { tokenHash, type }, select: { userId: true } });
+    return token ? { userId: token.userId } : undefined;
   }
 }
