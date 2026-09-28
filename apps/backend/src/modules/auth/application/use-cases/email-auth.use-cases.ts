@@ -48,7 +48,7 @@ export class RequestVerificationUseCase extends RequestVerificationPort {
   }
 
   async execute(email: string): Promise<void> {
-    const user = await this.users.findByEmail(email);
+    const user = await this.users.findByEmail(email.trim().toLowerCase());
     if (user && !user.emailVerifiedAt) this.events.publish(VERIFICATION_REQUESTED_EVENT, user);
   }
 }
@@ -63,7 +63,7 @@ export class RequestPasswordResetUseCase extends RequestPasswordResetPort {
   }
 
   async execute(email: string): Promise<void> {
-    const user = await this.users.findByEmail(email);
+    const user = await this.users.findByEmail(email.trim().toLowerCase());
     if (user) this.events.publish(PASSWORD_RESET_REQUESTED_EVENT, user);
   }
 }
