@@ -36,21 +36,25 @@ export class AuthEmailListeners {
   @OnEvent(PASSWORD_RESET_REQUESTED_EVENT)
   async onPasswordResetRequested(user: AuthUser): Promise<void> {
     const token = this.tokenGenerator.generate();
-    await this.tokens.create({ userId: user.id, type: 'password_reset', tokenHash: this.tokenGenerator.hash(token), expiresAt: new Date(Date.now() + TOKEN_TTL) });
+    const tokenHash = this.tokenGenerator.hash(token);
     try {
       await this.emailSender.sendPasswordReset({ email: user.email, name: user.name, token });
     } catch (error) {
       this.logger.error('Password reset email delivery failed', error);
+      return;
     }
+    await this.tokens.create({ userId: user.id, type: 'password_reset', tokenHash, expiresAt: new Date(Date.now() + TOKEN_TTL) });
   }
 
   private async sendVerification(user: AuthUser): Promise<void> {
     const token = this.tokenGenerator.generate();
-    await this.tokens.create({ userId: user.id, type: 'email_verification', tokenHash: this.tokenGenerator.hash(token), expiresAt: new Date(Date.now() + TOKEN_TTL) });
+    const tokenHash = this.tokenGenerator.hash(token);
     try {
       await this.emailSender.sendVerification({ email: user.email, name: user.name, token });
     } catch (error) {
       this.logger.error('Verification email delivery failed', error);
+      return;
     }
+    await this.tokens.create({ userId: user.id, type: 'email_verification', tokenHash, expiresAt: new Date(Date.now() + TOKEN_TTL) });
   }
 }

@@ -3,10 +3,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { GetCurrentUserUseCase } from './application/use-cases/get-current-user.use-case';
 import { LoginUserUseCase } from './application/use-cases/login-user.use-case';
 import { RegisterUserUseCase } from './application/use-cases/register-user.use-case';
-import { GetCurrentUserPort } from './application/ports/in/get-current-user.port';
 import { LoginUserPort } from './application/ports/in/login-user.port';
 import { RegisterUserPort } from './application/ports/in/register-user.port';
 import { EventBusPort } from './application/ports/out/event-bus.port';
@@ -64,7 +62,6 @@ import { JwtAuthGuard } from './infrastructure/adapters/in/http/jwt-auth.guard';
   providers: [
     { provide: RegisterUserPort, useClass: RegisterUserUseCase },
     { provide: LoginUserPort, useClass: LoginUserUseCase },
-    { provide: GetCurrentUserPort, useClass: GetCurrentUserUseCase },
     JwtStrategy,
     { provide: UserRepositoryPort, useClass: PrismaUserRepository },
     { provide: PasswordHasherPort, useClass: Argon2PasswordHasher },
@@ -84,6 +81,5 @@ import { JwtAuthGuard } from './infrastructure/adapters/in/http/jwt-auth.guard';
     RolesGuard,
     { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
-  exports: [GetCurrentUserPort],
 })
 export class AuthModule {}

@@ -18,7 +18,7 @@ export class LoginUserUseCase extends LoginUserPort {
   }
 
   async execute(input: LoginUserInput): Promise<AuthResult> {
-    const user = await this.users.findByEmail(input.email);
+    const user = await this.users.findByEmail(input.email.trim().toLowerCase());
     if (user?.lockedUntil && user.lockedUntil > new Date()) throw new AccountLockedError();
     const valid = user ? await this.passwordHasher.verify(user.passwordHash, input.password) : false;
     if (!user || !valid) {
