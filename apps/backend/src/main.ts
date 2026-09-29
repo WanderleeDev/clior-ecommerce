@@ -5,13 +5,16 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './shared/infrastructure/http/global-exception.filter';
+import { resolveAppOrigin } from './modules/auth/infrastructure/adapters/in/http/auth.controller';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
   app.use(cookieParser());
+  // Same validated APP_URL source as the refresh-cookie policy, so CORS and
+  // the cookie's SameSite decision cannot drift apart (M14).
   app.enableCors({
-    origin: process.env.APP_URL ?? 'http://localhost:4200',
+    origin: resolveAppOrigin(),
     credentials: true,
   });
   app.useGlobalFilters(new GlobalExceptionFilter());
@@ -33,5 +36,15 @@ async function bootstrap() {
   console.log(`Backend listening on http://localhost:${port}`);
   console.log(`Swagger UI available at http://localhost:${port}/api/docs`);
 }
+
+// Safety net for fire-and-forget async work (e.g. event listeners): Node's
+// default is to crash the process on an unhandled rejection. Log loudly and
+// keep serving instead; the underlying failures are handled at their source.
+process.on('unhandledRejection', (reason) => {
+  console.error(
+    '[process] Unhandled promise rejection:',
+    reason instanceof Error ? (reason.stack ?? reason.message) : reason,
+  );
+});
 
 void bootstrap();
