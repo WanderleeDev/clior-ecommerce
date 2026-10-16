@@ -19,11 +19,24 @@ export class PrismaAuthTokenRepository extends AuthTokenRepositoryPort {
   }
 
   async consume(tokenHash: string, type: AuthOneTimeTokenType): Promise<{ userId: string } | undefined> {
-    const token = await this.prisma.authToken.findFirst({
-      where: { tokenHash, type, consumedAt: null, expiresAt: { gt: new Date() } },
+    const now = new Date();
+    // Single conditional write: only one concurrent caller can flip
+    // consumedAt, so the token is redeemable at most once (H2).
+    const consumed = await this.prisma.authToken.updateMany({
+      where: { tokenHash, type, consumedAt: null, expiresAt: { gt: now } },
+      data: { consumedAt: now },
     });
-    if (!token) return undefined;
-    await this.prisma.authToken.update({ where: { id: token.id }, data: { consumedAt: new Date() } });
-    return { userId: token.userId };
+    if (consumed.count !== 1) return undefined;
+    const token = await this.prisma.authToken.findFirst({ where: { tokenHash, type } });
+    return token ? { userId: token.userId } : undefined;
+  }
+
+  async revokeByUserAndType(userId: string, type: AuthOneTimeTokenType): Promise<void> {
+    // AuthToken has no revokedAt column; consuming is the existing
+    // "no longer redeemable" marker, so outstanding tokens are burned here.
+    await this.prisma.authToken.updateMany({
+      where: { userId, type, consumedAt: null },
+      data: { consumedAt: new Date() },
+    });
   }
 }
