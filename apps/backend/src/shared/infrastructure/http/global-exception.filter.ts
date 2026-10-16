@@ -13,17 +13,21 @@ import { InvalidCredentialsError } from '../../../modules/auth/domain/errors/inv
 import { UserNotFoundError } from '../../../modules/auth/domain/errors/user-not-found.error';
 import { ProductNotFoundError } from '../../../modules/products/domain/errors/product.errors';
 
-type DomainError = Error & { constructor: typeof Error };
+type DomainErrorMapping = { status: HttpStatus; publicMessage: string };
 
-const domainErrorStatuses = new Map<Function, HttpStatus>([
-  [EmailAlreadyRegisteredError, HttpStatus.CONFLICT],
-  [InvalidCredentialsError, HttpStatus.UNAUTHORIZED],
-  [AccountLockedError, HttpStatus.UNAUTHORIZED],
-  [EmailNotVerifiedError, HttpStatus.FORBIDDEN],
-  [InvalidOneTimeTokenError, HttpStatus.BAD_REQUEST],
-  [InvalidRefreshTokenError, HttpStatus.UNAUTHORIZED],
-  [UserNotFoundError, HttpStatus.UNAUTHORIZED],
-  [ProductNotFoundError, HttpStatus.NOT_FOUND],
+// Known domain errors are answered with a FIXED public message per error
+// class: the detailed `exception.message` (internal flow context such as
+// refresh-token reuse reasons) is kept for logs only and never serialized
+// into the HTTP response.
+const domainErrorMappings = new Map<Function, DomainErrorMapping>([
+  [EmailAlreadyRegisteredError, { status: HttpStatus.CONFLICT, publicMessage: 'Email is already registered' }],
+  [InvalidCredentialsError, { status: HttpStatus.UNAUTHORIZED, publicMessage: 'Invalid credentials' }],
+  [AccountLockedError, { status: HttpStatus.UNAUTHORIZED, publicMessage: 'Account is temporarily locked' }],
+  [EmailNotVerifiedError, { status: HttpStatus.FORBIDDEN, publicMessage: 'Email address must be verified before login' }],
+  [InvalidOneTimeTokenError, { status: HttpStatus.BAD_REQUEST, publicMessage: 'Invalid or expired token' }],
+  [InvalidRefreshTokenError, { status: HttpStatus.UNAUTHORIZED, publicMessage: 'Invalid refresh token' }],
+  [UserNotFoundError, { status: HttpStatus.UNAUTHORIZED, publicMessage: 'User not found' }],
+  [ProductNotFoundError, { status: HttpStatus.NOT_FOUND, publicMessage: 'Product not found' }],
 ]);
 
 @Catch()
@@ -39,10 +43,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     }
 
     if (exception instanceof Error) {
-      const status = domainErrorStatuses.get(exception.constructor);
+      const mapping = domainErrorMappings.get(exception.constructor);
 
-      if (status !== undefined) {
-        response.status(status).json({ statusCode: status, message: exception.message });
+      if (mapping !== undefined) {
+        // Detailed domain message stays in the logs; the client gets the
+        // fixed generic message for its error class.
+        this.logger.warn(`${exception.name}: ${exception.message}`);
+        response.status(mapping.status).json({ statusCode: mapping.status, message: mapping.publicMessage });
         return;
       }
 
