@@ -1,3 +1,9 @@
+# Workspace packages. pnpm auto-installs before `pnpm run`, so without this
+# list pnpm does not recognize apps/backend, prunes it from the lockfile and
+# the store on every run (jest and friends disappear).
+packages:
+  - 'apps/backend'
+
 allowBuilds:
   '@parcel/watcher': true
   '@prisma/client': true

@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { ProductController } from '../../../infrastructure/adapters/in/http/product.controller';
+import { AUTH_ROLES_KEY } from '../../../../../modules/auth/infrastructure/adapters/in/http/roles.decorator';
+import { IS_PUBLIC_KEY } from '../../../../../shared/infrastructure/http/public.decorator';
 import { ListProductsUseCase } from '../list-products.use-case';
 import { CreateProductUseCase } from '../create-product.use-case';
 import { GetProductUseCase } from '../get-product.use-case';
@@ -102,5 +105,35 @@ describe('ProductController', () => {
 
   it('throws ProductNotFoundError for unknown id', async () => {
     await expect(controller.get('missing')).rejects.toThrow(ProductNotFoundError);
+  });
+});
+
+describe('ProductController route protection', () => {
+  // Mirrors how JwtAuthGuard (APP_GUARD) resolves @Public and how
+  // RolesGuard resolves @Roles: handler metadata first, class metadata second.
+  const reflector = new Reflector();
+
+  const isPublic = (handler: Function): boolean | undefined =>
+    reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [handler, ProductController]);
+
+  it('does not mark the controller class as public', () => {
+    // H5(b): a class-level @Public() short-circuits the JwtAuthGuard APP_GUARD,
+    // so request.user stays undefined and every admin mutation answers 403.
+    expect(Reflect.getMetadata(IS_PUBLIC_KEY, ProductController)).toBeUndefined();
+  });
+
+  it('keeps the catalogue reads public', () => {
+    expect(isPublic(ProductController.prototype.list)).toBe(true);
+    expect(isPublic(ProductController.prototype.get)).toBe(true);
+  });
+
+  it('requires authentication and the admin role for every mutation', () => {
+    const mutations = ['create', 'update', 'updateStock', 'remove'] as const;
+
+    for (const name of mutations) {
+      const handler = ProductController.prototype[name];
+      expect(isPublic(handler)).toBeFalsy();
+      expect(reflector.getAllAndOverride(AUTH_ROLES_KEY, [handler, ProductController])).toEqual(['admin']);
+    }
   });
 });

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EmailAlreadyRegisteredError } from '../../domain/errors/email-already-registered.error';
+import { normalizeEmail } from '../../domain/utils/normalize-email';
 import { UserRegisteredEvent, USER_REGISTERED_EVENT } from '../../domain/events/user-registered.event';
 import { EventBusPort } from '../ports/out/event-bus.port';
 import { PasswordHasherPort } from '../ports/out/password-hasher.port';
@@ -18,11 +19,14 @@ export class RegisterUserUseCase extends RegisterUserPort {
   }
 
   async execute(input: RegisterUserInput): Promise<void> {
-    const existing = await this.users.findByEmail(input.email);
+    // M13: canonicalize before the duplicate check so "Maria@" and "maria@" are
+    // the same identity instead of two accounts.
+    const email = normalizeEmail(input.email);
+    const existing = await this.users.findByEmail(email);
     if (existing) throw new EmailAlreadyRegisteredError();
 
     const passwordHash = await this.passwordHasher.hash(input.password);
-    const user = await this.users.create({ ...input, passwordHash });
+    const user = await this.users.create({ ...input, email, passwordHash });
     this.eventBus.publish(USER_REGISTERED_EVENT, new UserRegisteredEvent(user));
   }
 }

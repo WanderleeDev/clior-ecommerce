@@ -58,13 +58,19 @@ export class RequestPasswordResetUseCase extends RequestPasswordResetPort {
   constructor(
     private readonly users: UserRepositoryPort,
     private readonly events: EventBusPort,
+    private readonly tokens: AuthTokenRepositoryPort,
   ) {
     super();
   }
 
   async execute(email: string): Promise<void> {
     const user = await this.users.findByEmail(email);
-    if (user) this.events.publish(PASSWORD_RESET_REQUESTED_EVENT, user);
+    if (!user) return;
+    // M9: issuing a new reset token burns every outstanding one first, so
+    // only the most recently requested token stays redeemable. Revocation
+    // must precede publish, because the listener creates the new token.
+    await this.tokens.revokeByUserAndType?.(user.id, 'password_reset');
+    this.events.publish(PASSWORD_RESET_REQUESTED_EVENT, user);
   }
 }
 
