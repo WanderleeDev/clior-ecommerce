@@ -140,6 +140,7 @@ odd/
 .angular/
 .codegraph/
 .commandcode/
+.hermes/
 .nx/
 .codeium/
 .opencode/
