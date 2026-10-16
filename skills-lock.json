@@ -53,6 +53,12 @@
       "sourceType": "autoskills-registry",
       "computedHash": "dcc414410b81cfcc5c56490a7e450e664b11d170f3c336fe475c6e0a47def574"
     },
+    "polar-integration": {
+      "source": "polarsource/skills",
+      "sourceType": "github",
+      "skillPath": "skills/polar-integration/SKILL.md",
+      "computedHash": "3688a4eb0477fe11e0ff5fbb5fc805e0767f6066fa49db480501e15985bdab69"
+    },
     "pr_review": {
       "source": "angular/angular",
       "sourceType": "autoskills-registry",
