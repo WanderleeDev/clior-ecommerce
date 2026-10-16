@@ -5,7 +5,7 @@ import { EmailSenderPort } from '../../../../application/ports/out/email-sender.
 
 @Injectable()
 export class ResendEmailAdapter extends EmailSenderPort {
-  private readonly resend: Resend | undefined;
+  private readonly resend: Resend;
   private readonly from: string;
   private readonly appUrl: string;
   private readonly verificationTemplateId: string;
@@ -13,8 +13,13 @@ export class ResendEmailAdapter extends EmailSenderPort {
 
   constructor(config: ConfigService) {
     super();
+    // RESEND_API_KEY is required, matching config/env.validation.ts (M12):
+    // password reset and email verification cannot work without delivery, so
+    // the adapter fails fast at construction instead of degrading into a
+    // silently broken auth flow. The zod schema reports the missing key at
+    // boot, before dependency injection reaches this constructor.
     const apiKey = config.getOrThrow<string>('RESEND_API_KEY');
-    this.resend = apiKey ? new Resend(apiKey) : undefined;
+    this.resend = new Resend(apiKey);
     this.from = config.getOrThrow<string>('MAIL_FROM');
     this.appUrl = config.getOrThrow<string>('APP_URL');
     this.verificationTemplateId = config.getOrThrow<string>('RESEND_VERIFICATION_TEMPLATE_ID');
@@ -48,7 +53,6 @@ export class ResendEmailAdapter extends EmailSenderPort {
     templateId: string;
     variables: Record<string, string>;
   }): Promise<void> {
-    if (!this.resend) throw new Error('RESEND_API_KEY is not configured');
     const { error } = await this.resend.emails.send({
       from: this.from,
       to: input.to,
