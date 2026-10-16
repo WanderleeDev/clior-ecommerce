@@ -14,6 +14,7 @@ model User {
   reviews         Review[]
   refreshSessions RefreshSession[]
   authTokens      AuthToken[]
+  subscriptions   UserSubscription[]
 
   @@map("users")
 }

@@ -1,0 +1,13 @@
+model SubscriptionTier {
+  id             String   @id @default(uuid())
+  polarProductId String   @unique // UUID del producto en Polar
+  name           String   @unique // e.g. "Básico", "Premium"
+  priceCents     Int      // precio en centavos USD
+  interval       String   // "month" | "year"
+  description    String?
+  createdAt      DateTime @default(now())
+
+  subscriptions UserSubscription[]
+
+  @@map("subscription_tiers")
+}
