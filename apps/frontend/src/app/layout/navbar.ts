@@ -14,11 +14,15 @@ import { ThemeSelect } from './theme-select';
         class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 rounded-full border border-line bg-background/80 px-4 shadow-lg backdrop-blur-xl sm:px-6"
         aria-label="Navegación principal"
       >
-        <a
-          routerLink="/"
-          class="font-display text-xl font-extrabold tracking-tight"
-        >
-          Clior&nbsp;<span class="text-accent">Pets</span>
+        <a routerLink="/" class="flex shrink-0 items-center">
+          <img
+            src="logo-mini.webp"
+            alt="Clior Pets"
+            width="200"
+            height="133"
+            class="h-14 w-auto dark:brightness-0 dark:invert"
+            fetchpriority="high"
+          />
         </a>
         <div class="hidden items-center gap-6 text-sm lg:flex">
           <a routerLink="/catalogo" routerLinkActive="text-accent font-bold" class="hover:text-accent">Tienda +</a>

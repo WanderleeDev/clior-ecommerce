@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, computed, signal } from '@angular/core';
 
 const BRAND_NAMES = [
+  'Clior',
   'Bark', 'Bravecto', 'Brit Care', 'CanBo', 'Catit', 'Churu', 'Dentastix',
   'Dog Chow', 'Drontal', 'Eukanuba', 'Fancy Feast', 'Felix', 'Ferplast',
   'Fresh Step', 'Friskies', 'Frontline', 'Furminator', 'Greenies', 'Hartz',
@@ -21,8 +22,10 @@ const BRAND_NAMES = [
         Marcas <span class="text-muted">aliadas.</span>
       </h1>
       <p class="mt-3 max-w-2xl text-muted">
-        Trabajamos directo con {{ brands().length }} marcas verificadas. Solo
-        originales, con registro sanitario y fecha vigente.
+        {{ brands().length }} marcas en tienda: nuestra marca propia
+        <span class="font-bold text-foreground">Clior</span> y
+        {{ brands().length - 1 }} marcas aliadas. Solo originales, con registro
+        sanitario y fecha vigente.
       </p>
 
       <div class="mt-8 flex flex-wrap gap-2" aria-label="Filtrar por letra">

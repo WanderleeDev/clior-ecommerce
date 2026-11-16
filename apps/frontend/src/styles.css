@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+/* Themes are class-based (themes.css). Without this, dark: would follow the
+   OS preference instead of the theme the user picked. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-background: var(--background);
   --color-surface: var(--surface);
