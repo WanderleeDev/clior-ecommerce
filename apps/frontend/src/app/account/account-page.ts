@@ -45,7 +45,7 @@ import { AuthStore } from '../auth/presentation/state/auth.store';
               <ngx-iconify icon="noto:dog-face" [size]="24" />
             </span>
             <h2 class="mt-3 font-display text-lg font-bold">Mi mascota</h2>
-            <p class="mt-1 text-sm text-muted">{{ user()?.pet }}</p>
+            <p class="mt-1 text-sm text-muted">{{ user()?.pet ?? 'Aún no registraste tu mascota' }}</p>
           </div>
           <div class="rounded-2xl border border-line bg-surface p-6">
             <span class="flex h-11 w-11 items-center justify-center rounded-full bg-accent/15 text-accent">

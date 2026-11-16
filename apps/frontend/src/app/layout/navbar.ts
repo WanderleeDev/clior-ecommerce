@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgxIconify } from 'ngx-iconify-stack';
+import { AuthStore } from '../auth/presentation/state/auth.store';
 import { ThemeSelect } from './theme-select';
 
 @Component({
@@ -41,10 +42,13 @@ import { ThemeSelect } from './theme-select';
           </a>
           <a
             routerLink="/cuenta"
-            aria-label="Mi cuenta"
-            class="flex h-10 w-10 items-center justify-center rounded-full border border-line text-foreground hover:border-accent"
+            [attr.aria-label]="isLoggedIn() ? 'Mi cuenta de ' + firstName() : 'Mi cuenta'"
+            class="flex h-10 items-center justify-center gap-2 rounded-full border border-line px-3 text-foreground hover:border-accent"
           >
             <ngx-iconify icon="lucide:user" [size]="20" />
+            @if (isLoggedIn()) {
+              <span class="hidden max-w-28 truncate text-sm font-medium sm:inline">{{ firstName() }}</span>
+            }
           </a>
           <app-theme-select />
           <a
@@ -123,7 +127,11 @@ import { ThemeSelect } from './theme-select';
   `,
 })
 export class Navbar {
+  private readonly store = inject(AuthStore);
+
   protected readonly open = signal(false);
+  protected readonly isLoggedIn = this.store.isLoggedIn;
+  protected readonly firstName = computed(() => this.store.current()?.name.split(' ')[0] ?? '');
 
   protected toggle(): void {
     this.open.update((v) => !v);
