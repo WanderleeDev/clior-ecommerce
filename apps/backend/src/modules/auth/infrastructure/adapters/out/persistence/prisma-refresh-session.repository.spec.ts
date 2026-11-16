@@ -15,6 +15,7 @@ const user: AuthUser = {
   email: 'maria@example.com',
   name: 'Maria',
   role: 'customer',
+  petType: null,
   emailVerifiedAt: null,
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
 };

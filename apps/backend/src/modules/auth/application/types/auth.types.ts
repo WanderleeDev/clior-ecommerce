@@ -4,6 +4,8 @@ export interface RegisterUserInput {
   email: string;
   name: string;
   password: string;
+  /** Optional catalog personalization signal: 'dog' | 'cat' | 'small_pet'. */
+  petType?: string | null;
 }
 
 export interface LoginUserInput {

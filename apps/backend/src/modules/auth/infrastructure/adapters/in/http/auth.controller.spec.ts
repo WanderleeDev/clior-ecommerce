@@ -23,6 +23,7 @@ const user: AuthUser = {
   email: 'maria@example.com',
   name: 'Maria',
   role: 'customer',
+  petType: null,
   emailVerifiedAt: null,
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
 };
@@ -44,7 +45,13 @@ function stubPort(): { execute: jest.Mock } {
 
 function buildController(): {
   controller: AuthController;
-  ports: { login: { execute: jest.Mock }; refresh: { execute: jest.Mock } };
+  ports: {
+    register: { execute: jest.Mock };
+    login: { execute: jest.Mock };
+    refresh: { execute: jest.Mock };
+    verify: { execute: jest.Mock };
+    requestVerification: { execute: jest.Mock };
+  };
 } {
   const register = stubPort();
   const login = stubPort();
@@ -68,11 +75,49 @@ function buildController(): {
     resetPassword as unknown as ResetPasswordPort,
   );
 
-  return { controller, ports: { login, refresh } };
+  return {
+    controller,
+    ports: { register, login, refresh, verify, requestVerification },
+  };
 }
 
 afterEach(() => {
   restoreEnv();
+});
+
+describe('registration endpoints', () => {
+  it('registers through the port and returns the documented message', async () => {
+    const { controller, ports } = buildController();
+    const dto = {
+      name: 'Maria',
+      email: 'maria@example.com',
+      password: 'Secure-password1!',
+      petType: 'cat',
+    };
+
+    const result = await controller.register(dto);
+
+    expect(ports.register.execute).toHaveBeenCalledWith(dto);
+    expect(result).toEqual({
+      message: 'Cuenta creada. Te enviamos un correo de verificación, revisa tu bandeja.',
+    });
+  });
+
+  it('forwards the verification token', async () => {
+    const { controller, ports } = buildController();
+
+    await controller.verify({ token: 'one-time-token' });
+
+    expect(ports.verify.execute).toHaveBeenCalledWith('one-time-token');
+  });
+
+  it('forwards the resend request', async () => {
+    const { controller, ports } = buildController();
+
+    await controller.resendVerification({ email: 'maria@example.com' });
+
+    expect(ports.requestVerification.execute).toHaveBeenCalledWith('maria@example.com');
+  });
 });
 
 describe('refresh cookie policy (M14)', () => {
@@ -204,7 +249,13 @@ describe('AuthController cookie wiring (M14)', () => {
     );
     expect(result).toEqual({
       accessToken: 'access-1',
-      user: { id: user.id, email: user.email, name: user.name, role: user.role },
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        petType: user.petType,
+      },
     });
   });
 

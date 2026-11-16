@@ -57,7 +57,7 @@ describe('ResendEmailAdapter', () => {
         id: 'verification-template',
         variables: {
           USER_NAME: 'Maria',
-          ACTION_URL: 'http://localhost:4200/verify-email?token=raw-token',
+          ACTION_URL: 'http://localhost:4200/verificar?token=raw-token',
         },
       },
     });

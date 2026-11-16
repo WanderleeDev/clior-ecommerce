@@ -40,3 +40,22 @@ describe('Auth DTO email normalization (M13)', () => {
     expect(validateSync(instance)).toEqual([]);
   });
 });
+
+describe('RegisterDto pet type (optional catalog personalization)', () => {
+  const base = { name: 'Maria', email: 'maria@gmail.com', password: 'Secure-password1!' };
+
+  it('accepts a registration without a pet type', () => {
+    expect(validateSync(plainToInstance(RegisterDto, base))).toEqual([]);
+  });
+
+  it.each(['dog', 'cat', 'small_pet'])('accepts the known pet type %s', (petType) => {
+    expect(validateSync(plainToInstance(RegisterDto, { ...base, petType }))).toEqual([]);
+  });
+
+  it('rejects an unknown pet type instead of persisting free text', () => {
+    const errors = validateSync(plainToInstance(RegisterDto, { ...base, petType: 'dragon' }));
+
+    expect(errors).toHaveLength(1);
+    expect(errors[0].property).toBe('petType');
+  });
+});

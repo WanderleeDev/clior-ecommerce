@@ -31,6 +31,8 @@ export class PrismaUserRepository extends UserRepositoryPort {
           email: normalizeEmail(input.email),
           name: input.name,
           passwordHash: input.passwordHash,
+          // Optional personalization: null when the customer did not pick a pet.
+          petType: input.petType ?? null,
         },
       });
       return this.toUser(user);
@@ -86,6 +88,7 @@ export class PrismaUserRepository extends UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
+      petType: user.petType,
       emailVerifiedAt: user.emailVerifiedAt,
       passwordHash: user.passwordHash,
       failedLoginAttempts: user.failedLoginAttempts,

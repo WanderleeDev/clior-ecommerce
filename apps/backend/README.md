@@ -72,6 +72,18 @@ pnpm run start:prod
 
 ## Environment
 
+Validated at boot by `src/config/env.validation.ts`; the process refuses to start with a
+missing or malformed value.
+
 | Variable | Default | Description |
 | --- | --- | --- |
 | `PORT` | `3000` | HTTP port |
+| `DATABASE_URL` | — (required) | PostgreSQL connection string |
+| `JWT_SECRET` | — (required) | Access-token signing secret, 32+ characters |
+| `JWT_EXPIRES_IN` | `3600` | Access-token lifetime in seconds |
+| `RESEND_API_KEY` | — (required) | Resend API key |
+| `RESEND_VERIFICATION_TEMPLATE_ID` | — (required) | Resend template for the verification email |
+| `RESEND_PASSWORD_RESET_TEMPLATE_ID` | — (required) | Resend template for the password reset email |
+| `MAIL_FROM` | `Clio <onboarding@resend.dev>` | Sender presented by the email provider |
+| `APP_URL` | `http://localhost:4200` | Frontend origin used to build the links inside emails |
+| `MAIL_TRANSPORT` | `resend` | `resend` delivers real email; `log` writes the action link to the application log for local development and refuses `NODE_ENV=production` |

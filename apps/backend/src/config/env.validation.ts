@@ -16,6 +16,12 @@ export const environmentSchema = z.object({
   RESEND_PASSWORD_RESET_TEMPLATE_ID: z.string().min(1),
   MAIL_FROM: z.string().min(1).default('Clio <onboarding@resend.dev>'),
   APP_URL: z.string().url().default('http://localhost:4200'),
+  /**
+   * `resend` delivers real email; `log` writes the action link to the app log
+   * for local development. The log transport is rejected in production by the
+   * adapter itself.
+   */
+  MAIL_TRANSPORT: z.enum(['resend', 'log']).default('resend'),
 });
 
 export function validateEnvironment(config: Record<string, unknown>) {

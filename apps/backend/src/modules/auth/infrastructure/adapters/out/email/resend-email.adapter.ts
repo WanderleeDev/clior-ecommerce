@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
 import { EmailSenderPort } from '../../../../application/ports/out/email-sender.port';
+import { passwordResetUrl, verificationUrl } from './email-links';
 
 @Injectable()
 export class ResendEmailAdapter extends EmailSenderPort {
@@ -32,7 +33,7 @@ export class ResendEmailAdapter extends EmailSenderPort {
       templateId: this.verificationTemplateId,
       variables: {
         USER_NAME: input.name,
-        ACTION_URL: `${this.appUrl}/verify-email?token=${input.token}`,
+        ACTION_URL: verificationUrl(this.appUrl, input.token),
       },
     });
   }
@@ -43,7 +44,7 @@ export class ResendEmailAdapter extends EmailSenderPort {
       templateId: this.passwordResetTemplateId,
       variables: {
         USER_NAME: input.name,
-        ACTION_URL: `${this.appUrl}/reset-password?token=${input.token}`,
+        ACTION_URL: passwordResetUrl(this.appUrl, input.token),
       },
     });
   }

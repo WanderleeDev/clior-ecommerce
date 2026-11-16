@@ -27,6 +27,7 @@ import { RefreshSessionPort } from './application/ports/out/refresh-session.port
 import { PrismaRefreshSessionRepository } from './infrastructure/adapters/out/persistence/prisma-refresh-session.repository';
 import { EmailSenderPort } from './application/ports/out/email-sender.port';
 import { ResendEmailAdapter } from './infrastructure/adapters/out/email/resend-email.adapter';
+import { LogEmailAdapter } from './infrastructure/adapters/out/email/log-email.adapter';
 import { AuthEmailListeners } from './infrastructure/adapters/out/events/auth-email.listeners';
 import {
   LogoutPort,
@@ -73,7 +74,16 @@ import { JwtAuthGuard } from './infrastructure/adapters/in/http/jwt-auth.guard';
     { provide: OpaqueTokenPort, useClass: OpaqueTokenAdapter },
     { provide: AuthTokenRepositoryPort, useClass: PrismaAuthTokenRepository },
     { provide: RefreshSessionPort, useClass: PrismaRefreshSessionRepository },
-    { provide: EmailSenderPort, useClass: ResendEmailAdapter },
+    {
+      // Dev-only transport keeps registration testable before Resend
+      // credentials exist; the adapter refuses NODE_ENV=production.
+      provide: EmailSenderPort,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) =>
+        config.get<string>('MAIL_TRANSPORT') === 'log'
+          ? new LogEmailAdapter(config)
+          : new ResendEmailAdapter(config),
+    },
     { provide: RefreshAuthPort, useClass: RefreshAuthUseCase },
     { provide: LogoutPort, useClass: LogoutUseCase },
     { provide: VerifyEmailPort, useClass: VerifyEmailUseCase },

@@ -31,6 +31,7 @@ const storedRow = {
   email: 'maria@example.com',
   name: 'Maria',
   role: 'customer',
+  petType: null,
   emailVerifiedAt: null,
   passwordHash: 'hashed:secret-password',
   failedLoginAttempts: 0,
@@ -82,6 +83,7 @@ describe('PrismaUserRepository', () => {
           email: 'maria@gmail.com',
           name: 'Maria',
           passwordHash: 'hashed:secret-password',
+          petType: null,
         },
       });
     });
@@ -119,6 +121,7 @@ describe('PrismaUserRepository', () => {
         'emailVerifiedAt',
         'id',
         'name',
+        'petType',
         'role',
       ]);
       expect(found).not.toHaveProperty('passwordHash');

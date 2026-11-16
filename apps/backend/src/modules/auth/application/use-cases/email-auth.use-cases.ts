@@ -19,8 +19,6 @@ import { PasswordHasherPort } from '../ports/out/password-hasher.port';
 import { RefreshSessionPort } from '../ports/out/refresh-session.port';
 import type { AuthOneTimeTokenType } from '../types/auth.types';
 
-const ONE_HOUR = 60 * 60 * 1000;
-
 @Injectable()
 export class VerifyEmailUseCase extends VerifyEmailPort {
   constructor(

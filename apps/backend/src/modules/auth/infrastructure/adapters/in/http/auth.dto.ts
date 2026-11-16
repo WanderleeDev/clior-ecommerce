@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsStrongPassword, MinLength } from 'class-validator';
+import { IsEmail, IsIn, IsOptional, IsString, IsStrongPassword, MinLength } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { normalizeEmail } from '../../../../domain/utils/normalize-email';
@@ -32,6 +32,15 @@ export class RegisterDto {
     minSymbols: 1,
   })
   password!: string;
+
+  /**
+   * Optional on purpose: the catalog personalizes recommendations when the
+   * customer tells us who they shop for, but sign-up must stay frictionless.
+   */
+  @IsOptional()
+  @IsIn(['dog', 'cat', 'small_pet'])
+  @ApiProperty({ required: false, enum: ['dog', 'cat', 'small_pet'] })
+  petType?: string;
 }
 
 export class LoginDto {
