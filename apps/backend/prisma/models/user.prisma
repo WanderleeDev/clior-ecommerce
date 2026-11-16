@@ -4,6 +4,10 @@ model User {
   passwordHash         String
   name                 String
   role                 String            @default("customer")
+  // Optional pet type captured at registration so the catalog can recommend
+  // products: 'dog' | 'cat' | 'small_pet'. Nullable because sign-up stays
+  // optional for customers who have not adopted yet.
+  petType              String?
   emailVerifiedAt      DateTime?
   failedLoginAttempts  Int               @default(0)
   lockedUntil          DateTime?
