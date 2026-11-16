@@ -1,14 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './shared/infrastructure/http/global-exception.filter';
+import { applyProxyTrust } from './shared/infrastructure/http/proxy-trust';
 import { resolveAppOrigin } from './modules/auth/infrastructure/adapters/in/http/auth.controller';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  applyProxyTrust(app.getHttpAdapter().getInstance());
   app.use(helmet());
   app.use(cookieParser());
   // Same validated APP_URL source as the refresh-cookie policy, so CORS and
