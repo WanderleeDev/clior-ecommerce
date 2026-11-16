@@ -149,6 +149,9 @@ odd/
 .aider/
 .copilot/
 
+# Generated product photography (see data/IMAGE-CATALOG.md)
+data/images/
+
 # Session scratch and local task notes
 .odd/
 
