@@ -145,21 +145,21 @@ Defined in `apps/frontend/src/themes.css` and exposed to Tailwind 4 in `src/styl
 ### Frontend
 
 - **Done**: full visual layer — home, catalog, product detail, brands, cart, help, blog, contact, account, auth views, layout, themes, icons, SSR.
-- **Mock-only**: `app.config.ts` binds `MockProductAdapter` and `MockAuthAdapter`; there is no `HttpClient`, no environments, no interceptors.
-- **Auth**: `AuthStore` starts with a hardcoded `MOCK_SESSION`, so `authGuard` always passes.
+- **Mock-only**: `app.config.ts` still binds `MockProductAdapter` (catalog). Auth is real: `HttpAuthAdapter` + `HttpRegistrationAdapter`, `provideHttpClient(withFetch())` + `authInterceptor`, `API_BASE_URL` token (US-001/US-003).
+- **Auth**: `AuthStore` starts logged out; the session hydrates from the refresh cookie via a bootstrap refresh, and `authGuard` redirects to `/ingresar` when logged out (US-001).
 - **Cart**: hardcoded 3 lines; quantity buttons are decorative; checkout CTA loops to the cart.
 - **Account**: hardcoded "3 pedidos · 1 en camino".
 - **Contact form**: no submit handler.
 - **Model mismatch**: frontend `Product` (`price`, `image`, `rating`, `category` string, `oldPrice`) vs backend DTO (`priceCents`, `imageUrl`, `categoryId`).
-- **Tests**: `app.spec.ts` only (2 tests); e2e only the generated `example.spec.ts`.
+- **Tests**: frontend 12 files / 70 unit tests (auth views, session, interceptor, adapters, mappers); backend 19 suites / 129 tests — all green 2026-11-16. e2e still only the generated `example.spec.ts`.
 
 ### Infrastructure and verification
 
-- `apps/backend/.env` is missing, and `src/generated/prisma` is gitignored and not generated → 4 backend suites fail to compile.
-- Frontend `nx test frontend` passes; app compiles.
-- Local host port `3000` is occupied by Dokploy; the backend default must move (e.g. `3001`).
+- `apps/backend/.env` is present in the dev checkout (gitignored); `src/generated/prisma` is generated via `prisma generate` (must be re-run in each fresh worktree). Backend suites compile and pass (19 suites / 129 tests).
+- Frontend `nx test frontend` passes (70 tests); app compiles and prerenders 11 routes.
+- Backend runs on `:3001` (host port `3000` is occupied by Dokploy); `GET /health` → `200`.
 - Dev tunnel `clior-front-dev` maps `clior-dev.wanderlee.site` → `localhost:4200`; ERD served separately.
-- **Not started**: backend server (blocked by `.env` + Prisma client).
+- **Running**: backend server (`node dist/main`) against Postgres `clior-dev-postgres:5433`, migrations + seed applied.
 
 ---
 
@@ -219,10 +219,10 @@ If front and API are on different hostnames, the refresh cookie becomes cross-si
 ### Phase 1 — Front↔Back foundation
 
 - [ ] **P1-1** Add `src/environments/` and an `API_BASE_URL` injection token (SSR-safe).
-- [ ] **P1-2** `provideHttpClient(withFetch(), ...)` + interceptors (base URL, bearer, single-flight refresh, error normalization).
-- [ ] **P1-3** `AuthSessionService`: in-memory access token, `login/refresh/logout`, bootstrap refresh, `withCredentials`.
+- [x] **P1-2** `provideHttpClient(withFetch(), ...)` + interceptors (base URL, bearer, single-flight refresh, error normalization). *(US-001: `authInterceptor` + `API_BASE_URL` token + `auth-error.mapper`.)*
+- [x] **P1-3** `AuthSessionService`: in-memory access token, `login/refresh/logout`, bootstrap refresh, `withCredentials`. *(US-001: `SessionService` + bootstrap `provideAppInitializer`; login/logout token lifecycle in `HttpAuthAdapter`.)*
 - [ ] **P1-4** Map the backend public user to the frontend `User`; resolve `pet`/`memberSince` (see D2).
-- [ ] **P1-5** Domain error types + Spanish messages for 401/403/409/423/429/5xx.
+- [x] **P1-5** Domain error types + Spanish messages for 401/403/409/429/5xx (lockout is `401` per D-09; `423` superseded). *(US-003 + US-001: `auth-error.mapper`.)*
 - [ ] **P1-6** Contract tests with `HttpTestingController` for every adapter method.
 - [ ] **P1-7** Bind HTTP adapters in `app.config.ts`; keep mocks behind a test/demo switch. **AC**: flipping the switch changes data source with no view changes.
 
@@ -241,12 +241,12 @@ If front and API are on different hostnames, the refresh cookie becomes cross-si
 
 ### Phase 3 — Auth end-to-end
 
-- [ ] **P3-1** `HttpAuthAdapter` for login/register/forgot/reset/verify/resend/me/logout.
-- [ ] **P3-2** Remove `MOCK_SESSION`; hydrate `AuthStore` from the refresh cookie; guard redirects correctly.
+- [ ] **P3-1** `HttpAuthAdapter` for login/register/forgot/reset/verify/resend/me/logout. *(US-001: login/forgot/me/logout + refresh; US-003: register/verify/resend via `HttpRegistrationAdapter`. `reset` pending US-004.)*
+- [x] **P3-2** Remove `MOCK_SESSION`; hydrate `AuthStore` from the refresh cookie; guard redirects correctly. *(US-001.)*
 - [ ] **P3-3** New pages: `/verificar?token=`, `/restablecer?token=` and their success/error states.
-- [ ] **P3-4** Handle 403 unverified email with a resend CTA, plus lockout (423) and throttling (429) messaging.
+- [x] **P3-4** Handle 403 unverified email with a resend CTA, plus lockout (`401` per D-09) and throttling (429) messaging. *(US-001 login + US-003 register/verify.)*
 - [ ] **P3-5** Logout calls the API (clears the cookie) and clears in-memory state.
-- [ ] **P3-6** Real user in navbar/account; remove hardcoded "Mariana Torres".
+- [x] **P3-6** Real user in navbar/account; remove hardcoded "Mariana Torres". *(US-001: navbar shows the signed-in name, `/cuenta` renders the real user. The product-catalog mock's demo review author is a separate concern — US-005+.)*
 - [ ] **P3-7** Switch `/cuenta` to `RenderMode.Server` and never fetch auth data during prerender.
 - **AC**: register → verify email → login → refresh (reload keeps session) → logout works end-to-end against the API.
 
@@ -315,7 +315,7 @@ If front and API are on different hostnames, the refresh cookie becomes cross-si
 | ID | Decision | Options | Recommendation |
 |---|---|---|---|
 | D1 | Cart ownership | client localStorage vs server cart table | **Client** for MVP; server cart only if cross-device carts are required |
-| D2 | `pet` / `memberSince` user fields | add `pet`+meta to schema vs drop from UI | Drop `pet` for MVP; derive `memberSince` from `createdAt` |
+| D2 | `pet` / `memberSince` user fields | add `pet`+meta to schema vs drop from UI | **Resolved (US-001):** keep `petType` (US-003); `PublicUser` exposes `createdAt`; `auth-user.mapper` derives the `pet` label + `memberSince` |
 | D3 | Home data | hardcoded curated vs API-driven | Keep curated layout, but link tiles to real products/brands |
 | D4 | Payment provider | Culqi / Mercado Pago / Stripe / manual | Culqi or Mercado Pago for Peru; manual/COD as fallback |
 | D5 | Review eligibility | any authenticated user vs verified purchase | Verified purchase (stronger signal, matches "reseñas" trust copy) |

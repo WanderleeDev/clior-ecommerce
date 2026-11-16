@@ -12,8 +12,8 @@ This catalog is the backlog index. Full product intent per story lives in `docs/
 
 | ID | Story | Route | Priority | Story status | Impl. status |
 | --- | --- | --- | --- | --- | --- |
-| [US-001](user-histories/US-001-login.md) | Iniciar sesión | `/ingresar` | Must | Ready | Mock |
-| [US-002](user-histories/US-002-logout.md) | Cerrar sesión | `/cuenta` (action) | Must | Ready | Mock |
+| [US-001](user-histories/US-001-login.md) | Iniciar sesión | `/ingresar` | Must | Done | Real |
+| [US-002](user-histories/US-002-logout.md) | Cerrar sesión | `/cuenta` (action) | Must | Ready | Partial |
 | [US-003](user-histories/US-003-register.md) | Registrarse | `/registro`, `/verificar?token=` | Must | Done | Real |
 | [US-004](user-histories/US-004-password-recovery.md) | Recuperar acceso | `/recuperar`, `/restablecer?token=` | Must | Draft | Mock |
 
@@ -64,7 +64,7 @@ Impl. status: `Mock` (UI only) · `Partial` · `Real` · `Missing` (no UI yet).
 | --- | --- | --- | --- | --- |
 | US-018 | Fundación HTTP front↔back | environments + `API_BASE_URL`, interceptors (bearer, single-flight refresh, error normalization), `AuthSessionService`, HTTP adapter binding switch | P1-1..P1-7 | every `Real` story |
 
-US-018 is tracked as an enabler, not a user story: it enters the flow as prerequisite mini-tasks (mf0) of whichever story hits Gate 0 first, or as its own technical branch if the team prefers.
+US-018 is tracked as an enabler, not a user story. It was delivered as US-001's `mf2-http-foundation` mini-task (base-URL token, bearer + single-flight refresh interceptor, `SessionService`, HTTP adapter bindings, bootstrap refresh). Remaining polish: P1-1's `src/environments/` folder was replaced by the `API_BASE_URL` injection token, and P1-7's mock/demo switch was dropped when `MockAuthAdapter` was deleted.
 
 ---
 
@@ -72,7 +72,7 @@ US-018 is tracked as an enabler, not a user story: it enters the flow as prerequ
 
 Matches `ROADMAP.md` §9. Each row is one story branch cut from `dev`.
 
-1. **US-001 + US-002** — login/logout real (needs US-018 foundation; fixes D-11 proxy/TLS cookie issue).
+1. **US-002** — logout real (US-001 login is Done/Real; the US-018 HTTP foundation and the D-11 proxy/TLS cookie fix landed with it). Resolve D-08 idempotency and the failure path.
 2. **US-004** — password recovery landing `/restablecer?token=` (backend already done).
 3. **US-005 → US-006 → US-007** — catalog end-to-end (UI exists, only data wiring + DTO gap).
 4. **US-008** — real cart (decide D1 first; recommendation: client-side).
@@ -83,7 +83,7 @@ Matches `ROADMAP.md` §9. Each row is one story branch cut from `dev`.
 9. **US-015 → US-016 → US-017** — admin.
 10. **US-019** — contact submit, anytime after mail transport exists.
 
-US-003 is in progress on `pr/19-registration-email-verification`; finish and merge it before cutting new auth branches.
+US-003 (register) and US-001 (login) are closed and merged to `dev`. Cut the next auth branch (US-002) from `dev`.
 
 ---
 
@@ -93,9 +93,9 @@ Per the story-branch-flow skill, no sequential work starts until Gate 0 passes. 
 
 | Prerequisite | State | Owner task |
 | --- | --- | --- |
-| Backend boots locally (`.env`, Prisma client generated, Postgres up, migrations + seed) | **Missing** | P0-1..P0-3 → mf0 |
-| Green baseline recorded (backend test+build, frontend test+build+lint) | **Missing** | P0-4 → mf0 |
-| HTTP foundation (environments, interceptors, session service) | **Missing** | US-018 / P1 |
+| Backend boots locally (`.env`, Prisma client generated, Postgres up, migrations + seed) | **Done** (backend `:3001`, Postgres `clior-dev-postgres:5433`, migrations + seed applied) | P0-1..P0-3 (landed with US-003/US-001) |
+| Green baseline recorded (backend test+build, frontend test+build+lint) | **Done** (backend 19 suites / 129 tests + `nest build`; frontend 12 files / 70 tests + lint + build, 2026-11-16) | P0-4 |
+| HTTP foundation (base-URL token, interceptors, session service) | **Done** (US-001 `mf2-http-foundation`) | US-018 / P1 |
 | Story doc written (`docs/user-histories/US-<nnn>-<slug>.md`, status Ready) | Only US-001..004 | per story |
 | Blocking product decision resolved (D1 cart, D4 payments, D5 reviews, D6 admin) | Open | per story |
 

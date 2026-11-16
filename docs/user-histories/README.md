@@ -46,8 +46,8 @@ Implementation status per story: `Mock` (UI only) · `Partial` (some real calls)
 
 | ID | Story | Route | API | Priority | Story status | Impl. status |
 | --- | --- | --- | --- | --- | --- | --- |
-| [US-001](US-001-login.md) | Iniciar sesión | `/ingresar` | `POST /api/auth/login` | Must | Ready | Mock |
-| [US-002](US-002-logout.md) | Cerrar sesión | `/cuenta` (action) | `POST /api/auth/logout` | Must | Ready | Mock |
+| [US-001](US-001-login.md) | Iniciar sesión | `/ingresar` | `POST /api/auth/login` | Must | Done | Real |
+| [US-002](US-002-logout.md) | Cerrar sesión | `/cuenta` (action) | `POST /api/auth/logout` | Must | Ready | Partial |
 | [US-003](US-003-register.md) | Registrarse | `/registro`, `/verificar?token=` | `POST /api/auth/register`, `POST /api/auth/verify-email`, `POST /api/auth/resend-verification` | Must | Done | Real |
 | [US-004](US-004-password-recovery.md) | Recuperar acceso | `/recuperar`, `/restablecer?token=` | `POST /api/auth/forgot-password`, `POST /api/auth/reset-password` | Must | Draft | Mock |
 
@@ -65,7 +65,7 @@ Facts the four stories depend on. Source of truth: `apps/backend/src/modules/aut
 | Refresh token | Opaque, hashed at rest, sent as `httpOnly` cookie `refresh_token`, `path=/api/auth`, `SameSite=Lax` same-site / `None+Secure` cross-site, `Secure` when `NODE_ENV=production`. |
 | Session lifetime | Sliding 30 days per rotation, absolute cap 90 days per session family. |
 | Rotation | Single-flight rotation on `POST /api/auth/refresh`; reuse of a revoked token revokes the whole family. |
-| Login/refresh body | `{ accessToken, user }` with `user = { id, email, name, role }`. |
+| Login/refresh body | `{ accessToken, user }` with `user = { id, email, name, role, petType, createdAt }` (`createdAt` added in US-001, D2). |
 | Password hashing | Argon2id. |
 | Login protection | 5 failed attempts → 15 min lock. Decoy hash keeps timing equal for unknown emails. Lock expires instead of re-locking. |
 | Email normalization | Trimmed and lower-cased at the HTTP boundary, so duplicates are case-insensitive. |
@@ -118,7 +118,7 @@ A story can be estimated when: the route exists or is specified, the endpoint an
 
 | ID | Decision | Status | Notes |
 | --- | --- | --- | --- |
-| D-01 | Map backend English messages to Spanish UI copy in one client-side mapping layer | Implemented (US-003 slice) | `auth-error.mapper.ts` translates status + message into typed `AuthError`s; the API stays English and no view sees raw text. |
+| D-01 | Map backend English messages to Spanish UI copy in one client-side mapping layer | Implemented (US-003 + US-001) | `auth-error.mapper.ts` translates status + message into typed `AuthError`s (incl. login `invalid_credentials` / `locked` / `unverified`); the API stays English and no view sees raw text. |
 | D-02 | Registration does not auto-login; the user must verify email first | Implemented | `/registro` shows the `Revisa tu correo` panel instead of redirecting; matches backend `EmailNotVerifiedError`. |
 | D-03 | Email link routes: `/verificar?token=` and `/restablecer?token=` | Implemented for verification | `email-links.ts` builds both; `/verificar` is client-rendered (RenderMode.Client) so the single-use token is never spent by SSR/prerender. `/restablecer` landing is US-004. |
 | D-04 | Collect `Tu mascota` at registration? | Implemented | Optional provided select (`dog` / `cat` / `small_pet`, default `Prefiero no decir`). Persisted as `User.petType` (nullable) and used for catalog personalization; free text is rejected by `@IsIn`. |
@@ -126,6 +126,6 @@ A story can be estimated when: the route exists or is specified, the endpoint an
 | D-06 | Password policy: 8 chars on register vs 12 on reset | Open (register side implemented) | Register enforces and mirrors client-side the backend `@IsStrongPassword` (8+, lower, upper, number, symbol). The 12-char reset rule still needs one decision in US-004. |
 | D-07 | Session length: 30-day sliding, 90-day absolute | Proposed | Behind the `refresh_token` cookie; confirm it matches customer expectation. |
 | D-08 | Logout without a refresh cookie must be idempotent (200) | Open | Current API answers 401 because the cookie is required. |
-| D-09 | Locked-account status code: `423` vs `401` | Open | `ROADMAP` P3-4 expects `423`; the API returns `401`. |
+| D-09 | Locked-account status code: `423` vs `401` | Resolved (US-001) | Keep `401` (current API behavior). The UI maps the fixed `Account is temporarily locked` message to Spanish; the ROADMAP P3-4 `423` expectation is superseded. |
 | D-10 | Transactional email transport is configurable per environment | Implemented | `MAIL_TRANSPORT=resend` (default) sends through Resend; `MAIL_TRANSPORT=log` writes the action link to the application log for local development and refuses `NODE_ENV=production`. |
-| D-11 | Login behind a TLS-terminating proxy | Open | The refresh-cookie policy compares `APP_URL` with `request.protocol`; without trusting proxy headers an `https` `APP_URL` behind the Cloudflare tunnel resolves as cross-site and login answers `500`. US-001 owns the fix. |
+| D-11 | Login behind a TLS-terminating proxy | Implemented (US-001) | `applyProxyTrust` (`main.ts`) trusts the proxy hop so `request.protocol` resolves `https` behind the Cloudflare tunnel; the refresh-cookie policy then sees same-site and issues the `Lax` cookie. Verified live: login `200` + `Set-Cookie`, unverified `403`, refresh rotation `200`. |
