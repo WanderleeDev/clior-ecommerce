@@ -58,6 +58,10 @@
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",
+      "options": {
+        "proxyConfig": "apps/frontend/proxy.conf.json",
+        "allowedHosts": [".trycloudflare.com", "clior-dev.wanderlee.site"]
+      },
       "configurations": {
         "production": {
           "buildTarget": "frontend:build:production"
