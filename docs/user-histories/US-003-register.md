@@ -4,7 +4,7 @@
 | --- | --- |
 | ID | `US-003` |
 | Priority | Must |
-| Story status | In progress |
+| Story status | Done |
 | Implementation status | Real |
 | Route | `/registro`, `/verificar?token=` |
 | Endpoints | `POST /api/auth/register`, `POST /api/auth/verify-email`, `POST /api/auth/resend-verification` |
@@ -179,19 +179,28 @@ Implemented end to end and verified against the running API:
 - `POST /api/auth/resend-verification` → `200` always, `429` beyond 3/min.
 - The frontend calls the real API through `RegistrationRepositoryPort` → `HttpRegistrationAdapter`
   (`/api` proxied to the NestJS server by the dev server).
-- Tests: backend `jest src/modules/auth src/config` (18 suites / 124 tests) and frontend
-  `nx test frontend` (5 files / 24 tests) cover the rules above.
+- Tests: full backend `jest` (18 suites / 127 tests) + `nest build`, and frontend
+  `nx test frontend` (5 files / 24 tests) + `nx lint frontend` + `nx build frontend` — all green
+  on 2026-11-16.
+- The Resend adapter sends the published template variables (`first_name`,
+  `verification_link` / `reset_link`, `expiration_time='1 hora'`, `support_email`, `website_url`);
+  the reset email carries the subject `Restablece tu contraseña` because its template has no default.
+
+Closed 2026-11-16 with real delivery verified end to end:
+
+- `MAIL_TRANSPORT=resend` with a valid API key, published templates, and the verified domain
+  `mail.wanderlee.site` (`MAIL_FROM="Clior <clior@mail.wanderlee.site>"`).
+- Live probe: register → Resend reports `delivered` → the customer opened the emailed link and
+  `/verificar` verified the account (AC-003-06 and AC-003-11 with real transport).
 
 Pending / external:
 
-- Real email delivery needs a Resend API key and the two template IDs. Until then the local `.env`
-  uses `MAIL_TRANSPORT="log"`, which writes the action link to the backend log.
-- The verification link points at `APP_URL` (`https://clior-dev.wanderlee.site` in development) and
-  the frontend must be served there for the link to open.
 - AC-003-08 cannot be exercised from a browser yet: login is still mocked in the frontend (US-001),
   and a direct local `POST /api/auth/login` answers `500` because the refresh-cookie guard rejects
   an `http` request whose `APP_URL` is `https` (pre-existing deployment-policy issue in US-001, see
-  “Known issues” below).
+  "Known issues" below). The no-session rule itself is verified: the live probe created no session
+  or cookie, and the 403 mapping is pinned by `auth.use-cases.spec.ts` and
+  `global-exception.filter.spec.ts`.
 - `/restablecer?token=` (password recovery landing) is not implemented; it belongs to US-004.
 
 Known issues found while verifying (outside US-003):

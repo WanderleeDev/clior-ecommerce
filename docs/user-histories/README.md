@@ -48,7 +48,7 @@ Implementation status per story: `Mock` (UI only) · `Partial` (some real calls)
 | --- | --- | --- | --- | --- | --- | --- |
 | [US-001](US-001-login.md) | Iniciar sesión | `/ingresar` | `POST /api/auth/login` | Must | Ready | Mock |
 | [US-002](US-002-logout.md) | Cerrar sesión | `/cuenta` (action) | `POST /api/auth/logout` | Must | Ready | Mock |
-| [US-003](US-003-register.md) | Registrarse | `/registro`, `/verificar?token=` | `POST /api/auth/register`, `POST /api/auth/verify-email`, `POST /api/auth/resend-verification` | Must | In progress | Real |
+| [US-003](US-003-register.md) | Registrarse | `/registro`, `/verificar?token=` | `POST /api/auth/register`, `POST /api/auth/verify-email`, `POST /api/auth/resend-verification` | Must | Done | Real |
 | [US-004](US-004-password-recovery.md) | Recuperar acceso | `/recuperar`, `/restablecer?token=` | `POST /api/auth/forgot-password`, `POST /api/auth/reset-password` | Must | Draft | Mock |
 
 Next candidates: see the full backlog catalog in [`docs/USER-STORIES.md`](../USER-STORIES.md) (US-005 onward: catalog, product detail, brands, cart, checkout, payments, orders, profile, addresses, reviews, admin, contact).

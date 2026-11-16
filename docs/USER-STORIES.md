@@ -14,7 +14,7 @@ This catalog is the backlog index. Full product intent per story lives in `docs/
 | --- | --- | --- | --- | --- | --- |
 | [US-001](user-histories/US-001-login.md) | Iniciar sesión | `/ingresar` | Must | Ready | Mock |
 | [US-002](user-histories/US-002-logout.md) | Cerrar sesión | `/cuenta` (action) | Must | Ready | Mock |
-| [US-003](user-histories/US-003-register.md) | Registrarse | `/registro`, `/verificar?token=` | Must | In progress | Real |
+| [US-003](user-histories/US-003-register.md) | Registrarse | `/registro`, `/verificar?token=` | Must | Done | Real |
 | [US-004](user-histories/US-004-password-recovery.md) | Recuperar acceso | `/recuperar`, `/restablecer?token=` | Must | Draft | Mock |
 
 ---
