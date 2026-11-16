@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map, type Observable, switchMap } from 'rxjs';
 import { ViewProductsUsecase } from '../domain/ports/in/view-products.usecase';
 import { ProductRepositoryPort } from '../domain/ports/out/product-repository.port';
@@ -9,12 +9,8 @@ import type { ProductListView, ProductView } from './product-view.model';
 
 @Injectable()
 export class ViewProductsUseCase extends ViewProductsUsecase {
-  constructor(
-    private readonly repo: ProductRepositoryPort,
-    private readonly dom: ProductDomainService,
-  ) {
-    super();
-  }
+  private readonly repo = inject(ProductRepositoryPort);
+  private readonly dom = inject(ProductDomainService);
 
   view(id: string): Observable<ProductView> {
     return this.repo.getById(id).pipe(

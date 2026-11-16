@@ -1,3 +1,5 @@
+export type PetType = 'dog' | 'cat' | 'small_pet';
+
 export interface User {
   id: string;
   name: string;
@@ -16,8 +18,8 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
-  pet: string;
+  /** Optional pet type used to personalize catalog recommendations. */
+  petType?: PetType;
 }
 
 export interface RegisterResult {

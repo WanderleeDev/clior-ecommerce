@@ -1,3 +1,4 @@
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { iconSubset } from '../ngx-iconify/icon-subset';
 import { provideIconify } from 'ngx-iconify-stack';
 import { provideThemeStack } from 'ngx-theme-stack';
@@ -17,6 +18,8 @@ import { AuthUsecase } from './auth/domain/ports/in/auth.usecase';
 import { AuthUseCase } from './auth/application/auth.use-case';
 import { AuthRepositoryPort } from './auth/domain/ports/out/auth-repository.port';
 import { MockAuthAdapter } from './auth/infrastructure/adapters/mock-auth.adapter';
+import { RegistrationRepositoryPort } from './auth/domain/ports/out/registration-repository.port';
+import { HttpRegistrationAdapter } from './auth/infrastructure/adapters/http-registration.adapter';
 import { ViewProductsUsecase } from './products/domain/ports/in/view-products.usecase';
 import { ViewProductsUseCase } from './products/application/view-products.use-case';
 import { ProductDomainService } from './products/domain/services/product-domain.service';
@@ -25,6 +28,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideClientHydration(withEventReplay()),
     provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withFetch()),
     provideRouter(appRoutes), provideThemeStack({
       themes: ['system', 'light', 'dark', 'mascotas'] as const,
       defaultTheme: 'system',
@@ -35,15 +39,8 @@ export const appConfig: ApplicationConfig = {
     ProductDomainService,
     { provide: ProductRepositoryPort, useClass: MockProductAdapter },
     { provide: AuthRepositoryPort, useClass: MockAuthAdapter },
-    {
-      provide: AuthUsecase,
-      useClass: AuthUseCase,
-      deps: [AuthRepositoryPort],
-    },
-    {
-      provide: ViewProductsUsecase,
-      useClass: ViewProductsUseCase,
-      deps: [ProductRepositoryPort, ProductDomainService],
-    },
+    { provide: RegistrationRepositoryPort, useClass: HttpRegistrationAdapter },
+    { provide: AuthUsecase, useClass: AuthUseCase },
+    { provide: ViewProductsUsecase, useClass: ViewProductsUseCase },
   ],
 };

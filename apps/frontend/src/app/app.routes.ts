@@ -59,6 +59,12 @@ export const appRoutes: Route[] = [
     title: 'Clior Pets | Crear cuenta',
   },
   {
+    path: 'verificar',
+    loadComponent: () =>
+      import('./auth/presentation/views/verify-email.view').then((m) => m.VerifyEmailView),
+    title: 'Clior Pets | Verificar correo',
+  },
+  {
     path: 'recuperar',
     loadComponent: () =>
       import('./auth/presentation/views/recover.view').then((m) => m.RecoverView),
