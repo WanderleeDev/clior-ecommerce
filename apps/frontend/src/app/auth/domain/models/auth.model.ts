@@ -4,9 +4,14 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  pet: string;
+  role: string;
+  petType: PetType | null;
+  /** ISO timestamp as delivered by the API. */
+  createdAt: string;
   avatar?: string;
-  memberSince: string;
+  /** Display-only labels derived by the adapter; views may render them directly. */
+  pet?: string;
+  memberSince?: string;
 }
 
 export interface LoginCredentials {

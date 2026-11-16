@@ -255,6 +255,7 @@ describe('AuthController cookie wiring (M14)', () => {
         name: user.name,
         role: user.role,
         petType: user.petType,
+        createdAt: user.createdAt,
       },
     });
   });

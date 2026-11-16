@@ -20,7 +20,7 @@ import type { AuthResult } from '../../../../application/types/auth.types';
 import type { AuthUser } from '../../../../domain/models/auth-user';
 import { InvalidRefreshTokenError } from '../../../../domain/errors/auth-flow.errors';
 
-type PublicUser = Pick<AuthUser, 'id' | 'email' | 'name' | 'role' | 'petType'>;
+type PublicUser = Pick<AuthUser, 'id' | 'email' | 'name' | 'role' | 'petType' | 'createdAt'>;
 
 const REFRESH_COOKIE_NAME = 'refresh_token';
 const REFRESH_COOKIE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
@@ -127,7 +127,14 @@ function readRefreshToken(request: Request): string {
 }
 
 function toPublicUser(user: AuthUser): PublicUser {
-  return { id: user.id, email: user.email, name: user.name, role: user.role, petType: user.petType };
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+    petType: user.petType,
+    createdAt: user.createdAt,
+  };
 }
 
 function setRefreshCookie(response: Response, result: IssuedAuthResult, options: CookieOptions): PublicAuthResult {

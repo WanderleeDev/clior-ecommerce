@@ -45,4 +45,27 @@ describe('toAuthError', () => {
   it('treats a non-HTTP failure as unknown', () => {
     expect(toAuthError(new Error('boom')).code).toBe('unknown');
   });
+
+  it('maps wrong credentials to a generic Spanish message without enumeration', () => {
+    const error = toAuthError(httpError(401, { message: 'Invalid credentials' }));
+
+    expect(error.code).toBe('invalid_credentials');
+    expect(error.message).toBe('Email o contraseña incorrectos.');
+  });
+
+  it('maps a locked account to the Spanish lockout copy (still a 401)', () => {
+    const error = toAuthError(httpError(401, { message: 'Account is temporarily locked' }));
+
+    expect(error.code).toBe('locked');
+    expect(error.message).toContain('bloqueada temporalmente');
+  });
+
+  it('maps an unverified login to the verification hint', () => {
+    const error = toAuthError(
+      httpError(403, { message: 'Email address must be verified before login' }),
+    );
+
+    expect(error.code).toBe('unverified');
+    expect(error.message).toContain('verificado');
+  });
 });

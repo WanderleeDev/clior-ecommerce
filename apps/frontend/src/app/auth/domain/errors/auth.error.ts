@@ -1,6 +1,9 @@
 export type AuthErrorCode =
   | 'email_taken'
   | 'invalid_token'
+  | 'invalid_credentials'
+  | 'locked'
+  | 'unverified'
   | 'throttled'
   | 'validation'
   | 'unknown';

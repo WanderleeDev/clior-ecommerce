@@ -6,16 +6,8 @@ interface AuthState {
   user: User | null;
 }
 
-const MOCK_SESSION: User = {
-  id: 'u-1',
-  name: 'Mariana Torres',
-  email: 'mariana@ejemplo.com',
-  pet: 'Rocky · Labrador 3 años',
-  memberSince: 'Enero 2024',
-};
-
 const initialState: AuthState = {
-  user: MOCK_SESSION,
+  user: null,
 };
 
 export const AuthStore = signalStore(
