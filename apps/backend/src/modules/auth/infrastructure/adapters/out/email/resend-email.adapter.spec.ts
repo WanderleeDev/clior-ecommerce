@@ -27,6 +27,7 @@ function completeConfig(): Record<string, string> {
     RESEND_PASSWORD_RESET_TEMPLATE_ID: 'password-reset-template',
     MAIL_FROM: 'Clior <noreply@example.com>',
     APP_URL: 'http://localhost:4200',
+    SUPPORT_EMAIL: 'support@example.com',
   };
 }
 
@@ -41,7 +42,13 @@ describe('ResendEmailAdapter', () => {
     expect(() => new ResendEmailAdapter(configWith(withoutKey))).toThrow(/RESEND_API_KEY/);
   });
 
-  it('sends a verification email with the template and action url', async () => {
+  it('fails fast at construction when SUPPORT_EMAIL is absent', () => {
+    const { SUPPORT_EMAIL: _omitted, ...withoutSupport } = completeConfig();
+
+    expect(() => new ResendEmailAdapter(configWith(withoutSupport))).toThrow(/SUPPORT_EMAIL/);
+  });
+
+  it('sends a verification email with the published template variables', async () => {
     const adapter = new ResendEmailAdapter(configWith(completeConfig()));
 
     await adapter.sendVerification({
@@ -56,8 +63,49 @@ describe('ResendEmailAdapter', () => {
       template: {
         id: 'verification-template',
         variables: {
-          USER_NAME: 'Maria',
-          ACTION_URL: 'http://localhost:4200/verificar?token=raw-token',
+          first_name: 'Maria',
+          verification_link: 'http://localhost:4200/verificar?token=raw-token',
+          expiration_time: '1 hora',
+          support_email: 'support@example.com',
+          website_url: 'http://localhost:4200',
+        },
+      },
+    });
+  });
+
+  it('derives first_name from the first word of the registered name', async () => {
+    const adapter = new ResendEmailAdapter(configWith(completeConfig()));
+
+    await adapter.sendVerification({
+      email: 'maria@example.com',
+      name: '  Maria   Torres ',
+      token: 'raw-token',
+    });
+
+    expect(mockSend.mock.calls[0][0].template.variables.first_name).toBe('Maria');
+  });
+
+  it('sends a password reset email with subject and the published template variables', async () => {
+    const adapter = new ResendEmailAdapter(configWith(completeConfig()));
+
+    await adapter.sendPasswordReset({
+      email: 'maria@example.com',
+      name: 'Maria',
+      token: 'raw-token',
+    });
+
+    expect(mockSend).toHaveBeenCalledWith({
+      from: 'Clior <noreply@example.com>',
+      to: 'maria@example.com',
+      subject: 'Restablece tu contraseña',
+      template: {
+        id: 'password-reset-template',
+        variables: {
+          first_name: 'Maria',
+          reset_link: 'http://localhost:4200/restablecer?token=raw-token',
+          expiration_time: '1 hora',
+          support_email: 'support@example.com',
+          website_url: 'http://localhost:4200',
         },
       },
     });

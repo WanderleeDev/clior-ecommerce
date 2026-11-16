@@ -20,12 +20,18 @@ describe('validateEnvironment', () => {
     expect(thrown).toBeInstanceOf(z.ZodError);
     const paths = (thrown as z.ZodError).issues.map((issue) => issue.path.join('.'));
     expect(paths).toContain('RESEND_API_KEY');
+    expect(paths).toContain('SUPPORT_EMAIL');
   });
 
   it('accepts a complete environment that includes the Resend key', () => {
-    const result = validateEnvironment({ ...baseEnv(), RESEND_API_KEY: 're_test_key' });
+    const result = validateEnvironment({
+      ...baseEnv(),
+      RESEND_API_KEY: 're_test_key',
+      SUPPORT_EMAIL: 'support@example.com',
+    });
 
     expect(result.RESEND_API_KEY).toBe('re_test_key');
     expect(result.RESEND_VERIFICATION_TEMPLATE_ID).toBe('verification-template');
+    expect(result.SUPPORT_EMAIL).toBe('support@example.com');
   });
 });

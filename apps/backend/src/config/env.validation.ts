@@ -14,6 +14,7 @@ export const environmentSchema = z.object({
   RESEND_API_KEY: z.string().min(1),
   RESEND_VERIFICATION_TEMPLATE_ID: z.string().min(1),
   RESEND_PASSWORD_RESET_TEMPLATE_ID: z.string().min(1),
+  SUPPORT_EMAIL: z.string().min(1),
   MAIL_FROM: z.string().min(1).default('Clio <onboarding@resend.dev>'),
   APP_URL: z.string().url().default('http://localhost:4200'),
   /**
